@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 using namespace std;
 
@@ -164,7 +165,7 @@ class symbols {
 
 rules S;
 
-main()
+int main()
 {
   S.last()->insert_after(new symbols(cin.get()));
   int x = 0;
