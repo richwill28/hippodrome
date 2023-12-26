@@ -1,0 +1,369 @@
+<!DOCTYPE div PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<div class="div1">
+<h2><a name="concepts"></a>1 Concepts</h2> 
+<p>This informative chapter provides an easily approachable description of the design
+  of XForms, describing the major components and how they relate. Not every feature of
+  XForms is covered here. For a complete, normative description of XForms, refer to the
+  remainder of this document.</p> 
+  <div class="div2">
+<h3><a name="concepts-purpose-presentation"></a>1.1 Purpose and Presentation</h3>
+  <p>For explanatory purposes, a form can be considered to consist of 'purpose', 'presentation',
+  and 'data'. Some examples:</p>
+  <table width="100%"><thead><tr><td><b>Purpose</b></td><td><b>Presentation</b></td><td><b>Data</b></td></tr>
+  </thead><tbody>
+  <tr><td>Data collection</td><td>Arrangement of form controls</td><td>Registration information</td></tr>
+  <tr><td>Time card</td><td>How dates are entered</td><td>Days and hours worked</td></tr>
+  <tr><td>Order form</td><td>How to render the form controls on small devices</td><td>Order, shipping, and payment info</td></tr>
+  <tr><td>Information Please</td><td>How the form integrates with a Web site</td><td>User contact information</td></tr>
+  </tbody></table>
+  
+  <p>The design of existing Web forms didn't separate the purpose from the presentation
+  of a form, and additionally offered only a restricted representation for data captured through the form. This is the primary difference between XForms and previous form technologies.</p></div><div class="div2"> 
+    
+<h3><a name="concepts-xhtml"></a>1.2  Current Approach: XHTML</h3> 
+  <p> Take for instance a simple eCommerce form authored in XHTML 1.0:</p>
+  <table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"&gt;
+&lt;body&gt;
+&lt;form action="http://example.com/submit" method="post"&gt;
+  &lt;span&gt;Select Payment Method: &lt;/span&gt;
+  &lt;input type="radio" name="paytype" value="cash"&gt;Cash&lt;/input&gt;
+  &lt;input type="radio" name="paytype" value="credit"&gt;Credit&lt;/input&gt;&lt;br/&gt;
+  &lt;label&gt;Credit Card Number: &lt;input type="text" name="cc"/&gt;&lt;/label&gt;&lt;br/&gt;
+  &lt;label&gt;Expiration Date: &lt;input type="text" name="exp"/&gt;&lt;/label&gt;&lt;br/&gt;
+  &lt;input type="submit"/&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><p>A browser might render this form as follows:</p>
+<img src="images/concepts-xhtml.png" alt="screen shot of a graphic rendering">
+<p>This form makes no effort to separate purpose (data collection semantics) from  presentation (the <code>&lt;input&gt;</code> form controls), and offers no
+control over the basic name/value formatting of the resulting data. XForms greatly
+improves the expressive capabilities of electronic forms.</p>
+</div>
+<div class="div2">
+<h3><a name="concepts-xfu"></a>1.3 Stepping Up to XForms</h3>
+<p>XForms are comprised of separate sections that describe what the form does, and how
+the form is to be presented. This allows for flexible presentation options, making it possible for classic XHTML
+form controls, as well as other form control sets such as WML to be leveraged, as
+shown here.</p>
+<img src="images/arch1.jpg" alt="puzzle pieces; 'XForm Model' on the left, on the right 'XForms User Interface', 'XHTML', 'WML', and a stack of 'proprietary' pieces">
+<p>The simplest case involves authoring only the new XForms
+<a title="" href="#">form control</a>s, leaving out the other sections of the form. To convert the previous form into
+XForms this way, an <code>xform</code> element is needed in the <code>head</code> section of
+the document:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;xform:xform&gt;
+  &lt;xform:submitInfo target="http://example.com/submit" method="..."/&gt;
+&lt;/xform:xform&gt;</pre></td></tr></table>
+<p>With these changes to the containing document, the previous example could be rewritten
+like this:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;selectOne xmlns="http://www.w3.org/2001/06/xforms" ref="paytype"&gt;
+  &lt;caption&gt;Select Payment Method&lt;/caption&gt;
+  &lt;choices&gt;
+    &lt;item value="cash"&gt;Cash&lt;/item&gt;
+    &lt;item value="credit"&gt;Credit&lt;/item&gt;
+  &lt;/choices&gt;
+&lt;/selectOne&gt;
+&lt;textbox xmlns="http://www.w3.org/2001/06/xforms" ref="cc"&gt;
+  &lt;caption&gt;Credit Card Number&lt;/caption&gt;
+&lt;/textbox&gt;
+&lt;textbox xmlns="http://www.w3.org/2001/06/xforms" ref="exp"&gt;
+  &lt;caption&gt;Expiration Date&lt;/caption&gt;
+&lt;/textbox&gt;
+&lt;submit xmlns="http://www.w3.org/2001/06/xforms"/&gt;</pre></td></tr></table>
+<p>Notice the following features of this design:</p>
+<ul><li><p>The user interface is not hard-coded to use radio buttons. Different devices
+  (such as a voice browser) can render the concept of "selectOne" as appropriate.</p></li>
+<li><p>Form controls always have captions directly associated with them, as child elements.</p></li>
+<li><p>There is no need for an enclosing <code>form</code> element.</p></li>
+<li><p>Element names for form controls have been changed: <code>textbox</code> is a specific
+element, rather than a <code>type</code> attribute on <code>input</code>, as in XHTML.</p> </li>
+<li><p>Data entered through the form controls ends up submitted as XML.</p></li>
+</ul>
+<p>With these changes, the <a title="" href="#">XForms Processor</a>
+will be able to directly submit XML instance data. The XML is constructed by creating a root
+element with child elements reflecting the names given to each form control.  For instance,
+the submitted data might look like this:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;!-- envelope, generated separately --&gt;
+&lt;Envelope&gt;
+  &lt;Body&gt;</pre></td></tr></table><table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>    &lt;!-- serialized instance data --&gt;
+    &lt;paytype&gt;Credit&lt;/paytype&gt;
+    &lt;cc&gt;12354677890123456&lt;/cc&gt;
+    &lt;exp&gt;04-2001&lt;/exp&gt;</pre></td></tr></table>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>  &lt;!-- envelope, generated separately --&gt;
+  &lt;/Body&gt;
+&lt;/Envelope&gt;</pre></td></tr></table></div>
+<div class="div2">
+<h3><a name="concpts-instance"></a>1.4 Providing XML Instance Data</h3>
+<p>Understandably, authors will often desire greater control over exact construction of the
+submitted instance data. One common case might be submitting to a server XML data that is
+validated against a predefined DTD or XML Schema.</p>
+<p>XForms keeps track of the state of the partially filled form through
+<a title="" href="#">instance data</a>, which provides an outline
+of the desired  XML data, including namespace information. The instance data starts
+off with the initial values for the form, is updated as the user fills the form, and
+eventually is serialized and submitted. The initial instance data is taken from the
+<code>instance</code> element inside the <code>xform</code> element, defined as follows:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;xform:xform&gt;
+  &lt;xform:submitInfo target="http://example.com/submit" method="..."/&gt;
+  &lt;xform:instance&gt;
+    &lt;payment type="credit" xmlns="http://commerce.example.com/payment"&gt;
+      &lt;cc/&gt;
+      &lt;exp/&gt;
+    &lt;/payment&gt;
+  &lt;/xform:instance&gt;
+&lt;/xform:xform&gt;</pre></td></tr></table>
+<p>This design has features worth calling out:</p><ul>
+<li><p>There is complete flexibility in the structure of the XML. Notice that the item
+  <code>paytype</code> is now expressed as an attribute <code>type</code> of the element
+  <code>payment</code>.</p></li>
+<li><p>Empty elements <code>cc</code> and <code>exp</code> serve as placeholders in the XML structure,
+  and will be filled in with form data provided by the user.</p></li>
+<li><p>An initial value (<code>"credit"</code>) for the form control is provided through the
+  <code>type</code> attribute in the instance data. In the submitted XML, this initial value will
+  be replaced by the user input, if any.</p></li>
+<li><p>The instance data provides a unique namespace, which will be used when the XML gets
+  submitted.</p></li></ul>
+  <p>To connect this instance data with  form controls, the
+<code>ref</code> attributes on the form controls need to point to the proper part of the instance
+data, using <a title="" href="#">binding expressions</a>:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>  &lt;selectOne ref="payment/@type"&gt;
+  ...
+  &lt;inputText ref="payment/cc"&gt;
+  ...
+  &lt;inputText ref="payment/exp"&gt;</pre></td></tr></table>
+<p>Binding expressions are based on XPath <a href="#">[ref-xpath-1.0]</a>, including
+  the use of the '@' character to refer to attributes, as seen here.</p>
+  </div> 
+<div class="div2">
+<h3><a name="concepts-model"></a>1.5 The XForms Model</h3>
+<p>The earlier XHTML form in <a href="#"><b>???</b></a>. Even in this short form,
+there are several aspects that would be desirable to express, but would only be possible
+through the addition of unstructured script code:
+</p>
+<ul><li><p>The credit card information fields <code>cc</code> and <code>exp</code> are
+only relevant if the "Credit" option is chosen in the <code>paytype</code> field.</p></li>
+<li><p>The credit card information fields <code>cc</code> and <code>exp</code> should be
+required when the "Credit" option is chosen in the <code>paytype</code> field.</p></li>
+<li><p>The field <code>cc</code> should accept digits only, and should have exactly 14,
+15, or 16 digits.</p></li>
+<li><p>The field <code>exp</code> should accept only valid month/date combinations.</p></li></ul>
+<p>By specifying a 3rd component, the <a title="" href="#">XForms Model</a>,
+authors can include rich declarative datatype and validation information in forms.</p>
+<table border="1" summary="Editorial note: MJD"><tr><td width="50%" valign="top" align="left"><b>Editorial note: MJD</b></td><td width="50%" valign="top" align="right">&nbsp;</td></tr><tr><td valign="top" align="left" colspan="2">The examples here are sketchy out of necessity; this section
+will need to be rewritten after the Schema Basic task force delivers its syntax recommendations.</td></tr></table>
+<p>An XForms Model consists of <a title="" href="#">model items</a>, which
+include XML Schema datatype information <a href="#">[ref-xschema-2]</a> as well as properties
+specific to XForms.</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;!-- add to the cc model item the following: --&gt;
+relevant="value('payment/@type') == 'credit'"
+required="true"
+datatype of "xform:string"
+facet pattern of "\d{14,16}"
+
+&lt;!-- add to the exp model item the following: --&gt;
+relevant="value('payment/@type') == 'credit'"
+required="true"
+datatype of "xform:gYearMonth"</pre></td></tr></table>
+</div>
+<div class="div2">
+<h3><a name="concepts-multiple"></a>1.6 Multiple Forms per Document</h3>
+<p>XForms places no limits on the number of individual forms that can be placed in a single
+<a title="" href="#">containing document</a>. When multiple forms share
+the same containing document, multiple
+<code>xform</code> elements are needed. The first <code>xform</code> element may skip a unique <code>id</code>
+attribute (as have all the examples above), but subsequent  <code>xform</code> elements require
+an <code>id</code> so that they can be referenced from elsewhere in the containing document.</p>
+<p>The other side of the equation is that form controls throughout the document need to specify
+which <code>xform</code> element is associated with the instance data to which they bind. This is
+accomplished through an <code>xform</code> attribute alongside the <code>ref</code> attribute. The
+default for the <code>xform</code> attribute is to refer to the first <code>xform</code> element in
+document order.</p><p>To add a second form, an opinion poll, to our commerce example, the
+following would be authored in the head section of the XHTML:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;xform:xform&gt;
+  &lt;xform:submitInfo target="http://example.com/submit" method="..."/&gt;
+  &lt;xform:instance&gt;
+     ...payment instance data...
+  &lt;/xform:instance&gt;
+&lt;/xform:xform&gt;
+
+&lt;xform:xform id="poll"&gt;
+  &lt;xform:submitInfo target="http://example.com/poll" method="..."/&gt;
+&lt;/xform:xform&gt;</pre></td></tr></table><p>Additionally, the following form control markup in the body:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;selectOne ref="pollOption" xform="poll"  xmlns="http://www.w3.org/2001/06/xforms"&gt;
+  &lt;caption&gt;How useful is this page to you?&lt;/caption&gt;
+  &lt;choices&gt;
+    &lt;item value="0"&gt;Not at all helpful&lt;/item&gt;
+    &lt;item value="1"&gt;Barely helpful&lt;/item&gt;
+    &lt;item value="2"&gt;Somewhat helpful&lt;/item&gt;
+    &lt;item value="3"&gt;Very helpful&lt;/item&gt;
+  &lt;/choices&gt;
+&lt;/selectOne&gt;
+&lt;submit xform="poll"  xmlns="http://www.w3.org/2001/06/xforms"/&gt;</pre></td></tr></table>
+<p>The main difference to note here is the use of <code>xform="poll"</code>,
+  which identifies which form the form control binds to.</p></div>
+<div class="div2">
+<h3><a name="concepts-advancedUI"></a>1.7 Additional User Interface Capabilities</h3>
+<p>The visual layout appearance of the initial XHTML forms such as the above example
+(<a href="#"><b>???</b></a>) leaves much to be desired. </p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>Need extended UI example here</pre></td></tr></table>
+</div>
+<div class="div2">
+<h3><a name="concepts-complete"></a>1.8 Complete Document</h3>
+<p>This chapter presented various bits and pieces of XForms as a tool to help readers
+understand the design. Presented here is the entire XHTML+XForms document presented
+in one segment.</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+          "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xform="http://www.w3.org/2001/06/xforms"
+      xml:lang="en"&gt;
+&lt;head&gt;
+  &lt;title&gt;XForms in XHTML&lt;/title&gt;
+
+  &lt;xform:xform&gt;
+    &lt;xform:submitInfo target="http://example.com/submit" method="..."/&gt;
+    &lt;xform:instance&gt;
+      &lt;payment type="credit" xmlns="http://commerce.wizard"&gt;
+        &lt;cc/&gt;
+        &lt;exp/&gt;
+      &lt;/payment&gt;
+    &lt;/xform:instance&gt;
+  &lt;/xform:xform&gt;
+
+  &lt;xform:xform id="poll"&gt;
+    &lt;xform:submitInfo target="http://example.com/poll" method="..."/&gt;
+  &lt;/xform:xform&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+    ... include advanced UI markup here ...
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table>
+</div>
+</div><!DOCTYPE div PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<div class="div1"> 
+<h2><a name="intro"></a>1 About the XForms 1.0 Specification</h2> 
+<div class="div2"> 
+<h3><a name="intro-background"></a>1.1 Background</h3> 
+<p>Forms are an important part of the Web, and they continue to be the
+      primary means of interactivity used by many Web sites. Web applications and
+      eCommerce solutions have sparked the demand for better Web forms with richer
+      interactions. XForms are the response to this demand--extended analysis,
+      followed by the creation of a new platform-independent markup language for
+      online interaction between an <a title="" href="#">XForms Processor</a> and
+      a remote entity. XForms are the successor to XHTML forms, and benefit from the
+      lessons learned in the years of HTML forms implementation experience.</p>
+    <p>Further background information on XForms can be found at 
+      <a href="http://www.w3.org/MarkUp/Forms/">http://www.w3.org/MarkUp/Forms</a>.</p>
+  </div> 
+  <div class="div2">
+    
+<h3><a name="intro-reading"></a>1.2 Reading the Specification</h3>
+    <p>This specification has been written with various types of readers in
+      mind--in particular XForms authors and XForms implementors. We hope the
+      specification will provide authors with the tools they need to write efficient,
+      attractive, and accessible documents, without overexposing them to the XForms
+      implementation details. Implementors, however, should find all they need to
+      build conforming XForms Processors. The specification begins with a general
+      presentation of XForms and becomes more and more technical and specific towards
+      the end. For quick access to information, a general table of contents, specific
+      tables of contents at the beginning of each section, and an index provide easy
+      navigation, in both the electronic and printed versions.</p>
+    <p>The specification has been written with two modes of presentation in
+      mind: electronic and printed. In case of a discrepancy, the electronic version
+      is considered the authoritative version of the document.</p>
+  </div>
+  <div class="div2">
+    
+<h3><a name="intro-org"></a>1.3 How the Specification is Organized</h3>
+    <p>The specification is organized into the following chapters:</p>
+    <dl>
+      
+        <dt class="label">Chapters 1 and 2</dt>
+        <dd>
+          <p>An introduction to XForms The introduction includes a brief
+            tutorial on XForms and a discussion of design principles behind XForms.</p>
+        </dd>
+      
+      
+        <dt class="label">Chapters 3 and up</dt>
+        <dd>
+          <p>XForms reference manual. The bulk of the reference manual consists
+            of the specification of XForms. This reference defines what may go into XForms
+            and how XForms Processors must interpret the various components in order to
+            claim conformance.</p>
+        </dd>
+      
+      
+        <dt class="label">Appendixes</dt>
+        <dd>
+          <p>Appendixes contain a normative description of XForms described in
+            XML Schema, information on optional function libraries, references, a change
+            history, and other useful information.</p>
+        </dd>
+      
+    </dl>
+  </div>
+  <div class="div2">
+    
+<h3><a name="intro-conventions"></a>1.4 Documentation Conventions</h3>
+    <p>The following highlighting and typography is used to present technical
+      material in this document and other documents from the XForms Working
+      Group:</p>
+      
+    <p>Special terms are defined in their own chapter; hyperlinks connect uses
+      of the term to the definition.</p>
+      
+    <p>Throughout this document, the namespace prefixes "<code>xform:</code>",
+      "<code>xsd:</code>", and "<code>xsi:</code>" are used to denote the XForms, 
+      XML Schema, and XML Schema for Instances namespaces
+      respectively. This is by convention only; any namespace prefix may be used in
+      practice.</p>
+      
+    <p>Official terms are defined in the following manner: [<a title="term" name="def-term">Definition</a>: 
+    You can find most <b>terms</b> in the chapter <a href="#"><b>???</b></a>].
+    Links to <a title="" href="#">term</a>s may be specially highlighted in the text.</p>
+    
+    <p>The XML representations of various elements within XForms are presented
+  as follows: Listed are the element name, names of all attributes, allowed
+  values of attributes appearing after a "=" character, default values of
+  attributes appearing after a ":" character, and allowed content. One or
+  more headings below the table provide additional explanatory information.</p>
+  <div class="example">
+<h5>Example: XML Syntax Representation &lt;<code>example</code>&gt;</h5><table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;example
+  count = integer
+  size = (small | medium | large) : medium
+&gt;
+  &lt;!-- Content: (allowed-content) --&gt;
+&lt;/example&gt;</pre></td></tr></table><blockquote><p>
+    <b>count = integer</b> - description of this attribute
+    <br><b>size = (small | medium | large) : medium</b> - description of
+    this attribute
+  </p></blockquote></div>  
+  
+  
+  
+  
+  <p>Non-normative short examples are set off typographically:</p>
+    <blockquote><p>Example Item</p></blockquote><p>or</p><table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>Example Item</pre></td></tr></table>
+    
+    
+  <p>References to external documents appear as follows: <a href="#">[ref-example]</a>
+  with links to the references section of this document.</p><dl>
+  <dt class="label"><a name="ref-example"></a>Sample Reference</dt><dd><cite>Reference</cite> - linked
+  to from above.</dd></dl>
+  
+  <p>The following highlighting is used for non-normative commentary:</p>
+  
+  <div class="note"><p class="prefix"><b>Note:</b></p> <p>A general admonition to readers.</p></div>
+  
+  <table border="1" summary="Editorial note: Editorial Note Name"><tr><td width="50%" valign="top" align="left"><b>Editorial note: Editorial Note Name</b></td><td width="50%" valign="top" align="right">&nbsp;</td></tr><tr><td valign="top" align="left" colspan="2"> Editorial commentary.</td></tr></table>
+  
+  <div class="issue"><p class="prefix"><a name="issue-id"></a><b>Issue (issue-id):</b></p><p class="prefix"><b>Issue-Name</b></p>
+  <p> A specific issue to which input from readers is requested.</p></div>
+  
+  </div>
+</div>

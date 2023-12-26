@@ -1,0 +1,173 @@
+<!DOCTYPE div PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<div class="div1">
+<h2><a name="changes"></a>A Changes from Previous Release (Non-Normative)</h2>
+ 
+  <div class="div2"> 
+    
+<h3><a name="changes-overall"></a>1 Changes since the 16-Feb-2001 release</h3> 
+  <p>There have been significant changes to the XForms since our last public draft. In addition, we have switched over to authoring the specification using xmlspec.dtd from writing raw HTML (details at <a href="#"><b>???</b></a>). The change from hand-authored HTML to xmlspec has introduced changes throughout the document, and consequently, adding diff marks for each change would be excessively distracting and make this appendix difficult to read. Instead, this section summarizes how things have changed so that readers familiar with the previous draft can get up to to speed with the new specification.</p></div> 
+<div class="div2">
+<h3><a name="changes-about"></a>2 Changes to Chapter 1 'About XForms'</h3><p>The typographic samples have been updated to work better with the XMLspec publishing system.</p></div><div class="div2">
+<h3><a name="changes-concepts"></a>3 Changes to Chapter 2 'Concepts'</h3><p>This chapter has been completely updated. The new version contains a samples of complete forms and a step-by-step guide through the most common functionality in XForms.</p></div><div class="div2">
+<h3><a name="changes-terms"></a>4 Changes to Chapter 3 'Terminology'</h3><p>Terms have been cleaned-up and brought into line with the rest of the document. The term "datatype" has been imported from XML Schema. The terms "computed expression", "containing document", and "model item property" are new.</p></div><div class="div2">
+<h3><a name="changes-datatypes"></a>5 Changes to Chapter 4 'Datatypes'</h3><p>The Working Group has decided to more directly reference XML Schema datatypes, hence this chapter has been restructured to include by reference Schema datatypes, and define any additional types. Remaining issues are listed within the chapter.</p></div><div class="div2">
+<h3><a name="changes-model"></a>6 Changes to Chapter 5 'XForms Model'</h3><p>Removed all "simple syntax". Clarified how computed model item properties (including calculate) work. Improved terminology, consistently using terms from chapter 3.</p><p>Open and closed enumerations are now under separate headings. Removed 'group' to UI chapter. Renamed "Arrays" section to "Multiple Simultaneous Values", and added section "Repeating Line Items". Renamed "Switch" to "Alternate Representation", with a pointer to the UI section.</p><p>Significant changes to this chapter, bringing it into much closer alignment with XML Schema, were not available for publication at this time and will appear in a near-future Working Draft.</p></div><div class="div2">
+<h3><a name="changes-expr"></a>7 Changes to Chapter 6 'XPath Expressions in XForms'</h3><p>This chapter was previously named "Dynamic Constraint Language". The new title more accurately describes both the chapter and the role of XPath within XForms. The term "Dynamic Constraints Language" has been removed throughout the remainder of the document as well.</p><p>New introductory material describes the various ways XPath is used throughout XForms. The "Instance Data" section formerly residing in the Processing Model chapter is now in this chapter. The section on Datatypes now describes which parts of XForms use XPath datatypes and which use XML Schema datatypes.</p><p>The BNF productions have been removed, in favor of stronger wording that XPath is to be used directly.</p><p>The section "Evaluation Context" has been more thoroughly cross-checked against the XPath specification, with several underspecified areas now addressed.</p><p>The large set of custom operators has been replaced with a NOTE referencing the built-in XPath operators.</p><p>New functions defined--<code>count-non-empty(node-set)</code>, and <code>xforms-property(string)</code>.</p><p>Several of the functions have been specified in greater detail.</p><p>The extensibility section now makes a reference to a possible direction--the <code>element-available()</code> and <code>function-available()</code> functions.</p></div><div class="div2">
+<h3><a name="changes-controls"></a>8 Changes to Chapter 7 'Form Controls'</h3><p>Originally part of the chapter "XForms User Interface". Now split into a separate chapter. The material in this new chapter has been restructured for readability.</p><p>The "Design Input" section has been removed. Further details are available in the XForms Requirements document.</p><p> 
+
+ 
+
+Note that names of form controls have changed, but are  not yet cast in stone. The following changes and additions have been made to the core form controls:
+
+</p><blockquote><p>hidden has been removed as a form control<br>output, textbox, submit, and reset  have kept their same names<br>exclusiveSelect and multipleSelect have been renamed selectOne and selectMany<br>checkbox is now selectBoolean<br>password is now secret<br>button has been fleshed out, including event listener details<br>uploadMedia and range are new form controls in this Working Draft</p></blockquote><p>The "AnyControl" is now described in prose instead of formally. In addition, there are minimal changes to the common elements and attributes defined in this section. Element onevent is now taken from the XHTML Events module and is therefore no longer defined in detail in this specification. A later section defines XForms-specific event handlers for use within event listeners declared via element onevent.</p></div><div class="div2">
+<h3><a name="changes-ui"></a>9 Changes to Chapter 8 'XForms User Interface'</h3><p>The section "Future Work" has been removed.</p><p>The specification now  introduces constructs for authoring conditional user interfaces (see switch) and a construct for authoring repeating widgets (see repeat) for use in creating purchase orders or shopping carts that wish to create the user interface needed for populating repeating rows from a table.</p><p>Conditional User Interfaces: 
+This is a new section, and defines construct switch along with its associated event handlers.</p><p>New Construct repeat:
+There is a new section that defines construct repeat for authoring things like shopping carts where the user interface for populating a structure needs to be repeated multiple times.</p><p>UI  Templates: 
+Constructs for creating and using user interface templates have been renamed for consistency. The new element names are uiTemplate and useUITemplate.</p><p>Constructing High-level User Interfaces:
+The content pertaining to creating higher-level user interfaces from the basic building blocks has been substantially reorganized. This portion of the specification first defines construct group used to group user interface controls. Element group no longer defines an XForms-specific layout model; instead all layout attributes come from CSS. This enables XForms user interfaces to be laid out using either CSS or XSL:FO, or for that matter languages such as SVG.</p><p> 
+
+Subforms And Subpages:
+With the XForms constructs for authoring higher level user interaction now fleshed out, it turns out that there is no need for an XForms-specific subform or subpage construct --we can leverage existing mechanisms such as group and more generally, XHTML's div elements for this purpose.</p></div><div class="div2">
+<h3><a name="changes-binding"></a>10 Changes to Chapter 9 'Binding'</h3><p>Some of the text has been cleaned up with regard to the relationship with XPath, but otherwise no significant content changes.</p></div><div class="div2">
+<h3><a name="changes-structure"></a>11 Changes to Chapter 10 'Document Structure'</h3><p>This chapter was previously named "Using XForms with Other Document Types". Added new section "Integration with XLink". Updated examples to reflect xlink namespace. </p></div><div class="div2">
+<h3><a name="changes-rpm"></a>12 Changes to Chapter 11 'Processing Model and Conformance'</h3><p>Cleaned up terminology and brought into greater consistency with the rest of the document.</p><p>Removed the <code>locale</code> property; separated the rest into those that can vary from one <code>xform</code> element to the next, and those that are the same across the containing document. Renamed <code>use-nulls</code> to <code>use-nil</code>.</p><p>The "suspend" functionality has been removed, including the <code>xforms-suspend</code> event, and will appear in a post-1.0 version of XForms. The <code>xforms-resume</code> event has been renamed <code>xforms-initialize</code>. Clarified that model items are associated with only a single value.</p><p>The "instance data" section has moved to the XPath Expressions chapter, though rules for constructing instance data are still in this chapter, and reworded for clarity.</p><p>The multipart/form-data section has been replaced with a reference to RFC 2388.</p><p>An early  conformance section has been added.</p></div><div class="div2">
+<h3><a name="changes-schema"></a>13 Changes to Appendix  'Schema for XForms'</h3><p>For this release, the Schema only covers the XForms form controls and the Document Structure markup.</p><p>Significant changes to this appendix, bringing it into much closer alignment with XML Schema, were not available for publication at this time and will appear in a near-future Working Draft.</p></div><div class="div2">
+<h3><a name="changes-xslt"></a>14 Changes to Appendix 'XSLT from Simple Syntax'</h3><p>Following the Working Group decision to remove the simple syntax, this appendix has also been removed.</p></div><div class="div2">
+<h3><a name="changes-samples"></a>15 Change to Appendix 'Sample Forms'</h3><p>Sample forms have been incorporated into <a href="#"><b>???</b></a></p></div><div class="div2">
+<h3><a name="changes-optional"></a>16 Changes to Appendix 'Optional Function Library'</h3><p>The Working Group has decided to remove all optional functions from XForms.</p></div><div class="div2">
+<h3><a name="changes-references"></a>17 Changes to Appendix 'References'</h3><p>References have been updated to refer to the changes in document status, most notably the XML Schema recommendation. New normative reference to XLink, RFC2388; informative reference to T. V. Raman's book on auditory user interfaces. Removed orphaned references to ISO 8601, RFC 2369, RFC 2141 and moved  the orphaned Unicode reference to the informative section.</p></div></div><!DOCTYPE div PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<div class="div1">
+<h2><a name="expr"></a>1 XPath Expressions in XForms</h2> 
+
+<p>XPath is used within XForms to address instance data, as well as to perform basic operations, such as declaratively stating when a <a title="" href="#">form control</a>
+   needs to be filled out, or defining a computation over other values such as unit prices, quantities, discounts, and tax and shipping costs. This chapter describes how XForms uses XPath, and additional XForms functions for use in forms.</p>
+
+<div class="div2">
+<h3><a name="expr-datatypes"></a>1.1 Datatypes</h3>
+<p>In general, XPath uses a smaller set of datatypes than XML Schema.  XForms allows arbitrary Schema datatypes, including those defined in <a href="#"><b>???</b></a>, while XPath datatypes are limited to <code>boolean</code>, <code>string</code>, <code>number</code>, and <code>node-set</code>. (For completeness, XPath additionally has external objects and result tree fragments, but there is no special treatment for these types in the XForms specification.)</p>
+  
+<div class="note"><p class="prefix"><b>Note:</b></p><p>Resource-limited XForms Processors may define implementation
+limits on the maximum size of a <code>node-set</code>.</p></div>
+
+<p>The XForms specification is defined such that it is always clear whether XPath or XML Schema datatypes are used within a particular context. <a title="" href="#">Binding expression</a>s and <a title="" href="#">computed expression</a>s always use XPath datatypes, while everything else uses XML Schema datatypes.</p>
+
+
+<div class="note"><p class="prefix"><b>Note:</b></p><p>A future version of XForms is expected to use XPath 2.0, which includes support for XML Schema datatypes, which will make the above distinction moot. </p></div></div>
+
+<div class="div2">
+<h3><a name="expr-instance"></a>1.2 Instance Data</h3>
+
+<p>Every form has a current state, representing the values entered at any particular point in time. Within XForms, for each <code>xform</code> element, the XForms Processor must behave as if it internally maintains an XML  data structure modeled as a tree to represent the state of the form. This data structure is called <a title="" href="#">instance data</a> and conforms to the XPath Data Model <a href="#">[ref-xpath-1.0]</a>. Additionally, each node in the tree contains a boolean "dirty" flag, which is referenced elsewhere by the XForms Processing Model. In this context, "dirty" indicates that the data value might need to be refreshed in the presentation.</p>
+  
+<p>Elements and attributes in the instance data may have namespace information associated with them, as defined in the XPath Data Model. Unless otherwise specified, all instance data elements and attributes are unqualified. Instance data elements and attributes may not belong to  the XForms namespace.</p>
+  
+<div class="issue"><p class="prefix"><a name="issue-instance-data-access"></a><b>Issue (issue-instance-data-access):</b></p><p>Should there be specified a  DOM form of access (perhaps a document fragment), that maps to the instance data? If so, should it be read-only or read-write access? What are possible security 
+  implications here?</p></div><p>The rules for defining the root and context nodes of the instance data are found in in the following section.</p>
+        
+ 
+  
+
+  
+
+</div><div class="div2">
+<h3><a name="expr-eval"></a>1.3 Evaluation Context</h3>
+
+<p>Applied to XForms, XPath references abstract <a title="" href="#">instance data</a> (using the "path" portion of XPath), instead of a discrete XML document. This reference is called a <a title="" href="#">binding expression</a> in this specification.</p><p>The following context is used for evaluating all XPath expressions in XForms:</p>
+  
+<ol><li><p>The context node for <b>outermost</b> binding elements (such as XForms UI elements) 
+    is the XPath root (<code>/</code>). A "<b>binding element</b>" 
+    is any element that is explicitly allowed to have an <code>xform:ref</code>
+    attribute. An XForms element is "<b>outermost</b>" when the node-set returned by the XPath expression 
+    <code>ancestor::*</code> includes no <b>binding element</b> nodes.</p><div class="note"><p class="prefix"><b>Note:</b></p><p>The contents of the instance data below the XPath root node (<code>/</code>) are dependent on how the instance data was constructed, which is defined in <a href="#"><b>???</b></a>.</p></div></li><li><p>The context node for non-<b>outermost</b> binding elements 
+    is determined by evaluating the binding expression of the <b>immediately enclosing</b> 
+    element. An element is "<b>immediately enclosing</b>" when it is the first 
+    <b>binding element </b>node in the node-set returned by the XPath expression <code>ancestor::*</code>. This 
+    is also referred to as "scoped resolution".</p></li><li><p>The context size and position are both exactly 1.</p></li><li><p>No variable bindings are in place.</p></li><li><p>The available function library is defined below.</p></li><li><p>Any namespace declarations in scope for the attribute that defines the  expression are applied to the expression.</p></li></ol>
+
+
+
+<p>Example:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;repeat ref="element1/foo/bar"&gt;
+  &lt;selectOne ref="element2" ... /&gt;
+  &lt;selectOne ref="@attr" ... /&gt;
+&lt;/repeat&gt;</pre></td></tr></table>
+  <p>In this example, the <code>repeat</code> has a binding expression
+   of <code>element1/foo/bar</code>. According to the rules above, this outermost
+   element would have a context node of <code>/</code>, which is the root of the instance data, or the parent to the <code>element1</code> element. Both of the <code>selectOne</code>s then inherit a context node from
+   their parent, the context node being <code>/element1/foo/bar</code>. Based on this,
+   the <code>selectOne</code> binding expressions evaluate respectively to
+   <code>/element1/foo/bar/element2</code> and <code>/element1/foo/bar/@attr</code>.
+   Matching instance data follows:</p>
+<table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;element1&gt;
+  &lt;foo&gt;
+    &lt;bar attr="xyz"&gt;
+      &lt;element2&gt;xyz&lt;/element2&gt;
+    &lt;/bar&gt;
+  &lt;/foo&gt;
+&lt;/element1&gt;</pre></td></tr></table>
+
+
+  
+
+</div>
+
+<div class="div2">
+<h3><a name="expr-canonical"></a>1.4 Canonical Binding Expressions</h3><p>As with XPath, it is possible to construct many different binding 
+  expressions that end up returning the same node-set. That said, it is 
+  often useful to express a binding expression in a standard, compact representation,
+  defined as a canonical binding expression.</p>
+
+<p>Canonical binding expressions are represented as an <code>AbsoluteLocationPath</code> as 
+  defined in <a href="#">[ref-xpath-1.0]</a>. Additionally, canonical binding expressions use
+  only default abbreviated axis-specifiers (for elements) or the '@' abbreviation
+  (for attributes). Examples:</p>
+<ul>
+  <li><p>(canonical) <code>/a/b/c</code></p></li>
+  <li><p>(canonical) <code>/a/b/@c</code></p></li>
+  <li><p>(non-canonical) <code>a/b/c</code> (not an absolute path)</p></li>
+  <li><p>(non-canonical) <code>child::a/child::b/child::c</code></p></li>
+  <li><p>(non-canonical) <code>/a/b/c/d/ancestor::c</code></p></li>
+</ul></div><div class="div2">
+<h3><a name="expr-lib"></a>1.5 Forms Core Function Library</h3>
+
+<p>The XForms Core Function Library includes the entire <a href="#">[ref-xpath-1.0]</a>
+  Core Function Library, including operations on node-sets, strings, numbers, 
+  and booleans.</p>
+  
+<p>This section defines a set of required functions for use within XForms.</p>
+
+<div class="issue"><p class="prefix"><a name="xpath-core-lib"></a><b>Issue (xpath-core-lib):</b></p><p> Further input is required on the ability for resource-constrained 
+  devices to implement the complete XPath Core Function Library.</p></div>
+  
+<div class="div3">
+<h4><a name="expr-lib-num"></a>1.5.1 Number Methods</h4>
+
+<p><em>number</em> <b>average</b>(<var>node-set</var>)</p>
+
+<p>The <code>average</code> function returns the arithmetic 
+  average value, for each node in the argument node-set, of the result of converting 
+  the string-values of each node to a number. The sum is computed with <code>sum()</code>, and divided with <code>div</code> by the value computed with <code>count()</code>.</p>
+  
+<p><em>number</em> <b>min</b>(<var>node-set</var>)</p>
+
+<p>The <code>min</code> function returns the minimum value, 
+  for each node in the argument node-set, of the result of converting the string-values of the node 
+  to a number. "Minimum" is determined with the <code>&lt;</code> operator.</p>
+  
+<p><em>number</em> <b>max</b>(<var>node-set</var>)</p>
+
+<p>The <code>max</code> function returns the maximum value, 
+  for each node in the argument node-set, of the result of converting the string-values of the node 
+  to a number. "Maximum" is determined with the <code>&lt;</code> operator.</p>
+
+<p><em>number</em> <b>count-non-empty</b>(<var>node-set</var>)</p>
+
+<p>The <code>count-non-empty</code> function returns the number of non-empty
+  nodes in the argument node-set. A node is considered non-empty if it is convertible
+  into a string with a greater-than zero length.</p>
+
+<div class="note"><p class="prefix"><b>Note:</b></p><p>The following core functions are defined within <a href="#">[ref-xpath-1.0]</a>
+  - <code>number(), sum(), floor(), ceiling(), and round()</code></p></div>
+<div class="note"><p class="prefix"><b>Note:</b></p><p>The following useful numeric and boolean operators are defined within <a href="#">[ref-xpath-1.0]</a>
+  - "<code>+</code>", "<code>-</code>", "<code>*</code>", "<code>div</code>", "<code>mod</code>",
+  unary "<code>-</code>" ,"<code>=</code>", "<code>!=</code>", "

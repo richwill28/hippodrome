@@ -1,0 +1,3 @@
+rrrun -classpath=hedc.jar -noFP -noxml -quiet -noTidGC -tool=PS hedc.Tester > full_trace.rr
+
+  

@@ -1,0 +1,1 @@
+rrrun -classpath=tsp.jar -noFP -noxml -quiet -noTidGC -tool=PS Tsp tspfiles/map16c 8 > full_trace.rr 

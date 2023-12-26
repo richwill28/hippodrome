@@ -1,0 +1,1 @@
+rrrun -classpath=sor.jar -noFP -noxml -quiet -noTidGC -tool=PS sor.Sor 50 2 > full_trace.rr

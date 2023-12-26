@@ -1,0 +1,2 @@
+Execute RR/Atomizer:
+  rrrun -tool=A sor.Sor 50 2 -xml

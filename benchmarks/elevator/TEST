@@ -1,0 +1,2 @@
+rrrun -classpath=elevator.jar -noFP -noxml -quiet -noTidGC -tool=PS elevator.Elevator data3 > full_trace.rr
+ 

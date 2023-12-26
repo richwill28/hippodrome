@@ -1,0 +1,403 @@
+<!DOCTYPE div PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<div class="div1">
+<h2><a name="acks"></a>A Acknowledgements (Non-Normative)</h2> 
+<p>The Authors of this document are:</p>
+<ul>
+  <li> 
+    Steven Pemberton 
+    , CWI 
+     (<i>co-chair</i>)  
+  </li>
+  <li> 
+    Sebastian Schnitzenbaumer 
+    , Mozquito Technologies 
+     (<i>co-chair</i>)  
+  </li>
+  <li> 
+    Micah Dubinko 
+    , Cardiff 
+  </li>
+  <li> 
+    Peter Stark 
+    , Ericsson 
+  </li>
+  <li> 
+    Roland Merrick 
+    , IBM 
+  </li>
+  <li> 
+    T. V. Raman 
+    , IBM 
+  </li>
+  <li>
+    Linda Bucksay Welsh
+    , Intel
+     (<i>Until April 2001</i>) 
+  </li> 
+  <li>
+    Gavin McKenzie 
+    , JetForm Corporation 
+    </li>
+    <li>
+      Rob McDougall 
+      , JetForm Corporation 
+    </li>
+  <li>
+    John McCarthy
+    , Lawrence Berkeley National Laboratory
+     (<i>Until November 2000</i>) 
+  </li>
+  <li>
+    Frank Olken
+    , Lawrence Berkeley National Laboratory
+     (<i>Until November 2000</i>) 
+  </li>
+  <li>
+    Ray Waldin 
+    , Lexica, LLC 
+  </li> 
+  <li> 
+    Tantek &Ccedil;elik 
+    , Microsoft 
+  </li> 
+  <li>Panagiotis Reveliotis
+    , Phillips
+     (<i>Until December 2000</i>) 
+  </li>
+  <li> 
+    David Cleary 
+    , Progress Software 
+  </li> 
+  <li> 
+    Mike Mansell 
+    , PureEdge 
+  </li><li>Josef Dietl
+    , Mozquito Technologies
+  </li>
+  <li>Michael Fergusson
+    , Softquad
+  </li> 
+  <li>
+    Dave Raggett
+    , W3C/OpenWave
+     (<i>Until December 2000</i>) 
+  </li>
+  <li> 
+    Leigh Klotz 
+    , Xerox 
+  </li> 
+</ul>
+  
+  <p>This document was written with the participation of the XForms Working
+        Group, which currently consists of the following members:</p> 
+<ul> 
+  <li> 
+    Steven Pemberton 
+    , CWI 
+     (<i>co-chair</i>)  
+  </li><li> 
+    Sebastian Schnitzenbaumer 
+    , Mozquito Technologies 
+     (<i>co-chair</i>)  
+  </li><li> 
+    Micah Dubinko 
+    , Cardiff 
+  </li> 
+  <li>
+    Driss Eddaifi
+    , Ecole Mohammadia d'Ing&eacute;nieurs
+  </li>
+  <li>
+    Michalis Petropoulos
+    , Enosys Markets, Inc.
+  </li>
+  <li> 
+    Peter Stark 
+    , Ericsson 
+  </li> 
+  <li> 
+    Frank Boumphrey 
+    , HTML Writer's Guild 
+  </li> 
+  <li> 
+    Roland Merrick 
+    , IBM 
+  </li><li> 
+    T. V. Raman 
+    , IBM 
+  </li> 
+  <li>
+    Gavin McKenzie 
+    , JetForm Corporation 
+  </li>
+  <li>
+    Rob McDougall 
+    , JetForm Corporation 
+  </li>
+  <li>
+    Ray Waldin 
+    , Lexica, LLC 
+  </li> 
+  <li> 
+    Tantek &Ccedil;elik 
+    , Microsoft 
+  </li> 
+  <li> 
+    Alex Hopmann 
+    , Microsoft 
+  </li> 
+  <li>Dave Hyatt
+    , Netscape/AOL
+  </li>
+  <li> 
+    Eric Pollmann 
+    , Netscape/AOL 
+  </li>
+  <li>
+    Tom Butcher
+    , OpenDesign
+  </li> 
+  <li> 
+    K. P. Lee 
+    , Phillips 
+  </li> 
+  <li> 
+    Roli Wendorf 
+    , Phillips 
+  </li> 
+  <li> 
+    Ted Wugofski 
+    , Openwave 
+  </li> 
+  <li> 
+    David Cleary 
+    , Progress Software 
+  </li> 
+  <li> 
+    Mike Mansell 
+    , PureEdge 
+  </li> 
+  <li> 
+    Dave Manning 
+    , PureEdge 
+  </li>
+  <li>
+    Josef Dietl
+    , Mozquito Technologies
+  </li>
+  <li>Michael Fergusson
+    , Softquad
+  </li> 
+  <li> 
+    Zoe Lacroix 
+    , SurroMed, Inc. 
+  </li>
+  <li>
+    Masayasu Ishikawa
+    , W3C
+  </li> 
+  <li>
+    Leigh Klotz 
+    , Xerox 
+  </li> 
+</ul>
+
+<p>The XForms Working Group has benefited in its work from the
+        participation and contributions of Invited Experts:</p> 
+<ul> 
+  <li> 
+    Tom Schnetlage 
+    , University of Berkeley 
+  </li> 
+  <li> 
+    Dan Gillman 
+    , Federal Bureau of Labor Statistics 
+  </li> 
+  <li> 
+    Eliot Christian 
+    , U.S. Geological Survey 
+  </li>
+  <li>
+    Mikko Honkala
+    , Helsinki University Of Technology
+  </li>
+</ul>
+
+<div class="note"><p class="prefix"><b>Note:</b></p><p><em>Additional Acknowledgments</em>: The editors would like to thank Kai Scheppe, Malte 
+  Wedel and G&ouml;tz Bock for lots of constructive criticism on early versions 
+  of the chapter <a href="#"><b>???</b></a> and their contributions to its present content.</p></div>
+</div><!DOCTYPE div PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<div class="div1">
+  
+<h2><a name="controls"></a>1 Form Controls</h2>
+  <div class="div2">
+    
+<h3><a name="ui-intro"></a>1.1 Introduction</h3>
+    
+    <p>
+      XForms User Interface controls, also called <a title="" href="#">form control</a>s, are declared using
+      markup elements, and their behavior refined via
+      markup attributes. This markup may be further
+      decorated with style properties that can be set
+      using CSS stylesheets to deliver a customized look
+      and feel. Form controls defined
+      here are bound to the underlying instance data
+      using the <a title="" href="#">binding</a> attributes as defined in the
+      chapter <a href="#"><b>???</b></a>.</p>
+
+    
+    <p>
+      The XForms form controls enable
+      accessibility by taking a uniform approach to such
+      features as captions, help text, tabbing and keyboard
+      shortcuts.  Internationalization issues are being
+      addressed in conjunction with the Internationalization
+      Working Group and are addressed by following the same
+      design principles as within the rest of XHTML. All form controls defined here are suitable for implementation as Aural CSS (ACSS) form controls.</p>
+
+    <p>
+        Several XForms form controls are of a general class that represent the concept of
+        selecting from available choices.  Such selection
+        controls can be characterized along a presentational
+        dimension that is completely orthogonal to the
+        functional distinction.  Distinguishing the
+        <em>presentational</em> from the
+        <em>functional</em> dimension allows the
+        expression of the <em>meaning</em> of a
+        particular form control--see <a href="#">[aui-conversational-gestures]</a> for a definition
+        of such high-level  user interaction primitives.</p>
+      
+
+      <p>This chapter includes non-normative graphical
+      examples of many form controls.
+      The CSS Working Group is providing assistance with creating
+      default CSS rules for producing visual renderings 
+      of standard XForms form controls. This
+      specification will also include non-normative rules for
+      how these same controls might be rendered to alternative
+      access modalities.</p><div class="issue"><p class="prefix"><a name="control-names"></a><b>Issue (control-names):</b></p>
+      <p>All form control names listed here should be considered advisory until further consensus is reached in the Working Group.</p>
+    </div><p>For each form control, the following aspects will be defined:</p>
+
+  <blockquote><p>Description<br>Examples<br>Data Binding Restrictions<br>Implementation Hints<br>XML Representation</p></blockquote><p>The form controls defined here use common attributes and elements that are defined later in this chapter (<a href="#"><b>???</b></a>).</p></div>
+  
+  <div class="div2">
+<h3><a name="ui-entry"></a>1.2 textbox</h3><p>Description: This form control enables free-form data entry.</p><p>Examples:</p><table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;textbox ref="order/shipTo/street" style="width:xx; height:xx"&gt;
+ &lt;caption&gt;Street&lt;caption&gt;
+ &lt;help&gt;Please enter the number and street name&lt;/help&gt;
+&lt;/textbox&gt;</pre></td></tr></table><p>
+        In the above, CSS style attributes <code>height</code>
+        and <code>width</code>
+        specify the display size of the form control. Note
+        that the constraints on how much text can be input are
+        obtained from the underlying XForms Model definition
+        and not from these display properties.</p>
+
+      
+
+      
+      <p>A graphical browser might render the above example as follows:</p>
+
+      <p><img src="images/ui-textbox.png" alt="an average-looking text entry field. The title, 'street' has been automatically aligned to the left"></p>
+    <p>Data Binding Restrictions: The entered value of the form control (after processing as described in <a href="#"><b>???</b></a>) is treated as a lexical value. A datatype bound to this form control will be treated as a restriction upon the allowed entered value.</p><p>Implementation Hints: Implementations may represent this form control with more than one native user interface control, for example a form control that appears to be three separate smaller entry fields for "day", "month", and "year" for a date datatype. Further, for date datatypes, a calendar system for data entry may be used, including non-Gregorian calendar systems. For numeric datatypes, additional features might include spin buttons or other conveniences. When bound to a datatype that accepts newline characters, this form control should accept multi-line input.</p><div class="example">
+        
+<h5>Example: XML Representation: &lt;<code>textbox</code>&gt;</h5>
+        
+        <table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;textbox
+  (common attributes)
+&gt;
+  &lt;!-- caption, help?, hint?, onevent? --&gt;
+&lt;/textbox&gt;</pre></td></tr></table><blockquote><p>
+          <b>common attributes</b> defined in
+            <a href="#"><b>???</b></a>
+        </p></blockquote>
+      </div></div>
+  
+  <div class="div2">
+<h3><a name="ui-secret"></a>1.3 secret</h3><p>Description: This form control is used for obtaining   information that is considered sensitive, and thus  not echoed
+        to a visual or aural display as it is being entered, e.g., password entry.</p><p>Example:</p><table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;secret ref="/login/password" style="width:xx; height:xx"&gt;
+  &lt;caption&gt;Please enter your password --it will not be visible as you type.&lt;caption&gt;
+&lt;/secret&gt;</pre></td></tr></table><p>
+        In the above, CSS style attributes
+        <code>height</code> and <code>width</code> specify
+        the display size of the form control. Note that
+        the constraints on how much text can be input are
+        obtained from the underlying XForms model definition
+        and not from these display properties.</p>
+
+      
+
+      
+      <p>A graphical browser might render this form control
+        as follows:</p>
+
+      <p><img src="images/ui-password.png" alt="an                   average-looking text entry field, with '*'                   characters where the text would be                   expected"></p>
+      <p>Data Binding Restrictions: Identical to <code>textbox</code>.</p><p>Implementation Hints: In general,  implementations, including accessibility aids, would render a "*" or similar character instead of  the actual characters entered, and thus would  not render the entered value of this form control. Note that this provides only a casual level of security; truly sensitive information will require additional security measures outside the scope of XForms.</p><div class="example">
+<h5>Example: XML Representation
+          &lt;<code>secret</code>&gt;</h5>
+        <table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;secret
+  (common attributes)
+&gt;
+  &lt;!-- caption, help?, hint?, onevent? --&gt;
+&lt;/secret&gt;</pre></td></tr></table>
+        <blockquote><p>
+
+          <b>common attributes</b> defined 
+            in <a href="#"><b>???</b></a>
+        </p></blockquote>
+      </div></div>
+  
+  
+  
+  <div class="div2">
+<h3><a name="ui-uploadMedia"></a>1.4 uploadMedia</h3><p>Description: This form control enables the common feature of Web sites to upload a file from the local file system, as well as accepting input from various devices including microphones, pens, and digital cameras.</p><p>Example:</p><table summary="Example" width="100%" bgcolor="#99ffff" border="1" cellpadding="5" class="eg"><tr><td><pre>&lt;uploadMedia ref="mail/attach1" mediaType="image/*"&gt;
+  &lt;caption&gt;Select image:&lt;/caption&gt;
+&lt;/upload&gt;</pre></td></tr></table>
+      
+      
+
+      
+      <p>A graphical browser might render this form control as follows:</p>
+
+      <p><img src="images/ui-upload.png" alt="A drop-down box; main display reads 'Select Image:' with a cutesey icon. The drop-down                   itself has three items: (icon)-From Scanner or Camera...; (icon)-Scribble...; Browse..."></p>
+      <p>Data Binding Restrictions:  This form control can only be bound to datatypes <code>xsd:base64Binary</code> or <code>xsd:hexBinary</code>, or types derived by restriction from these.</p><p>Implementation Hints:</p><ul>
+        <li>
+          <p>Implementations with a file system SHOULD support "file upload"--selecting a specific file, for all mediaTypes. The types of files presented
+            by default MUST reflect the mediaType specified in the XForms Model, for
+            example defaulting to only audio file types in the file dialog when the
+            mediaType is "audio/*". In XForms 1.0, there is a 1:1 binding between a
+            uploadMedia form control and one of the <code>xform:binary</code> datatypes, although that
+            single file may be compound (e.g. application/zip).</p>
+        </li>
+        <li>
+          <p>Implementations with specific pen/digitizer hardware SHOULD (and
+            implementations with other pointing devices MAY) support "scribble"--allowing in-place creation of pen-based PNG image data, when the mediaType
+            is "image/*" or "image/png". Other mediaTypes besides image/png MAY share this
+            input method.</p>
+        <div class="note"><p class="prefix"><b>Note:</b></p><p>Commonly, people have trouble drawing recognizable figures or
+                signatures with a conventional pointing device like a mouse or track ball.
+                Hence, a reasonable implementation of XForms might not want this feature, hence the
+                "MAY" here for generic pointing
+                devices</p></div></li>
+        <li>
+          <p>Implementations with specific audio recording capabilities SHOULD support
+            <em>record</em>--in-place recording of an audio clip, when the mediaType is
+            "audio/*" or "audio/basic". Other mediaTypes besides "audio/basic" MAY share this
+            input method.</p>
+        </li>
+        <li>
+          <p>Implementations with a digital camera/scanner interface SHOULD support
+            <em>send image</em>--in-place upload of images from an attached device, when the
+            mediaType is "image/*" or "image/jpeg". Other mediaTypes besides "image/jpg" MAY
+            share this input method.</p>
+        </li>
+        <li>
+          <p>Implementations with video recording capability SHOULD provide a "record"
+            option for video/* mediaTypes.</p>
+        </li>
+        <li>
+          <p>Implementations with 3d capabilities SHOULD provide a 3d interface option
+            for model/* mediaTypes.</p>
+        </li>
+        <li>
+          
