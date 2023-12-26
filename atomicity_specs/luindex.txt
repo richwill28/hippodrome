@@ -1,0 +1,4 @@
+org/dacapo/luindex/Index.main(Ljava/io/File;[Ljava/lang/String;)V
+org/apache/lucene/index/ConcurrentMergeScheduler$MergeThread.run()V
+org/apache/lucene/search/MultiSearcherThread.run()V
+org/apache/lucene/search/TimeLimitedCollector$TimerThread.run()V

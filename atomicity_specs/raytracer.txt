@@ -1,0 +1,7 @@
+JGFRayTracerBenchSizeA.main([Ljava/lang/String;)V
+raytracer/JGFRayTracerBench.JGFapplication()V
+raytracer/JGFRayTracerBench.JGFrun(I)V
+java/lang/Thread.run()V
+raytracer/RayTracerRunner.run()V
+raytracer/TournamentBarrier.DoBarrier(I)V
+raytracer/RayTracer.render(Lraytracer/Interval;)V

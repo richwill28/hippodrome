@@ -1,0 +1,8 @@
+elevator/Elevator;.main([Ljava/lang/String;)V
+elevator/Lift;.run()V
+elevator/Lift;.sleep(J)V
+elevator/Elevator;.waitForLiftsToFinishOperation()V
+elevator/Lift;.join()V
+elevator/Elevator;.begin()V
+elevator/Lift;.doIdle()V
+elevator/Controls;.claimUp(Ljava/lang/String;I)Z

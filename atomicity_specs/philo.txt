@@ -1,0 +1,7 @@
+Philo;.main([Ljava/lang/String;)V
+Philo;.run()V
+Philo;.start()V
+Philo;.join()V
+Philo;.sleep(J)V
+Table;.getForks(I)I
+Table;.putForks(I)V
