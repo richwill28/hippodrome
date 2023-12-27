@@ -10,7 +10,7 @@ import print.parse.util.EventInfo;
 
 public class Parse {
 	// ACQUIRE, RELEASE, READ, WRITE, FORK, JOIN;
-		public static String matchStr[] = { "acq", "rel", "r", "w", "fork", "join", "enter", "exit", "dummy" };
+		public static String matchStr[] = { "acq", "rel", "r", "w", "fork", "join", "begin", "end", "enter", "exit", "dummy" };
 		
 		public static String prefixPattern = "^(";
 		public static String midFixPattern = String.join("|", matchStr);
@@ -62,17 +62,23 @@ public class Parse {
 				String thId = eArray[0];
 				String op = eArray[1];
 				String locId = eArray[2];
-				Matcher matcher = genericEventPattern.matcher(op);
-				if (matcher.find()) {
-					Matcher primitiveMatcher = primitiveEventPattern.matcher(op);
-					if(primitiveMatcher.find()){
-						getInfoOp(eInfo, thId, locId, primitiveMatcher);
-					}
-					else{
+				if (op.startsWith("begin")) {
+					eInfo.updateEventInfo(EventType.BEGIN, thId, null, locId);
+				} else if (op.startsWith("end")) {
+					eInfo.updateEventInfo(EventType.END, thId, null, locId);
+				} else {
+					Matcher matcher = genericEventPattern.matcher(op);
+					if (matcher.find()) {
+						Matcher primitiveMatcher = primitiveEventPattern.matcher(op);
+						if(primitiveMatcher.find()){
+							getInfoOp(eInfo, thId, locId, primitiveMatcher);
+						}
+						else{
+							throw new CannotParseException(line);
+						}
+					} else {
 						throw new CannotParseException(line);
 					}
-				} else {
-					throw new CannotParseException(line);
 				}
 			}
 		}

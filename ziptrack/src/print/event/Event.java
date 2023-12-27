@@ -210,6 +210,14 @@ public class Event {
 			str = str + this.getTarget().getName();
 		}
 		
+		else if (this.getType().isBegin()) {
+			str = str + "B";
+		}
+
+		else if (this.getType().isEnd()) {
+			str = str + "E";
+		}
+
 		return str;
 	}
 	

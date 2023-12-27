@@ -136,6 +136,14 @@ public class ParseStandard {
 			e.updateEvent(totEvents, LID, ename, eInfo.type, t, null, null, target);
 		}
 
+		else if (eInfo.type.isBegin()) {
+			e.updateEvent(totEvents, LID, ename, eInfo.type, t, null, null, null);
+		}
+
+		else if (eInfo.type.isEnd()) {
+			e.updateEvent(totEvents, LID, ename, eInfo.type, t, null, null, null);
+		}
+
 		else {
 			throw new IllegalArgumentException("Illegal type of event " + eInfo.type.toString());
 		}
@@ -147,7 +155,7 @@ public class ParseStandard {
 		try {
 			parser.getInfo(eInfo, line);
 		} catch (CannotParseException ex) {
-//			System.err.println("Canot parse line -> " + line);
+			System.err.println("Cannot parse line -> " + line);
 		}
 		eInfo2Event(e);
 	}

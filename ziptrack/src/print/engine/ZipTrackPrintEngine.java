@@ -10,6 +10,7 @@ import print.parse.ParserType;
 import print.engine.Engine;
 import print.engine.RefinedAccessTimesEngine;
 import print.event.Event;
+import print.event.EventType;
 import print.event.Thread;
 import print.event.Lock;
 import print.event.Variable;
@@ -23,6 +24,9 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 	HashMap<Thread, HashMap<Lock, Long>> releaseMap;
 	HashMap<Thread, HashMap<Thread, Long>> forkMap;
 	HashMap<Thread, HashMap<Thread, Long>> joinMap;
+	HashMap<Thread, Long> beginMap;
+	HashMap<Thread, Long> endMap;
+	HashMap<Thread, Long> txnDepthMap;	// for handling nested transactions
 	ArrayList<String> eventStrings;
 
 	private HashMap<String, HashSet<String>> variableToThreadSet;
@@ -48,6 +52,9 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 		releaseMap = new HashMap<Thread, HashMap<Lock, Long>> ();
 		forkMap = new HashMap<Thread, HashMap<Thread, Long>> ();
 		joinMap = new HashMap<Thread, HashMap<Thread, Long>> ();
+		beginMap = new HashMap<Thread, Long> ();
+		endMap = new HashMap<Thread, Long> ();
+		txnDepthMap = new HashMap<Thread, Long> ();
 		eventStrings = new ArrayList<String> ();
 
 		RefinedAccessTimesEngine accessTimesEngine = new RefinedAccessTimesEngine(pType, trace_folder);
@@ -79,17 +86,61 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 			while(rvParser.hasNext()){
 				rvParser.getNextEvent(handlerEvent);
 				if(! skipEvent(handlerEvent)){
-					processEvent();
+					processEvent(handlerEvent);
 				}
 			}
 		}
 	}
 	
 	public void analyzeTraceSTD() {
-		while(stdParser.hasNext()){
+		while (stdParser.hasNext()) {
 			stdParser.getNextEvent(handlerEvent);
-			if(! skipEvent(handlerEvent)){
-				processEvent();
+
+			Thread t = handlerEvent.getThread();
+
+			if (!txnDepthMap.containsKey(t)) {
+				txnDepthMap.put(t, 0L);
+			}
+
+			if (handlerEvent.getType().isBegin()) {
+				if (txnDepthMap.get(t) == 0L) {
+					processEvent(handlerEvent);
+				}
+				txnDepthMap.put(t, txnDepthMap.get(t) + 1L);
+			}
+
+			else if (handlerEvent.getType().isEnd()) {
+				if (txnDepthMap.get(t) == 1L) {
+					processEvent(handlerEvent);
+				}
+				txnDepthMap.put(t, txnDepthMap.get(t) - 1L);
+
+				if (txnDepthMap.get(t) < 0L) {
+					System.err.println("Ill-formed trace: end event does not have a matching begin event");
+				}
+			}
+
+			else {
+				if (skipEvent(handlerEvent)) {
+					continue;
+				}
+
+				// Unary transaction
+				if (txnDepthMap.get(t) == 0L) {
+					Event beginTxnEvent = new Event();
+					beginTxnEvent.updateEvent(handlerEvent.getAuxId(), handlerEvent.getLocId(), handlerEvent.getName(), EventType.BEGIN, handlerEvent.getThread());
+					processEvent(beginTxnEvent);
+
+					processEvent(handlerEvent);
+
+					Event endTxnEvent = new Event();
+					endTxnEvent.updateEvent(handlerEvent.getAuxId(), handlerEvent.getLocId(), handlerEvent.getName(), EventType.END, handlerEvent.getThread());
+					processEvent(endTxnEvent);
+				}
+
+				else {
+					processEvent(handlerEvent);
+				}
 			}
 		}
 	}
@@ -97,7 +148,7 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 	public void analyzeTraceRR() {
 		while(rrParser.checkAndGetNext(handlerEvent)){
 			if(! skipEvent(handlerEvent)){
-				processEvent();
+				processEvent(handlerEvent);
 			}
 		}
 	}
@@ -152,27 +203,24 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 		}
 	}
 
-	private void processEvent(){
+	private void processEvent(Event handlerEvent) {
 		//		System.out.println(handlerEvent.toString());
 
 		Thread t = handlerEvent.getThread();
 		Long this_index = 0L;
 
-		if(handlerEvent.getType().isRead()){
+		if (handlerEvent.getType().isRead()) {
 			Variable v = handlerEvent.getVariable();
-			if(readMap.containsKey(t)){
-				if(readMap.get(t).containsKey(v)){
+			if (readMap.containsKey(t)) {
+				if (readMap.get(t).containsKey(v)) {
 					this_index = readMap.get(t).get(v);
-				}
-				else{
+				} else {
 					this_index = event_index;
 					readMap.get(t).put(v, this_index);
 					eventStrings.add(handlerEvent.toCompactString());
 					event_index = event_index + 1;
-
 				}
-			}
-			else{
+			} else {
 				readMap.put(t, new HashMap<Variable, Long> ());
 				this_index = event_index;
 				readMap.get(t).put(v, this_index);
@@ -181,20 +229,18 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 			}
 		}
 
-		if(handlerEvent.getType().isWrite()){
+		else if (handlerEvent.getType().isWrite()) {
 			Variable v = handlerEvent.getVariable();
-			if(writeMap.containsKey(t)){
-				if(writeMap.get(t).containsKey(v)){
+			if (writeMap.containsKey(t)) {
+				if (writeMap.get(t).containsKey(v)) {
 					this_index = writeMap.get(t).get(v);
-				}
-				else{
+				} else {
 					this_index = event_index;
 					writeMap.get(t).put(v, this_index);
 					eventStrings.add(handlerEvent.toCompactString());
 					event_index = event_index + 1;
 				}
-			}
-			else{
+			} else {
 				writeMap.put(t, new HashMap<Variable, Long> ());
 				this_index = event_index;
 				writeMap.get(t).put(v, this_index);
@@ -203,20 +249,18 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 			}
 		}
 
-		if(handlerEvent.getType().isAcquire()){
+		else if (handlerEvent.getType().isAcquire()) {
 			Lock l = handlerEvent.getLock();
-			if(acquireMap.containsKey(t)){
-				if(acquireMap.get(t).containsKey(l)){
+			if (acquireMap.containsKey(t)) {
+				if (acquireMap.get(t).containsKey(l)) {
 					this_index = acquireMap.get(t).get(l);
-				}
-				else{
+				} else {
 					this_index = event_index;
 					acquireMap.get(t).put(l, this_index);
 					eventStrings.add(handlerEvent.toCompactString());
 					event_index = event_index + 1;
 				}
-			}
-			else{
+			} else {
 				acquireMap.put(t, new HashMap<Lock, Long> ());
 				this_index = event_index;
 				acquireMap.get(t).put(l, this_index);
@@ -225,20 +269,18 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 			}
 		}
 
-		if(handlerEvent.getType().isRelease()){
+		else if (handlerEvent.getType().isRelease()) {
 			Lock l = handlerEvent.getLock();
-			if(releaseMap.containsKey(t)){
-				if(releaseMap.get(t).containsKey(l)){
+			if (releaseMap.containsKey(t)) {
+				if (releaseMap.get(t).containsKey(l)) {
 					this_index = releaseMap.get(t).get(l);
-				}
-				else{
+				} else {
 					this_index = event_index;
 					releaseMap.get(t).put(l, this_index);
 					eventStrings.add(handlerEvent.toCompactString());
 					event_index = event_index + 1;
 				}
-			}
-			else{
+			} else {
 				releaseMap.put(t, new HashMap<Lock, Long> ());
 				this_index = event_index;
 				releaseMap.get(t).put(l, this_index);
@@ -247,20 +289,18 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 			}
 		}
 
-		if(handlerEvent.getType().isFork()){
+		else if (handlerEvent.getType().isFork()) {
 			Thread tar = handlerEvent.getTarget();
-			if(forkMap.containsKey(t)){
-				if(forkMap.get(t).containsKey(tar)){
+			if (forkMap.containsKey(t)) {
+				if (forkMap.get(t).containsKey(tar)) {
 					this_index = forkMap.get(t).get(tar);
-				}
-				else{
+				} else {
 					this_index = event_index;
 					forkMap.get(t).put(tar, this_index);
 					eventStrings.add(handlerEvent.toCompactString());
 					event_index = event_index + 1;
 				}
-			}
-			else{
+			} else {
 				forkMap.put(t, new HashMap<Thread, Long> ());
 				this_index = event_index;
 				forkMap.get(t).put(tar, this_index);
@@ -268,26 +308,51 @@ public class ZipTrackPrintEngine extends Engine<Event> {
 				event_index = event_index + 1;
 			}
 		}
-		if(handlerEvent.getType().isJoin()){
+
+		else if (handlerEvent.getType().isJoin()) {
 			Thread tar = handlerEvent.getTarget();
-			if(joinMap.containsKey(t)){
-				if(joinMap.get(t).containsKey(tar)){
+			if (joinMap.containsKey(t)) {
+				if (joinMap.get(t).containsKey(tar)) {
 					this_index = joinMap.get(t).get(tar);
-				}
-				else{
+				} else {
 					this_index = event_index;
 					joinMap.get(t).put(tar, this_index);
 					eventStrings.add(handlerEvent.toCompactString());
 					event_index = event_index + 1;
 				}
-			}
-			else{
+			} else {
 				joinMap.put(t, new HashMap<Thread, Long> ());
 				this_index = event_index;
 				joinMap.get(t).put(tar, this_index);
 				eventStrings.add(handlerEvent.toCompactString());
 				event_index = event_index + 1;
 			}
+		}
+
+		else if (handlerEvent.getType().isBegin()) {
+			if (beginMap.containsKey(t)) {
+				this_index = beginMap.get(t);
+			} else {
+				this_index = event_index;
+				beginMap.put(t, this_index);
+				eventStrings.add(handlerEvent.toCompactString());
+				event_index = event_index + 1;
+			}
+		}
+
+		else if (handlerEvent.getType().isEnd()) {
+			if (endMap.containsKey(t)) {
+				this_index = endMap.get(t);
+			} else {
+				this_index = event_index;
+				endMap.put(t, this_index);
+				eventStrings.add(handlerEvent.toCompactString());
+				event_index = event_index + 1;
+			}
+		}
+
+		else {
+			System.err.println("Event type is illegal");
 		}
 
 		System.out.print(this_index + " ");
