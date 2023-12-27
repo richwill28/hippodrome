@@ -1,0 +1,856 @@
+
+[main: RoadRunner Agent Loaded.]
+[main: Running in FAST Mode]
+[RR: Creating Fresh Meta Data]
+[main: ----- ----- ----- -----       Meep Meep.      ----- ----- ----- -----]
+[main: ]
+@  Wr(0,@02.harness/Callback.startTime_J)  Final  Callback.java:5:6
+@  Wr(0,null.Philo.harness_Lharness/Callback;)  Final  Philo.java:37:7
+@  Enter(0,Philo.main([Ljava/lang/String;)V) from null
+@   Wr(0,@03.Table.forks_\[Z)  Final  Philo.java:9:8
+@   Rd(0,@03.Table.forks_\[Z)  Final  Philo.java:11:17
+@   AWr(0,@04[0])  Final  Philo.java:11:22
+@   Rd(0,@03.Table.forks_\[Z)  Final  Philo.java:11:17
+@   AWr(0,@04[1])  Final  Philo.java:11:22
+@   Rd(0,@03.Table.forks_\[Z)  Final  Philo.java:11:17
+@   AWr(0,@04[2])  Final  Philo.java:11:22
+@   Rd(0,@03.Table.forks_\[Z)  Final  Philo.java:11:17
+@   AWr(0,@04[3])  Final  Philo.java:11:22
+@   Rd(0,@03.Table.forks_\[Z)  Final  Philo.java:11:17
+@   AWr(0,@04[4])  Final  Philo.java:11:22
+@   Wr(0,@05.Philo.id_I)  Final  Philo.java:44:6
+@   Wr(0,@05.Philo.t_LTable;)  Final  Philo.java:45:11
+@   AWr(0,@06[0])  Final  Philo.java:94:142
+@   ARd(0,@06[0])  Final  Philo.java:95:146
+@   Start(0,1)
+@  Enter(1,Philo.run()V) from null
+@   Wr(0,@07.Philo.id_I)  Final  Philo.java:44:6
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:49:8
+0 run start
+@   Wr(0,@07.Philo.t_LTable;)  Final  Philo.java:45:11
+@   AWr(0,@06[1])  Final  Philo.java:94:142
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:53:41
+0 let's try to get the forks
+@   ARd(0,@06[1])  Final  Philo.java:95:146
+@   Rd(1,@05.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:54:66
+@   Enter(1,Table.getForks(I)I) from null
+@   Start(0,2)
+@  Enter(2,Philo.run()V) from null
+@   Wr(0,@08.Philo.id_I)  Final  Philo.java:44:6
+@   Wr(0,@08.Philo.t_LTable;)  Final  Philo.java:45:11
+@   Rd(2,@07.Philo.id_I)  Final  Philo.java:49:8
+1 run start
+@   AWr(0,@06[2])  Final  Philo.java:94:142
+@   Rd(2,@07.Philo.id_I)  Final  Philo.java:53:41
+1 let's try to get the forks
+@    Acquire(1,@03)
+@   ARd(0,@06[2])  Final  Philo.java:95:146
+@   Rd(2,@07.Philo.t_LTable;)  Final  Philo.java:54:62
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(1,@04[0])  Final  Philo.java:17:41
+@   Start(0,3)
+@   Rd(2,@07.Philo.id_I)  Final  Philo.java:54:66
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@   Enter(2,Table.getForks(I)I) from null
+@    ARd(1,@04[1])  Final  Philo.java:17:64
+0 check forks[0]=true and forks[1]=true
+@  Enter(3,Philo.run()V) from null
+@   Wr(0,@09.Philo.id_I)  Final  Philo.java:44:6
+@   Wr(0,@09.Philo.t_LTable;)  Final  Philo.java:45:11
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:49:8
+2 run start
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(1,@04[0])  Final  Philo.java:19:117
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:53:41
+2 let's try to get the forks
+@   AWr(0,@06[3])  Final  Philo.java:94:142
+@   ARd(0,@06[3])  Final  Philo.java:95:146
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:54:62
+@    ARd(1,@04[1])  Final  Philo.java:19:126
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:54:66
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@   Enter(3,Table.getForks(I)I) from null
+@   Start(0,4)
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(1,@04[1])  Final  Philo.java:23:142
+@    AWr(1,@04[0])  Final  Philo.java:23:143
+0 got forks
+@  Enter(4,Philo.run()V) from null
+@   Wr(0,@0A.Philo.id_I)  Final  Philo.java:44:6
+@    Rd(1,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@   Rd(4,@09.Philo.id_I)  Final  Philo.java:49:8
+3 run start
+@   Wr(0,@0A.Philo.t_LTable;)  Final  Philo.java:45:11
+@   Rd(4,@09.Philo.id_I)  Final  Philo.java:53:41
+3 let's try to get the forks
+@    Wr(1,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@   AWr(0,@06[4])  Final  Philo.java:94:142
+@    Release(1,@03)
+@   Rd(4,@09.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Exit(1,Table.getForks(I)I)
+@    Acquire(3,@03)
+@   ARd(0,@06[4])  Final  Philo.java:95:146
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:55:81
+0 have the forks now
+@   Rd(4,@09.Philo.id_I)  Final  Philo.java:54:66
+@    ARd(3,@04[2])  Final  Philo.java:17:41
+@   Enter(4,Table.getForks(I)I) from null
+@   Start(0,5)
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(3,@04[3])  Final  Philo.java:17:64
+2 check forks[2]=true and forks[3]=true
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:58:125
+0 eating (473)
+@   ARd(0,@06[0])  Final  Philo.java:98:168
+@    ARd(3,@04[2])  Final  Philo.java:19:117
+@  Enter(5,Philo.run()V) from null
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:49:8
+4 run start
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(3,@04[3])  Final  Philo.java:19:126
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:53:41
+4 let's try to get the forks
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:54:62
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:54:66
+@    AWr(3,@04[3])  Final  Philo.java:23:142
+@   Enter(5,Table.getForks(I)I) from null
+@    AWr(3,@04[2])  Final  Philo.java:23:143
+2 got forks
+@    Rd(3,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(3,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(3,@03)
+@   Exit(3,Table.getForks(I)I)
+@    Acquire(2,@03)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:55:81
+2 have the forks now
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:58:125
+2 eating (460)
+@    ARd(2,@04[1])  Final  Philo.java:17:41
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(2,@04[2])  Final  Philo.java:17:64
+1 check forks[1]=false and forks[2]=false
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(2,@04[1])  Final  Philo.java:19:117
+1 wait for forks
+@    Acquire(5,@03)
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(5,@04[4])  Final  Philo.java:17:41
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(5,@04[0])  Final  Philo.java:17:64
+4 check forks[4]=true and forks[0]=false
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(5,@04[4])  Final  Philo.java:19:117
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(5,@04[0])  Final  Philo.java:19:126
+4 wait for forks
+@    Acquire(4,@03)
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(4,@04[3])  Final  Philo.java:17:41
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(4,@04[4])  Final  Philo.java:17:64
+3 check forks[3]=false and forks[4]=true
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(4,@04[3])  Final  Philo.java:19:117
+3 wait for forks
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:60:166
+2 that was good
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(3,Table.putForks(I)V) from null
+@    Acquire(3,@03)
+2 putforks
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(3,@04[3])  Final  Philo.java:30:41
+@    AWr(3,@04[2])  Final  Philo.java:30:42
+2 notify done
+@    Release(3,@03)
+@   Exit(3,Table.putForks(I)V)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:53:41
+2 let's try to get the forks
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:54:66
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@   Enter(3,Table.getForks(I)I) from null
+@    ARd(2,@04[1])  Final  Philo.java:19:117
+1 wait for forks
+@    Acquire(3,@03)
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(3,@04[2])  Final  Philo.java:17:41
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(3,@04[3])  Final  Philo.java:17:64
+2 check forks[2]=true and forks[3]=true
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(3,@04[2])  Final  Philo.java:19:117
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(3,@04[3])  Final  Philo.java:19:126
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(3,@04[3])  Final  Philo.java:23:142
+@    AWr(3,@04[2])  Final  Philo.java:23:143
+2 got forks
+@    Rd(3,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(3,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(3,@03)
+@   Exit(3,Table.getForks(I)I)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:55:81
+2 have the forks now
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:58:125
+2 eating (57)
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:60:166
+0 that was good
+@   Rd(1,@05.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(1,Table.putForks(I)V) from null
+@    Acquire(1,@03)
+0 putforks
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(1,@04[1])  Final  Philo.java:30:41
+@    AWr(1,@04[0])  Final  Philo.java:30:42
+0 notify done
+@    Release(1,@03)
+@   Exit(1,Table.putForks(I)V)
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(5,@04[4])  Final  Philo.java:19:117
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:53:41
+0 let's try to get the forks
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(5,@04[0])  Final  Philo.java:19:126
+@   Rd(1,@05.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:54:66
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@   Enter(1,Table.getForks(I)I) from null
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(5,@04[0])  Final  Philo.java:23:142
+@    AWr(5,@04[4])  Final  Philo.java:23:143
+4 got forks
+@    Rd(5,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(5,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(5,@03)
+@   Exit(5,Table.getForks(I)I)
+@    Acquire(1,@03)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:55:81
+4 have the forks now
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(1,@04[0])  Final  Philo.java:17:41
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:58:125
+4 eating (106)
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(1,@04[1])  Final  Philo.java:17:64
+0 check forks[0]=false and forks[1]=true
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(1,@04[0])  Final  Philo.java:19:117
+0 wait for forks
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:60:166
+2 that was good
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(3,Table.putForks(I)V) from null
+@    Acquire(3,@03)
+2 putforks
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(3,@04[3])  Final  Philo.java:30:41
+@    AWr(3,@04[2])  Final  Philo.java:30:42
+2 notify done
+@    Release(3,@03)
+@   Exit(3,Table.putForks(I)V)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:53:41
+2 let's try to get the forks
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(4,@04[3])  Final  Philo.java:19:117
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(4,@04[4])  Final  Philo.java:19:126
+3 wait for forks
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:54:66
+@   Enter(3,Table.getForks(I)I) from null
+@    Acquire(3,@03)
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(3,@04[2])  Final  Philo.java:17:41
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(3,@04[3])  Final  Philo.java:17:64
+2 check forks[2]=true and forks[3]=true
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(3,@04[2])  Final  Philo.java:19:117
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(3,@04[3])  Final  Philo.java:19:126
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(3,@04[3])  Final  Philo.java:23:142
+@    AWr(3,@04[2])  Final  Philo.java:23:143
+2 got forks
+@    Rd(3,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(3,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(3,@03)
+@   Exit(3,Table.getForks(I)I)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:55:81
+2 have the forks now
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:58:125
+2 eating (93)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:60:166
+4 that was good
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(5,Table.putForks(I)V) from null
+@    Acquire(5,@03)
+4 putforks
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(5,@04[0])  Final  Philo.java:30:41
+@    AWr(5,@04[4])  Final  Philo.java:30:42
+4 notify done
+@    Release(5,@03)
+@   Exit(5,Table.putForks(I)V)
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:53:41
+4 let's try to get the forks
+@    ARd(2,@04[1])  Final  Philo.java:19:117
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:54:66
+@   Enter(5,Table.getForks(I)I) from null
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(2,@04[2])  Final  Philo.java:19:126
+1 wait for forks
+@    Acquire(5,@03)
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(5,@04[4])  Final  Philo.java:17:41
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(5,@04[0])  Final  Philo.java:17:64
+4 check forks[4]=true and forks[0]=true
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(5,@04[4])  Final  Philo.java:19:117
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(5,@04[0])  Final  Philo.java:19:126
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(5,@04[0])  Final  Philo.java:23:142
+@    AWr(5,@04[4])  Final  Philo.java:23:143
+4 got forks
+@    Rd(5,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(5,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(5,@03)
+@   Exit(5,Table.getForks(I)I)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:55:81
+4 have the forks now
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:58:125
+4 eating (192)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:60:166
+2 that was good
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(3,Table.putForks(I)V) from null
+@    Acquire(3,@03)
+2 putforks
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(3,@04[3])  Final  Philo.java:30:41
+@    AWr(3,@04[2])  Final  Philo.java:30:42
+2 notify done
+@    Release(3,@03)
+@   Exit(3,Table.putForks(I)V)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:53:41
+2 let's try to get the forks
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(1,@04[0])  Final  Philo.java:19:117
+0 wait for forks
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:54:66
+@   Enter(3,Table.getForks(I)I) from null
+@    Acquire(3,@03)
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(3,@04[2])  Final  Philo.java:17:41
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(3,@04[3])  Final  Philo.java:17:64
+2 check forks[2]=true and forks[3]=true
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(3,@04[2])  Final  Philo.java:19:117
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(3,@04[3])  Final  Philo.java:19:126
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(3,@04[3])  Final  Philo.java:23:142
+@    AWr(3,@04[2])  Final  Philo.java:23:143
+2 got forks
+@    Rd(3,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(3,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(3,@03)
+@   Exit(3,Table.getForks(I)I)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:55:81
+2 have the forks now
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:58:125
+2 eating (394)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:60:166
+4 that was good
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(5,Table.putForks(I)V) from null
+@    Acquire(5,@03)
+4 putforks
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(5,@04[0])  Final  Philo.java:30:41
+@    AWr(5,@04[4])  Final  Philo.java:30:42
+4 notify done
+@    Release(5,@03)
+@   Exit(5,Table.putForks(I)V)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:53:41
+4 let's try to get the forks
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:54:62
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:54:66
+@    ARd(4,@04[3])  Final  Philo.java:19:117
+3 wait for forks
+@   Enter(5,Table.getForks(I)I) from null
+@    Acquire(5,@03)
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(5,@04[4])  Final  Philo.java:17:41
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(5,@04[0])  Final  Philo.java:17:64
+4 check forks[4]=true and forks[0]=true
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(5,@04[4])  Final  Philo.java:19:117
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(5,@04[0])  Final  Philo.java:19:126
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(5,@04[0])  Final  Philo.java:23:142
+@    AWr(5,@04[4])  Final  Philo.java:23:143
+4 got forks
+@    Rd(5,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(5,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(5,@03)
+@   Exit(5,Table.getForks(I)I)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:55:81
+4 have the forks now
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:58:125
+4 eating (120)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:60:166
+4 that was good
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(5,Table.putForks(I)V) from null
+@    Acquire(5,@03)
+4 putforks
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(5,@04[0])  Final  Philo.java:30:41
+@    AWr(5,@04[4])  Final  Philo.java:30:42
+4 notify done
+@    Release(5,@03)
+@   Exit(5,Table.putForks(I)V)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:53:41
+4 let's try to get the forks
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:54:62
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(2,@04[1])  Final  Philo.java:19:117
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:54:66
+@    ARd(2,@04[2])  Final  Philo.java:19:126
+1 wait for forks
+@   Enter(5,Table.getForks(I)I) from null
+@    Acquire(5,@03)
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(5,@04[4])  Final  Philo.java:17:41
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(5,@04[0])  Final  Philo.java:17:64
+4 check forks[4]=true and forks[0]=true
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(5,@04[4])  Final  Philo.java:19:117
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(5,@04[0])  Final  Philo.java:19:126
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(5,@04[0])  Final  Philo.java:23:142
+@    AWr(5,@04[4])  Final  Philo.java:23:143
+4 got forks
+@    Rd(5,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(5,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(5,@03)
+@   Exit(5,Table.getForks(I)I)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:55:81
+4 have the forks now
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:58:125
+4 eating (284)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:60:166
+2 that was good
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(3,Table.putForks(I)V) from null
+@    Acquire(3,@03)
+2 putforks
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(3,@04[3])  Final  Philo.java:30:41
+@    AWr(3,@04[2])  Final  Philo.java:30:42
+2 notify done
+@    Release(3,@03)
+@   Exit(3,Table.putForks(I)V)
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:53:41
+2 let's try to get the forks
+@    ARd(1,@04[0])  Final  Philo.java:19:117
+0 wait for forks
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:54:66
+@   Enter(3,Table.getForks(I)I) from null
+@    Acquire(3,@03)
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(3,@04[2])  Final  Philo.java:17:41
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(3,@04[3])  Final  Philo.java:17:64
+2 check forks[2]=true and forks[3]=true
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(3,@04[2])  Final  Philo.java:19:117
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(3,@04[3])  Final  Philo.java:19:126
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(3,@04[3])  Final  Philo.java:23:142
+@    AWr(3,@04[2])  Final  Philo.java:23:143
+2 got forks
+@    Rd(3,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(3,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(3,@03)
+@   Exit(3,Table.getForks(I)I)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:55:81
+2 have the forks now
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:58:125
+2 eating (423)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:60:166
+4 that was good
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(5,Table.putForks(I)V) from null
+@    Acquire(5,@03)
+4 putforks
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(5,@04[0])  Final  Philo.java:30:41
+@    AWr(5,@04[4])  Final  Philo.java:30:42
+4 notify done
+@    Release(5,@03)
+@   Exit(5,Table.putForks(I)V)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:53:41
+4 let's try to get the forks
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:54:66
+@    ARd(4,@04[3])  Final  Philo.java:19:117
+3 wait for forks
+@   Enter(5,Table.getForks(I)I) from null
+@    Acquire(5,@03)
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(5,@04[4])  Final  Philo.java:17:41
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(5,@04[0])  Final  Philo.java:17:64
+4 check forks[4]=true and forks[0]=true
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(5,@04[4])  Final  Philo.java:19:117
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(5,@04[0])  Final  Philo.java:19:126
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(5,@04[0])  Final  Philo.java:23:142
+@    AWr(5,@04[4])  Final  Philo.java:23:143
+4 got forks
+@    Rd(5,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(5,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(5,@03)
+@   Exit(5,Table.getForks(I)I)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:55:81
+4 have the forks now
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:58:125
+4 eating (117)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:60:166
+4 that was good
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(5,Table.putForks(I)V) from null
+@    Acquire(5,@03)
+4 putforks
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(5,@04[0])  Final  Philo.java:30:41
+@    AWr(5,@04[4])  Final  Philo.java:30:42
+4 notify done
+@    Release(5,@03)
+@   Exit(5,Table.putForks(I)V)
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:53:41
+4 let's try to get the forks
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:54:62
+@    ARd(2,@04[1])  Final  Philo.java:19:117
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:54:66
+@    ARd(2,@04[2])  Final  Philo.java:19:126
+1 wait for forks
+@   Enter(5,Table.getForks(I)I) from null
+@    Acquire(5,@03)
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(5,@04[4])  Final  Philo.java:17:41
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(5,@04[0])  Final  Philo.java:17:64
+4 check forks[4]=true and forks[0]=true
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(5,@04[4])  Final  Philo.java:19:117
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(5,@04[0])  Final  Philo.java:19:126
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(5,@04[0])  Final  Philo.java:23:142
+@    AWr(5,@04[4])  Final  Philo.java:23:143
+4 got forks
+@    Rd(5,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(5,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(5,@03)
+@   Exit(5,Table.getForks(I)I)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:55:81
+4 have the forks now
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:58:125
+4 eating (252)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:60:166
+2 that was good
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(3,Table.putForks(I)V) from null
+@    Acquire(3,@03)
+2 putforks
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(3,@04[3])  Final  Philo.java:30:41
+@    AWr(3,@04[2])  Final  Philo.java:30:42
+2 notify done
+@    Release(3,@03)
+@   Exit(3,Table.putForks(I)V)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:53:41
+2 let's try to get the forks
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(1,@04[0])  Final  Philo.java:19:117
+0 wait for forks
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:54:62
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:54:66
+@   Enter(3,Table.getForks(I)I) from null
+@    Acquire(3,@03)
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(3,@04[2])  Final  Philo.java:17:41
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(3,@04[3])  Final  Philo.java:17:64
+2 check forks[2]=true and forks[3]=true
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(3,@04[2])  Final  Philo.java:19:117
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(3,@04[3])  Final  Philo.java:19:126
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(3,@04[3])  Final  Philo.java:23:142
+@    AWr(3,@04[2])  Final  Philo.java:23:143
+2 got forks
+@    Rd(3,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(3,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(3,@03)
+@   Exit(3,Table.getForks(I)I)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:55:81
+2 have the forks now
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:58:125
+2 eating (44)
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:60:166
+2 that was good
+@   Rd(3,@08.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(3,@08.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(3,Table.putForks(I)V) from null
+@    Acquire(3,@03)
+2 putforks
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(3,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(3,@04[3])  Final  Philo.java:30:41
+@    AWr(3,@04[2])  Final  Philo.java:30:42
+2 notify done
+@    Release(3,@03)
+@   Exit(3,Table.putForks(I)V)
+@  Exit(3,Philo.run()V)
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(4,@04[3])  Final  Philo.java:19:117
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(4,@04[4])  Final  Philo.java:19:126
+3 wait for forks
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:60:166
+4 that was good
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(5,Table.putForks(I)V) from null
+@    Acquire(5,@03)
+4 putforks
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(5,@04[0])  Final  Philo.java:30:41
+@    AWr(5,@04[4])  Final  Philo.java:30:42
+4 notify done
+@    Release(5,@03)
+@   Exit(5,Table.putForks(I)V)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:53:41
+4 let's try to get the forks
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:54:62
+@    ARd(2,@04[1])  Final  Philo.java:19:117
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:54:66
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@   Enter(5,Table.getForks(I)I) from null
+@    ARd(2,@04[2])  Final  Philo.java:19:126
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(2,@04[2])  Final  Philo.java:23:142
+@    AWr(2,@04[1])  Final  Philo.java:23:143
+1 got forks
+@    Rd(2,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(2,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(2,@03)
+@   Exit(2,Table.getForks(I)I)
+@   Rd(2,@07.Philo.id_I)  Final  Philo.java:55:81
+1 have the forks now
+@    Acquire(5,@03)
+@   Rd(2,@07.Philo.id_I)  Final  Philo.java:58:125
+1 eating (327)
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:37
+@    ARd(5,@04[4])  Final  Philo.java:17:41
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:17:60
+@    ARd(5,@04[0])  Final  Philo.java:17:64
+4 check forks[4]=true and forks[0]=true
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(5,@04[4])  Final  Philo.java:19:117
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(5,@04[0])  Final  Philo.java:19:126
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(5,@04[0])  Final  Philo.java:23:142
+@    AWr(5,@04[4])  Final  Philo.java:23:143
+4 got forks
+@    Rd(5,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(5,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(5,@03)
+@   Exit(5,Table.getForks(I)I)
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:55:81
+4 have the forks now
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:58:125
+4 eating (512)
+@   Rd(2,@07.Philo.id_I)  Final  Philo.java:60:166
+1 that was good
+@   Rd(2,@07.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(2,@07.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(2,Table.putForks(I)V) from null
+@    Acquire(2,@03)
+1 putforks
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(2,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(2,@04[2])  Final  Philo.java:30:41
+@    AWr(2,@04[1])  Final  Philo.java:30:42
+1 notify done
+@    Release(2,@03)
+@   Exit(2,Table.putForks(I)V)
+@  Exit(2,Philo.run()V)
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(1,@04[0])  Final  Philo.java:19:117
+0 wait for forks
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:60:166
+4 that was good
+@   Rd(5,@0A.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(5,@0A.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(5,Table.putForks(I)V) from null
+@    Acquire(5,@03)
+4 putforks
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(5,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(5,@04[0])  Final  Philo.java:30:41
+@    AWr(5,@04[4])  Final  Philo.java:30:42
+4 notify done
+@    Release(5,@03)
+@   Exit(5,Table.putForks(I)V)
+@  Exit(5,Philo.run()V)
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(4,@04[3])  Final  Philo.java:19:117
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(4,@04[4])  Final  Philo.java:19:126
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(4,@04[4])  Final  Philo.java:23:142
+@    AWr(4,@04[3])  Final  Philo.java:23:143
+3 got forks
+@    Rd(4,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(4,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(4,@03)
+@   Exit(4,Table.getForks(I)I)
+@   Rd(4,@09.Philo.id_I)  Final  Philo.java:55:81
+3 have the forks now
+@   Rd(4,@09.Philo.id_I)  Final  Philo.java:58:125
+3 eating (56)
+@   Rd(4,@09.Philo.id_I)  Final  Philo.java:60:166
+3 that was good
+@   Rd(4,@09.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(4,@09.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(4,Table.putForks(I)V) from null
+@    Acquire(4,@03)
+3 putforks
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(4,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(4,@04[4])  Final  Philo.java:30:41
+@    AWr(4,@04[3])  Final  Philo.java:30:42
+3 notify done
+@    Release(4,@03)
+@   Exit(4,Table.putForks(I)V)
+@  Exit(4,Philo.run()V)
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:113
+@    ARd(1,@04[0])  Final  Philo.java:19:117
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:19:122
+@    ARd(1,@04[1])  Final  Philo.java:19:126
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:23:131
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:23:136
+@    AWr(1,@04[1])  Final  Philo.java:23:142
+@    AWr(1,@04[0])  Final  Philo.java:23:143
+0 got forks
+@    Rd(1,@03.Table.eatctr_I)  Final  Philo.java:25:171
+@    Wr(1,@03.Table.eatctr_I)  Final  Philo.java:25:177
+@    Release(1,@03)
+@   Exit(1,Table.getForks(I)I)
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:55:81
+0 have the forks now
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:58:125
+0 eating (501)
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:60:166
+0 that was good
+@   Rd(1,@05.Philo.t_LTable;)  Final  Philo.java:61:187
+@   Rd(1,@05.Philo.id_I)  Final  Philo.java:61:191
+@   Enter(1,Table.putForks(I)V) from null
+@    Acquire(1,@03)
+0 putforks
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:30:26
+@    Rd(1,@03.Table.forks_\[Z)  Final  Philo.java:30:31
+@    AWr(1,@04[1])  Final  Philo.java:30:41
+@    AWr(1,@04[0])  Final  Philo.java:30:42
+0 notify done
+@    Release(1,@03)
+@   Exit(1,Table.putForks(I)V)
+@  Exit(1,Philo.run()V)
+@   Join(0,1)
+@   ARd(0,@06[1])  Final  Philo.java:98:168
+@   Join(0,2)
+@   ARd(0,@06[2])  Final  Philo.java:98:168
+@   Join(0,3)
+@   ARd(0,@06[3])  Final  Philo.java:98:168
+@   Join(0,4)
+@   ARd(0,@06[4])  Final  Philo.java:98:168
+@   Join(0,5)
+@  Exit(0,Philo.main([Ljava/lang/String;)V)
+[main: ]
+[main: ----- ----- ----- -----      Thpthpthpth.     ----- ----- ----- -----]
+[RR: Total Time: 2914]
+
+[RR: Time = 2914]
+[RR: Exiting: 0]
