@@ -1,15 +1,18 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include "event.h"
+#include "grammar.h"
 #include "util.h"
 #include <fstream>
 #include <iostream>
 #include <regex>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 struct Parser {
-  std::unordered_map<std::string, int> variable;
-  std::unordered_map<std::string, int> lock;
-  std::unordered_map<std::string, int> thread;
+  Grammar grammar;
 
   EventType parse_event_type(std::string event_type) {
     if (event_type == "R") {
@@ -57,35 +60,57 @@ struct Parser {
       std::exit(EXIT_FAILURE);
     }
 
-    std::string event;
-    while (std::getline(map_file, event)) {
-      std::vector<std::string> tokens = util::split(event, "|");
+    std::string line;
+    while (std::getline(map_file, line)) {
+      std::vector<std::string> tokens = util::split(line, "|");
 
-      std::string id{tokens[0]};
+      Terminal terminal{"[" + tokens[0] + "]"};
       Event event{parse_event(tokens[1])};
 
-      if (event.type == EventType::read || event.type == EventType::write) {
-
-      } else if (event.type == EventType::lock ||
-                 event.type == EventType::unlock) {
-
-      } else if (event.type == EventType::fork ||
-                 event.type == EventType::join) {
-      }
+      grammar.terminals.insert(terminal);
+      grammar.content[terminal] = event;
     }
   }
 
-  void parse_grammar(std::string grammar_path) {
+  Grammar parse_grammar(std::string grammar_path) {
     std::ifstream grammar_file{grammar_path};
 
     if (!grammar_file.is_open()) {
       std::cerr << "Parser: Grammar file does not exist\n";
       std::exit(EXIT_FAILURE);
     }
+
+    std::string line;
+    while (std::getline(grammar_file, line)) {
+      std::vector<std::string> tokens = util::split(line, " -> ");
+
+      Nonterminal nonterminal{tokens[0]};
+      std::vector<Symbol> symbols = util::split(tokens[1], " ");
+
+      grammar.nonterminals.insert(nonterminal);
+      grammar.rules[nonterminal] = symbols;
+
+      switch (symbols.size()) {
+      case 1:
+        grammar.terminals.insert(symbols[0]);
+        break;
+      case 2:
+        grammar.nonterminals.insert(symbols[0]);
+        grammar.nonterminals.insert(symbols[1]);
+        break;
+      default:
+        std::cerr << "Parser: Grammar is not in CNF";
+        std::exit(EXIT_FAILURE);
+      }
+    }
+
+    return grammar;
   }
 
-  void parse(std::string map_path, std::string grammar_path) {
+  Grammar parse(std::string map_path, std::string grammar_path) {
     parse_map(map_path);
-    parse_grammar(grammar_path);
+    return parse_grammar(grammar_path);
   }
 };
+
+#endif

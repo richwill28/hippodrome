@@ -1,8 +1,21 @@
+#ifndef EVENT_H
+#define EVENT_H
+
 #include <string>
 
 using Thread = int;
 
-enum class EventType { read, write, lock, unlock, fork, join, begin, end };
+enum class EventType {
+  read,
+  write,
+  lock,
+  unlock,
+  fork,
+  join,
+  begin,
+  end,
+  undefined
+};
 
 using Operand = std::string;
 
@@ -14,6 +27,12 @@ struct Event {
   Operand operand;
   Annotation annotation;
 
+  Event()
+      : thread{-1}, type{EventType::undefined}, operand{},
+        annotation{Annotation::undefined} {}
+
   Event(Thread thr, EventType ty, Operand op, Annotation anno)
       : thread{thr}, type{ty}, operand{op}, annotation{anno} {}
 };
+
+#endif

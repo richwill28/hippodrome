@@ -11,5 +11,5 @@ int main(int argc, char **argv) {
   std::string map_path{argv[1]};
   std::string grammar_path{argv[2]};
 
-  engine::analyze(map_path, grammar_path);
+  Engine{}.analyze(map_path, grammar_path);
 }
