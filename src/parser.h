@@ -33,7 +33,7 @@ struct Parser {
       return EventType::end;
     }
 
-    std::cerr << "Parser: Invalid event type";
+    std::cerr << "Parser: Invalid event type\n";
     std::exit(EXIT_FAILURE);
   }
 
@@ -62,6 +62,7 @@ struct Parser {
 
     std::string line;
     while (std::getline(map_file, line)) {
+      util::trim(line);
       std::vector<std::string> tokens = util::split(line, "|");
 
       Terminal terminal{"[" + tokens[0] + "]"};
@@ -82,6 +83,7 @@ struct Parser {
 
     std::string line;
     while (std::getline(grammar_file, line)) {
+      util::trim(line);
       std::vector<std::string> tokens = util::split(line, " -> ");
 
       Nonterminal nonterminal{tokens[0]};
@@ -99,7 +101,7 @@ struct Parser {
         grammar.nonterminals.insert(symbols[1]);
         break;
       default:
-        std::cerr << "Parser: Grammar is not in CNF";
+        std::cerr << "Parser: Grammar is not in CNF\n";
         std::exit(EXIT_FAILURE);
       }
     }

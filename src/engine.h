@@ -15,10 +15,10 @@ struct Engine {
                             std::unordered_set<Nonterminal> &visited,
                             std::vector<Nonterminal> &result) {
     visited.insert(vertex);
-    for (Symbol symbol : grammar.rules.at(vertex)) {
-      if (grammar.nonterminals.contains(symbol)) {
-        if (!visited.contains(symbol)) {
-          topological_sort_dfs(grammar, vertex, visited, result);
+    for (Symbol neighbor : grammar.rules.at(vertex)) {
+      if (grammar.nonterminals.contains(neighbor)) {
+        if (!visited.contains(neighbor)) {
+          topological_sort_dfs(grammar, neighbor, visited, result);
         }
       }
     }
