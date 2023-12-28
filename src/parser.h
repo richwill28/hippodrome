@@ -40,7 +40,7 @@ struct Parser {
   Event parse_event(std::string event) {
     std::vector<std::string> tokens = util::split(event, ",");
 
-    Thread thread = std::stoi(tokens[0]);
+    Thread thread = tokens[0];
 
     EventType event_type = parse_event_type(tokens[1]);
 

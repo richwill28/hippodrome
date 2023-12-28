@@ -3,7 +3,7 @@
 
 #include <string>
 
-using Thread = int;
+using Thread = std::string;
 
 enum class EventType {
   read,
