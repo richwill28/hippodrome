@@ -8,15 +8,15 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
+#include <utility>
 
-struct std::hash<std::pair<Thread, Operand>> {
+template <> struct std::hash<std::pair<Thread, Operand>> {
   std::size_t operator()(const std::pair<Thread, Operand> &key) const {
     return std::hash<std::string>{}(key.first + " " + key.second);
   }
 };
 
-struct std::hash<std::pair<Transaction, Transaction>> {
+template <> struct std::hash<std::pair<Transaction, Transaction>> {
   std::size_t operator()(const std::pair<Transaction, Transaction> &key) const {
     return std::hash<std::string>{}(std::to_string(key.first.idx) + " " +
                                     std::to_string(key.second.idx));
@@ -35,13 +35,13 @@ struct Graph {
         last_transaction{}, edges{} {}
 
   bool cyclic() {
-    std::unordered_map<int, std::vector<int>> neighbors;
-    std::unordered_map<int, int> in_degree;
+    std::unordered_map<int, std::unordered_set<int>> neighbors;
+    std::unordered_map<int, size_t> in_degree;
     std::stack<int> bag;
-    int visited = 0;
+    size_t visited = 0;
 
     for (const auto &edge : edges) {
-      neighbors[edge.first.idx].push_back(edge.second.idx);
+      neighbors[edge.first.idx].insert(edge.second.idx);
       in_degree[edge.second.idx]++;
     }
 

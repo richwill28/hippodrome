@@ -22,7 +22,7 @@ struct Transaction {
   bool operator==(const Transaction &other) const { return idx == other.idx; }
 };
 
-struct std::hash<Transaction> {
+template <> struct std::hash<Transaction> {
   std::size_t operator()(const Transaction &key) const {
     return std::hash<int>{}(key.idx);
   }

@@ -8,9 +8,10 @@
 #include <string>
 #include <tuple>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
-struct std::hash<std::pair<Nonterminal, TransactionIdx>> {
+template <> struct std::hash<std::pair<Nonterminal, TransactionIdx>> {
   std::size_t
   operator()(const std::pair<Nonterminal, TransactionIdx> &key) const {
     return std::hash<std::string>{}(key.first + " " +
@@ -117,6 +118,47 @@ struct Engine {
     for (const auto &edge : aux_graph[bottom_chunk].edges) {
       graph.edges.insert(std::make_pair(transaction[edge.first.thread],
                                         transaction[edge.second.thread]));
+    }
+
+    for (const Transaction &v : graph.vertices) {
+      for (const Transaction &w : graph.vertices) {
+        if (v != w) {
+          for (const Event &e : content[std::make_pair(top_chunk, v.idx)]) {
+            for (const Event &f :
+                 content[std::make_pair(bottom_chunk, w.idx)]) {
+              if (e.conflict(f)) {
+                graph.edges.insert(std::make_pair(v, w));
+              }
+            }
+          }
+        }
+
+        for (const Event &e : content[std::make_pair(top_chunk, v.idx)]) {
+          for (const Event &f :
+               reversed_summary[std::make_pair(bottom_chunk, w.idx)]) {
+            if (e.conflict(f)) {
+              graph.edges.insert(std::make_pair(v, w));
+            }
+          }
+        }
+
+        for (const Event &e : summary[std::make_pair(top_chunk, v.idx)]) {
+          for (const Event &f : content[std::make_pair(bottom_chunk, w.idx)]) {
+            if (e.conflict(f)) {
+              graph.edges.insert(std::make_pair(v, w));
+            }
+          }
+        }
+
+        for (const Event &e : summary[std::make_pair(top_chunk, v.idx)]) {
+          for (const Event &f :
+               reversed_summary[std::make_pair(bottom_chunk, w.idx)]) {
+            if (e.conflict(f)) {
+              graph.edges.insert(std::make_pair(v, w));
+            }
+          }
+        }
+      }
     }
   }
 

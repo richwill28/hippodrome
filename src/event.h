@@ -79,13 +79,20 @@ struct Event {
   Event(Thread thr, EventType ty, Operand op, Annotation anno)
       : thread{thr}, type{ty}, operand{op}, annotation{anno} {}
 
+  bool conflict(const Event &other) const {
+    return (type == EventType::read && other.type == EventType::write) ||
+           (type == EventType::write && other.type == EventType::read) ||
+           (type == EventType::write && other.type == EventType::write) ||
+           (type == EventType::unlock && other.type == EventType::lock);
+  }
+
   bool operator==(const Event &other) const {
     return (thread == other.thread) && (type == other.type) &&
            (operand == other.operand) && (annotation == other.annotation);
   }
 };
 
-struct std::hash<Event> {
+template <> struct std::hash<Event> {
   std::size_t operator()(const Event &key) const {
     return std::hash<std::string>{}(
         key.thread + " " + event_type_to_string(key.type) + " " + key.operand +
