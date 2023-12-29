@@ -6,13 +6,17 @@
 #include "transaction.h"
 #include <stack>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
 
-template <> struct std::hash<std::pair<Thread, Operand>> {
-  std::size_t operator()(const std::pair<Thread, Operand> &key) const {
-    return std::hash<std::string>{}(key.first + " " + key.second);
+template <> struct std::hash<std::tuple<Thread, EventType, Operand>> {
+  std::size_t
+  operator()(const std::tuple<Thread, EventType, Operand> &key) const {
+    return std::hash<std::string>{}(std::get<0>(key) + " " +
+                                    event_type_to_string(std::get<1>(key)) +
+                                    " " + std::get<2>(key));
   }
 };
 
@@ -26,8 +30,10 @@ template <> struct std::hash<std::pair<Transaction, Transaction>> {
 struct Graph {
   std::unordered_set<Transaction> vertices;
   std::unordered_set<Transaction> reversed_vertices;
-  std::unordered_map<std::pair<Thread, Operand>, Transaction> first_transaction;
-  std::unordered_map<std::pair<Thread, Operand>, Transaction> last_transaction;
+  std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
+      first_transaction;
+  std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
+      last_transaction;
   std::unordered_set<std::pair<Transaction, Transaction>> edges;
 
   Graph()

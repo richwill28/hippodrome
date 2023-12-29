@@ -41,7 +41,50 @@ struct Engine {
       return;
     }
 
-    // TODO
+    std::vector<Nonterminal> chunks = grammar.rules[nonterminal];
+
+    if (chunks.size() == 1) {
+      Terminal chunk = chunks[0];
+      Event event = grammar.content[chunk];
+
+      if (event.type == EventType::begin) {
+        event.annotation = Annotation::down;
+      } else if (event.type == EventType::end) {
+        event.annotation = Annotation::up;
+      } else {
+        event.annotation = Annotation::open;
+      }
+
+      Transaction transaction = make_transaction();
+      transaction.thread = event.thread;
+      transaction.content.insert(event);
+
+      if (event.type != EventType::end) {
+        aux_graph[nonterminal].vertices.insert(transaction);
+      }
+
+      if (event.type != EventType::begin) {
+        aux_graph[nonterminal].reversed_vertices.insert(transaction);
+      }
+
+      aux_graph[nonterminal].first_transaction[std::make_tuple(
+          event.thread, EventType::undefined, "")] = transaction;
+      aux_graph[nonterminal].first_transaction[std::make_tuple(
+          event.thread, event.type, event.operand)] = transaction;
+
+      aux_graph[nonterminal].last_transaction[std::make_tuple(
+          event.thread, EventType::undefined, "")] = transaction;
+      aux_graph[nonterminal].last_transaction[std::make_tuple(
+          event.thread, event.type, event.operand)] = transaction;
+
+    } else if (chunks.size() == 2) {
+      Nonterminal top_chunk = chunks[0];
+      Nonterminal bottom_chunk = chunks[1];
+
+    } else {
+      std::cerr << "Engine: Grammar is not in CNF\n";
+      std::exit(EXIT_FAILURE);
+    }
   }
 
   void compute_cross_graph(Nonterminal nonterminal) {
@@ -51,14 +94,12 @@ struct Engine {
 
     std::vector<Nonterminal> chunks = grammar.rules[nonterminal];
     if (chunks.size() != 2) {
-      std::cerr << "Engine: Grammar is not CNF\n";
+      std::cerr << "Engine: Something went wrong\n";
       std::exit(EXIT_FAILURE);
     }
 
     Nonterminal top_chunk{chunks[0]};
     Nonterminal bottom_chunk{chunks[1]};
-
-    Graph graph;
 
     std::unordered_map<Thread, Transaction> transaction;
     std::unordered_map<std::pair<Nonterminal, TransactionIdx>,
@@ -107,27 +148,27 @@ struct Engine {
     }
 
     for (const auto &it : transaction) {
-      graph.vertices.insert(it.second);
+      cross_graph[nonterminal].vertices.insert(it.second);
     }
 
     for (const auto &edge : aux_graph[top_chunk].edges) {
-      graph.edges.insert(std::make_pair(transaction[edge.first.thread],
-                                        transaction[edge.second.thread]));
+      cross_graph[nonterminal].edges.insert(std::make_pair(
+          transaction[edge.first.thread], transaction[edge.second.thread]));
     }
 
     for (const auto &edge : aux_graph[bottom_chunk].edges) {
-      graph.edges.insert(std::make_pair(transaction[edge.first.thread],
-                                        transaction[edge.second.thread]));
+      cross_graph[nonterminal].edges.insert(std::make_pair(
+          transaction[edge.first.thread], transaction[edge.second.thread]));
     }
 
-    for (const Transaction &v : graph.vertices) {
-      for (const Transaction &w : graph.vertices) {
+    for (const Transaction &v : cross_graph[nonterminal].vertices) {
+      for (const Transaction &w : cross_graph[nonterminal].vertices) {
         if (v != w) {
           for (const Event &e : content[std::make_pair(top_chunk, v.idx)]) {
             for (const Event &f :
                  content[std::make_pair(bottom_chunk, w.idx)]) {
               if (e.conflict(f)) {
-                graph.edges.insert(std::make_pair(v, w));
+                cross_graph[nonterminal].edges.insert(std::make_pair(v, w));
               }
             }
           }
@@ -137,7 +178,7 @@ struct Engine {
           for (const Event &f :
                reversed_summary[std::make_pair(bottom_chunk, w.idx)]) {
             if (e.conflict(f)) {
-              graph.edges.insert(std::make_pair(v, w));
+              cross_graph[nonterminal].edges.insert(std::make_pair(v, w));
             }
           }
         }
@@ -145,7 +186,7 @@ struct Engine {
         for (const Event &e : summary[std::make_pair(top_chunk, v.idx)]) {
           for (const Event &f : content[std::make_pair(bottom_chunk, w.idx)]) {
             if (e.conflict(f)) {
-              graph.edges.insert(std::make_pair(v, w));
+              cross_graph[nonterminal].edges.insert(std::make_pair(v, w));
             }
           }
         }
@@ -154,7 +195,7 @@ struct Engine {
           for (const Event &f :
                reversed_summary[std::make_pair(bottom_chunk, w.idx)]) {
             if (e.conflict(f)) {
-              graph.edges.insert(std::make_pair(v, w));
+              cross_graph[nonterminal].edges.insert(std::make_pair(v, w));
             }
           }
         }
