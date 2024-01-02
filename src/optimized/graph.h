@@ -30,8 +30,6 @@ template <> struct std::hash<std::pair<Transaction, Transaction>> {
 struct Graph {
   std::unordered_set<Transaction> vertices;
   std::unordered_set<Transaction> reversed_vertices;
-  std::unordered_set<Transaction> first_transactions;
-  std::unordered_set<Transaction> last_transactions;
   std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
       first_transaction;
   std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
@@ -88,18 +86,6 @@ struct Graph {
 
     str += "RV =";
     for (const auto &txn : reversed_vertices) {
-      str += " " + txn.to_string();
-    }
-    str += "\n";
-
-    str += "FT =";
-    for (const auto &txn : first_transactions) {
-      str += " " + txn.to_string();
-    }
-    str += "\n";
-
-    str += "LT =";
-    for (const auto &txn : last_transactions) {
       str += " " + txn.to_string();
     }
     str += "\n";
