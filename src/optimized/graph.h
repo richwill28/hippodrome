@@ -30,6 +30,8 @@ template <> struct std::hash<std::pair<Transaction, Transaction>> {
 struct Graph {
   std::unordered_set<Transaction> vertices;
   std::unordered_set<Transaction> reversed_vertices;
+  std::unordered_set<Transaction> first_transactions;
+  std::unordered_set<Transaction> last_transactions;
   std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
       first_transaction;
   std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
@@ -43,7 +45,7 @@ struct Graph {
       : vertices{}, reversed_vertices{}, first_transaction{},
         last_transaction{}, edges{}, content{}, summary{}, reversed_summary{} {}
 
-  bool cyclic() {
+  bool cyclic() const {
     std::unordered_map<int, std::unordered_set<int>> neighbors;
     std::unordered_map<int, size_t> in_degree;
     std::stack<int> bag;
@@ -74,6 +76,86 @@ struct Graph {
 
     return visited < vertices.size();
   }
+
+  std::string to_string() const {
+    std::string str;
+
+    str += "V =";
+    for (const auto &txn : vertices) {
+      str += " " + txn.to_string();
+    }
+    str += "\n";
+
+    str += "RV =";
+    for (const auto &txn : reversed_vertices) {
+      str += " " + txn.to_string();
+    }
+    str += "\n";
+
+    str += "FT =";
+    for (const auto &txn : first_transactions) {
+      str += " " + txn.to_string();
+    }
+    str += "\n";
+
+    str += "LT =";
+    for (const auto &txn : last_transactions) {
+      str += " " + txn.to_string();
+    }
+    str += "\n";
+
+    for (const auto &[decor, txn] : first_transaction) {
+      str += "FT(" + std::get<0>(decor) + ", " +
+             event_type_to_string(std::get<1>(decor)) + ", " +
+             std::get<2>(decor) + ") = " + txn.to_string();
+      str += "\n";
+    }
+
+    for (const auto &[decor, txn] : last_transaction) {
+      str += "LT(" + std::get<0>(decor) + ", " +
+             event_type_to_string(std::get<1>(decor)) + ", " +
+             std::get<2>(decor) + ") = " + txn.to_string();
+      str += "\n";
+    }
+
+    str += "E =";
+    for (const auto &edge : edges) {
+      str +=
+          " (" + edge.first.to_string() + ", " + edge.second.to_string() + ")";
+    }
+    str += "\n";
+
+    for (const auto &[txn, events] : content) {
+      str += "C(" + txn.to_string() + ") =";
+      for (const auto &event : events) {
+        str += " " + event.to_string();
+      }
+      str += "\n";
+    }
+
+    for (const auto &[txn, events] : summary) {
+      str += "S(" + txn.to_string() + ") =";
+      for (const auto &event : events) {
+        str += " " + event.to_string();
+      }
+      str += "\n";
+    }
+
+    for (const auto &[txn, events] : reversed_summary) {
+      str += "RS(" + txn.to_string() + ") =";
+      for (const auto &event : events) {
+        str += " " + event.to_string();
+      }
+      str += "\n";
+    }
+
+    return str;
+  }
 };
+
+std::ostream &operator<<(std::ostream &os, const Graph &graph) {
+  os << graph.to_string();
+  return os;
+}
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "event.h"
 #include "grammar.h"
+#include <string>
 #include <unordered_set>
 
 using TransactionIdx = int;
@@ -15,6 +16,8 @@ struct Transaction {
 
   Transaction(TransactionIdx idx) : idx{idx}, thread{} {}
 
+  std::string to_string() const { return "T" + std::to_string(idx); }
+
   bool operator==(const Transaction &other) const { return idx == other.idx; }
 };
 
@@ -23,5 +26,10 @@ template <> struct std::hash<Transaction> {
     return std::hash<int>{}(key.idx);
   }
 };
+
+std::ostream &operator<<(std::ostream &os, const Transaction &transaction) {
+  os << transaction.to_string();
+  return os;
+}
 
 #endif

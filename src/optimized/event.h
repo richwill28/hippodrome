@@ -86,6 +86,11 @@ struct Event {
            (type == EventType::unlock && other.type == EventType::lock);
   }
 
+  std::string to_string() const {
+    return "(" + thread + ", " + event_type_to_string(type) + ", " + operand +
+           ", " + annotation_to_string(annotation) + ")";
+  }
+
   bool operator==(const Event &other) const {
     return (thread == other.thread) && (type == other.type) &&
            (operand == other.operand) && (annotation == other.annotation);
@@ -94,10 +99,13 @@ struct Event {
 
 template <> struct std::hash<Event> {
   std::size_t operator()(const Event &key) const {
-    return std::hash<std::string>{}(
-        key.thread + " " + event_type_to_string(key.type) + " " + key.operand +
-        " " + annotation_to_string(key.annotation));
+    return std::hash<std::string>{}(key.to_string());
   }
 };
+
+std::ostream &operator<<(std::ostream &os, const Event &event) {
+  os << event.to_string();
+  return os;
+}
 
 #endif
