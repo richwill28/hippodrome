@@ -35,10 +35,13 @@ struct Graph {
   std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
       last_transaction;
   std::unordered_set<std::pair<Transaction, Transaction>> edges;
+  std::unordered_map<Transaction, std::unordered_set<Event>> content;
+  std::unordered_map<Transaction, std::unordered_set<Event>> summary;
+  std::unordered_map<Transaction, std::unordered_set<Event>> reversed_summary;
 
   Graph()
       : vertices{}, reversed_vertices{}, first_transaction{},
-        last_transaction{}, edges{} {}
+        last_transaction{}, edges{}, content{}, summary{}, reversed_summary{} {}
 
   bool cyclic() {
     std::unordered_map<int, std::unordered_set<int>> neighbors;

@@ -10,14 +10,10 @@ using TransactionIdx = int;
 struct Transaction {
   TransactionIdx idx;
   Thread thread;
-  std::unordered_set<Event> content;
-  std::unordered_set<Event> summary;
-  std::unordered_set<Event> reversed_summary;
 
-  Transaction() : idx{-1}, thread{}, content{}, summary{}, reversed_summary{} {}
+  Transaction() : idx{-1}, thread{} {}
 
-  Transaction(TransactionIdx idx)
-      : idx{idx}, thread{}, content{}, summary{}, reversed_summary{} {}
+  Transaction(TransactionIdx idx) : idx{idx}, thread{} {}
 
   bool operator==(const Transaction &other) const { return idx == other.idx; }
 };
