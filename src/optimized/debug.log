@@ -257,6 +257,91 @@ E =
 C(T17) = (1, read, @05.Philo.id_I, open) (1, read, @05.Philo.t_LTable;, open)
 S(T17) =
 
+Before compute_reversed_summaries
+V = T17
+RV = T17
+FT(1, read, @05.Philo.t_LTable;) = T17
+FT(1, undefined, ) = T17
+FT(1, read, @05.Philo.id_I) = T17
+LT(1, read, @05.Philo.id_I) = T17
+LT(1, undefined, ) = T17
+LT(1, read, @05.Philo.t_LTable;) = T17
+E =
+C(T17) = (1, read, @05.Philo.id_I, open) (1, read, @05.Philo.t_LTable;, open)
+S(T17) =
+
+Engine: compute_neighbor_reversed_summary(Ti = T17, A = 22, C = 63)
+Engine: compute_trickle_down_reversed_summary(Ti = T17, B = 134, C = 63)
+After compute_reversed_summaries
+V = T17
+RV = T17
+FT(1, read, @05.Philo.t_LTable;) = T17
+FT(1, undefined, ) = T17
+FT(1, read, @05.Philo.id_I) = T17
+LT(1, read, @05.Philo.id_I) = T17
+LT(1, undefined, ) = T17
+LT(1, read, @05.Philo.t_LTable;) = T17
+E =
+C(T17) = (1, read, @05.Philo.id_I, open) (1, read, @05.Philo.t_LTable;, open)
+S(T17) =
+RS(T17) =
+
+Before compute_v2v_edges
+V = T17
+RV = T17
+FT(1, read, @05.Philo.t_LTable;) = T17
+FT(1, undefined, ) = T17
+FT(1, read, @05.Philo.id_I) = T17
+LT(1, read, @05.Philo.id_I) = T17
+LT(1, undefined, ) = T17
+LT(1, read, @05.Philo.t_LTable;) = T17
+E =
+C(T17) = (1, read, @05.Philo.id_I, open) (1, read, @05.Philo.t_LTable;, open)
+S(T17) =
+RS(T17) =
+
+After compute_v2v_edges
+V = T17
+RV = T17
+FT(1, read, @05.Philo.t_LTable;) = T17
+FT(1, undefined, ) = T17
+FT(1, read, @05.Philo.id_I) = T17
+LT(1, read, @05.Philo.id_I) = T17
+LT(1, undefined, ) = T17
+LT(1, read, @05.Philo.t_LTable;) = T17
+E =
+C(T17) = (1, read, @05.Philo.id_I, open) (1, read, @05.Philo.t_LTable;, open)
+S(T17) =
+RS(T17) =
+
+Before compute_f2v_edges
+V = T17
+RV = T17
+FT(1, read, @05.Philo.t_LTable;) = T17
+FT(1, undefined, ) = T17
+FT(1, read, @05.Philo.id_I) = T17
+LT(1, read, @05.Philo.id_I) = T17
+LT(1, undefined, ) = T17
+LT(1, read, @05.Philo.t_LTable;) = T17
+E =
+C(T17) = (1, read, @05.Philo.id_I, open) (1, read, @05.Philo.t_LTable;, open)
+S(T17) =
+RS(T17) =
+
+After compute_f2v_edges
+V = T17
+RV = T17
+FT(1, read, @05.Philo.t_LTable;) = T17
+FT(1, undefined, ) = T17
+FT(1, read, @05.Philo.id_I) = T17
+LT(1, read, @05.Philo.id_I) = T17
+LT(1, undefined, ) = T17
+LT(1, read, @05.Philo.t_LTable;) = T17
+E =
+C(T17) = (1, read, @05.Philo.id_I, open) (1, read, @05.Philo.t_LTable;, open)
+S(T17) =
+RS(T17) =
+
 Engine: compute_aux_graph (1 -> 63 22)
 Before merge_routine
 V =
@@ -356,6 +441,91 @@ E =
 C(T19) = (1, read, @05.Philo.t_LTable;, open) (1, read, @05.Philo.id_I, open)
 S(T19) =
 
+Before compute_reversed_summaries
+V = T19
+RV = T19
+FT(1, read, @05.Philo.id_I) = T19
+FT(1, undefined, ) = T19
+FT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, undefined, ) = T19
+LT(1, read, @05.Philo.id_I) = T19
+E =
+C(T19) = (1, read, @05.Philo.t_LTable;, open) (1, read, @05.Philo.id_I, open)
+S(T19) =
+
+Engine: compute_neighbor_reversed_summary(Ti = T19, A = 1, C = 22)
+Engine: compute_trickle_down_reversed_summary(Ti = T19, B = 63, C = 22)
+After compute_reversed_summaries
+V = T19
+RV = T19
+FT(1, read, @05.Philo.id_I) = T19
+FT(1, undefined, ) = T19
+FT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, undefined, ) = T19
+LT(1, read, @05.Philo.id_I) = T19
+E =
+C(T19) = (1, read, @05.Philo.t_LTable;, open) (1, read, @05.Philo.id_I, open)
+S(T19) =
+RS(T19) =
+
+Before compute_v2v_edges
+V = T19
+RV = T19
+FT(1, read, @05.Philo.id_I) = T19
+FT(1, undefined, ) = T19
+FT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, undefined, ) = T19
+LT(1, read, @05.Philo.id_I) = T19
+E =
+C(T19) = (1, read, @05.Philo.t_LTable;, open) (1, read, @05.Philo.id_I, open)
+S(T19) =
+RS(T19) =
+
+After compute_v2v_edges
+V = T19
+RV = T19
+FT(1, read, @05.Philo.id_I) = T19
+FT(1, undefined, ) = T19
+FT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, undefined, ) = T19
+LT(1, read, @05.Philo.id_I) = T19
+E =
+C(T19) = (1, read, @05.Philo.t_LTable;, open) (1, read, @05.Philo.id_I, open)
+S(T19) =
+RS(T19) =
+
+Before compute_f2v_edges
+V = T19
+RV = T19
+FT(1, read, @05.Philo.id_I) = T19
+FT(1, undefined, ) = T19
+FT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, undefined, ) = T19
+LT(1, read, @05.Philo.id_I) = T19
+E =
+C(T19) = (1, read, @05.Philo.t_LTable;, open) (1, read, @05.Philo.id_I, open)
+S(T19) =
+RS(T19) =
+
+After compute_f2v_edges
+V = T19
+RV = T19
+FT(1, read, @05.Philo.id_I) = T19
+FT(1, undefined, ) = T19
+FT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, read, @05.Philo.t_LTable;) = T19
+LT(1, undefined, ) = T19
+LT(1, read, @05.Philo.id_I) = T19
+E =
+C(T19) = (1, read, @05.Philo.t_LTable;, open) (1, read, @05.Philo.id_I, open)
+S(T19) =
+RS(T19) =
+
 Engine: compute_aux_graph (65 -> [16])
 V = T20
 RV = T20
@@ -376,4 +546,530 @@ LT(2, undefined, ) = T21
 E =
 C(T21) = (2, begin, , down)
 
-No conflict serializability violation detected
+Engine: compute_aux_graph (67 -> [18])
+V = T22
+RV = T22
+FT(0, write, @08.Philo.id_I) = T22
+FT(0, undefined, ) = T22
+LT(0, write, @08.Philo.id_I) = T22
+LT(0, undefined, ) = T22
+E =
+C(T22) = (0, write, @08.Philo.id_I, open)
+
+Engine: compute_aux_graph (68 -> [19])
+V = T23
+RV = T23
+FT(0, write, @08.Philo.t_LTable;) = T23
+FT(0, undefined, ) = T23
+LT(0, write, @08.Philo.t_LTable;) = T23
+LT(0, undefined, ) = T23
+E =
+C(T23) = (0, write, @08.Philo.t_LTable;, open)
+
+Engine: compute_aux_graph (69 -> [20])
+V = T24
+RV = T24
+FT(2, read, @07.Philo.id_I) = T24
+FT(2, undefined, ) = T24
+LT(2, read, @07.Philo.id_I) = T24
+LT(2, undefined, ) = T24
+E =
+C(T24) = (2, read, @07.Philo.id_I, open)
+
+Engine: compute_aux_graph (70 -> [21])
+V = T25
+RV = T25
+FT(1, lock, @03) = T25
+FT(1, undefined, ) = T25
+LT(1, lock, @03) = T25
+LT(1, undefined, ) = T25
+E =
+C(T25) = (1, lock, @03, open)
+
+Engine: compute_aux_graph (71 -> [22])
+V = T26
+RV = T26
+FT(2, read, @07.Philo.t_LTable;) = T26
+FT(2, undefined, ) = T26
+LT(2, read, @07.Philo.t_LTable;) = T26
+LT(2, undefined, ) = T26
+E =
+C(T26) = (2, read, @07.Philo.t_LTable;, open)
+
+Engine: compute_aux_graph (98 -> [23])
+V = T27
+RV = T27
+FT(1, read, @03.Table.forks_\[Z) = T27
+FT(1, undefined, ) = T27
+LT(1, read, @03.Table.forks_\[Z) = T27
+LT(1, undefined, ) = T27
+E =
+C(T27) = (1, read, @03.Table.forks_\[Z, open)
+
+Engine: compute_aux_graph (99 -> [24])
+V = T28
+RV = T28
+FT(1, read, @04[0]) = T28
+FT(1, undefined, ) = T28
+LT(1, read, @04[0]) = T28
+LT(1, undefined, ) = T28
+E =
+C(T28) = (1, read, @04[0], open)
+
+Engine: compute_aux_graph (2 -> 98 99)
+Before merge_routine
+V =
+RV =
+E =
+
+After merge_routine
+V =
+RV =
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_vertices
+V =
+RV =
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+After compute_vertices
+V = T30
+RV =
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_reversed_vertices
+V = T30
+RV =
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+After compute_reversed_vertices
+V = T30
+RV = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_first_transactions
+V = T30
+RV = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+After compute_first_transactions
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_last_transactions
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+After compute_last_transactions
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_summaries
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+
+Engine: compute_neighbor_summary(Ti = T30, A = 2, B = 98)
+Engine: compute_trickle_down_summary(Ti = T30, B = 98, C = 99)
+After compute_summaries
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+S(T30) =
+
+Before compute_reversed_summaries
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+S(T30) =
+
+Engine: compute_neighbor_reversed_summary(Ti = T30, A = 2, C = 99)
+Engine: compute_trickle_down_reversed_summary(Ti = T30, B = 98, C = 99)
+After compute_reversed_summaries
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+S(T30) =
+RS(T30) =
+
+Before compute_v2v_edges
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+S(T30) =
+RS(T30) =
+
+After compute_v2v_edges
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+S(T30) =
+RS(T30) =
+
+Before compute_f2v_edges
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+S(T30) =
+RS(T30) =
+
+After compute_f2v_edges
+V = T30
+RV = T30
+FT(1, read, @03.Table.forks_\[Z) = T30
+FT(1, undefined, ) = T30
+FT(1, read, @04[0]) = T30
+LT(1, read, @04[0]) = T30
+LT(1, undefined, ) = T30
+LT(1, read, @03.Table.forks_\[Z) = T30
+E =
+C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
+S(T30) =
+RS(T30) =
+
+Engine: compute_aux_graph (72 -> [25])
+V = T31
+RV = T31
+FT(0, fork, 3) = T31
+FT(0, undefined, ) = T31
+LT(0, fork, 3) = T31
+LT(0, undefined, ) = T31
+E =
+C(T31) = (0, fork, 3, open)
+
+Engine: compute_aux_graph (78 -> [26])
+V = T32
+RV = T32
+FT(1, read, @04[1]) = T32
+FT(1, undefined, ) = T32
+LT(1, read, @04[1]) = T32
+LT(1, undefined, ) = T32
+E =
+C(T32) = (1, read, @04[1], open)
+
+Engine: compute_aux_graph (3 -> 98 78)
+Before merge_routine
+V =
+RV =
+E =
+
+After merge_routine
+V =
+RV =
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_vertices
+V =
+RV =
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+After compute_vertices
+V = T34
+RV =
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_reversed_vertices
+V = T34
+RV =
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+After compute_reversed_vertices
+V = T34
+RV = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_first_transactions
+V = T34
+RV = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+After compute_first_transactions
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_last_transactions
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+After compute_last_transactions
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+Before compute_summaries
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+
+Engine: compute_neighbor_summary(Ti = T34, A = 3, B = 98)
+Engine: compute_trickle_down_summary(Ti = T34, B = 98, C = 78)
+After compute_summaries
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+S(T34) =
+
+Before compute_reversed_summaries
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+S(T34) =
+
+Engine: compute_neighbor_reversed_summary(Ti = T34, A = 3, C = 78)
+Engine: compute_trickle_down_reversed_summary(Ti = T34, B = 98, C = 78)
+After compute_reversed_summaries
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+S(T34) =
+RS(T34) =
+
+Before compute_v2v_edges
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+S(T34) =
+RS(T34) =
+
+After compute_v2v_edges
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+S(T34) =
+RS(T34) =
+
+Before compute_f2v_edges
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+S(T34) =
+RS(T34) =
+
+After compute_f2v_edges
+V = T34
+RV = T34
+FT(1, read, @03.Table.forks_\[Z) = T34
+FT(1, undefined, ) = T34
+FT(1, read, @04[1]) = T34
+LT(1, read, @04[1]) = T34
+LT(1, undefined, ) = T34
+LT(1, read, @03.Table.forks_\[Z) = T34
+E =
+C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
+S(T34) =
+RS(T34) =
+
+Engine: compute_aux_graph (73 -> [27])
+V = T35
+RV =
+FT(3, begin, ) = T35
+FT(3, undefined, ) = T35
+LT(3, begin, ) = T35
+LT(3, undefined, ) = T35
+E =
+C(T35) = (3, begin, , down)
+
+Engine: compute_aux_graph (74 -> [28])
+V = T36
+RV = T36
+FT(0, write, @09.Philo.id_I) = T36
+FT(0, undefined, ) = T36
+LT(0, write, @09.Philo.id_I) = T36
+LT(0, undefined, ) = T36
+E =
+C(T36) = (0, write, @09.Philo.id_I, open)
+
+Engine: compute_aux_graph (75 -> [29])
+V = T37
+RV = T37
+FT(0, write, @09.Philo.t_LTable;) = T37
+FT(0, undefined, ) = T37
+LT(0, write, @09.Philo.t_LTable;) = T37
+LT(0, undefined, ) = T37
+E =
+C(T37) = (0, write, @09.Philo.t_LTable;, open)
+
+Engine: compute_aux_graph (76 -> [30])
+V = T38
+RV = T38
+FT(3, read, @08.Philo.id_I) = T38
+FT(3, undefined, ) = T38
+LT(3, read, @08.Philo.id_I) = T38
+LT(3, undefined, ) = T38
+E =
+C(T38) = (3, read, @08.Philo.id_I, open)
+
+Engine: compute_aux_graph (4 -> 76 98)
+Before merge_routine
+V =
+RV =
+E =
+
+After merge_routine
+V =
+RV =
+E =
+C(T42) = (1, read, @03.Table.forks_\[Z, open)
+C(T41) = (3, read, @08.Philo.id_I, open)
+
+Before compute_vertices
+V =
+RV =
+E =
+C(T42) = (1, read, @03.Table.forks_\[Z, open)
+C(T41) = (3, read, @08.Philo.id_I, open)
+
+After compute_vertices
+V = T41 T42
+RV =
+E =
+C(T42) = (1, read, @03.Table.forks_\[Z, open)
+C(T41) = (3, read, @08.Philo.id_I, open)
+
+Before compute_reversed_vertices
+V =

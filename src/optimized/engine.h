@@ -26,6 +26,34 @@ struct Engine {
   std::unordered_map<Nonterminal, Graph> cross_graph;
   std::unordered_map<Nonterminal, bool> csv;
 
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      NS;
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      TDS;
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      ATDS;
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      ACS;
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      NRS;
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      TDRS;
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      ATDRS;
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      ABRS;
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
+      THS;
+
   std::unordered_set<Thread> threads;
   std::unordered_set<Operand> variables;
   std::unordered_set<Operand> locks;
@@ -89,7 +117,9 @@ struct Engine {
   }
 
   void merge_routine(Nonterminal A, Nonterminal B, Nonterminal C,
-                     std::unordered_map<Transaction, Transaction> &parent) {
+                     std::unordered_map<Transaction, Transaction> &parent,
+                     std::unordered_map<std::pair<Nonterminal, Transaction>,
+                                        Transaction> &child) {
 
     std::unordered_map<Thread, Transaction> cross_transaction;
 
@@ -105,6 +135,7 @@ struct Engine {
       cross_transaction[txn.thread] = txn;
       parent[vertex] = txn;
       parent[txn] = txn;
+      child[std::make_pair(B, txn)] = vertex;
     }
 
     for (const Transaction &reversed_vertex : aux_graph[C].reversed_vertices) {
@@ -126,6 +157,7 @@ struct Engine {
             aux_graph[C].content[reversed_vertex].begin(),
             aux_graph[C].content[reversed_vertex].end());
         parent[reversed_vertex] = txn;
+        child[std::make_pair(C, txn)] = reversed_vertex;
 
       } else {
         Transaction txn = make_transaction();
@@ -135,12 +167,15 @@ struct Engine {
         cross_transaction[txn.thread] = txn;
         parent[reversed_vertex] = txn;
         parent[txn] = txn;
+        child[std::make_pair(C, txn)] = reversed_vertex;
       }
     }
   }
 
   void compute_vertices(Nonterminal A, Nonterminal B, Nonterminal C,
-                        std::unordered_map<Transaction, Transaction> &parent) {
+                        std::unordered_map<Transaction, Transaction> &parent,
+                        std::unordered_map<std::pair<Nonterminal, Transaction>,
+                                           Transaction> &child) {
 
     for (const Transaction &vertex : aux_graph[C].vertices) {
       if (vertex.idx == -1) {
@@ -151,6 +186,7 @@ struct Engine {
         aux_graph[A].vertices.insert(parent[vertex]);
       } else {
         parent[vertex] = vertex;
+        child[std::make_pair(C, vertex)] = vertex;
         aux_graph[A].vertices.insert(parent[vertex]);
         aux_graph[A].content[parent[vertex]] =
             aux_graph[C].content[parent[vertex]];
@@ -172,7 +208,9 @@ struct Engine {
 
   void compute_reversed_vertices(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      std::unordered_map<Transaction, Transaction> &parent) {
+      std::unordered_map<Transaction, Transaction> &parent,
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const Transaction &reversed_vertex : aux_graph[B].reversed_vertices) {
       if (reversed_vertex.idx == -1) {
@@ -183,6 +221,7 @@ struct Engine {
         aux_graph[A].reversed_vertices.insert(parent[reversed_vertex]);
       } else {
         parent[reversed_vertex] = reversed_vertex;
+        child[std::make_pair(B, reversed_vertex)] = reversed_vertex;
         aux_graph[A].reversed_vertices.insert(parent[reversed_vertex]);
         aux_graph[A].content[parent[reversed_vertex]] =
             aux_graph[C].content[parent[reversed_vertex]];
@@ -204,7 +243,9 @@ struct Engine {
 
   void compute_first_transactions(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      std::unordered_map<Transaction, Transaction> &parent) {
+      std::unordered_map<Transaction, Transaction> &parent,
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const auto &[decor, txn] : aux_graph[C].first_transaction) {
       if (txn.idx == -1) {
@@ -215,6 +256,7 @@ struct Engine {
         aux_graph[A].first_transaction[decor] = parent[txn];
       } else {
         parent[txn] = txn;
+        child[std::make_pair(C, txn)] = txn;
         aux_graph[A].first_transaction[decor] = parent[txn];
         aux_graph[A].content[parent[txn]] = aux_graph[C].content[parent[txn]];
       }
@@ -229,6 +271,7 @@ struct Engine {
         aux_graph[A].first_transaction[decor] = parent[txn];
       } else {
         parent[txn] = txn;
+        child[std::make_pair(B, txn)] = txn;
         aux_graph[A].first_transaction[decor] = parent[txn];
         aux_graph[A].content[parent[txn]] = aux_graph[B].content[parent[txn]];
       }
@@ -237,7 +280,9 @@ struct Engine {
 
   void compute_last_transactions(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      std::unordered_map<Transaction, Transaction> &parent) {
+      std::unordered_map<Transaction, Transaction> &parent,
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const auto &[decor, txn] : aux_graph[B].last_transaction) {
       if (txn.idx == -1) {
@@ -248,6 +293,7 @@ struct Engine {
         aux_graph[A].last_transaction[decor] = parent[txn];
       } else {
         parent[txn] = txn;
+        child[std::make_pair(B, txn)] = txn;
         aux_graph[A].last_transaction[decor] = parent[txn];
         aux_graph[A].content[parent[txn]] = aux_graph[B].content[parent[txn]];
       }
@@ -262,6 +308,7 @@ struct Engine {
         aux_graph[A].last_transaction[decor] = parent[txn];
       } else {
         parent[txn] = txn;
+        child[std::make_pair(C, txn)] = txn;
         aux_graph[A].last_transaction[decor] = parent[txn];
         aux_graph[A].content[parent[txn]] = aux_graph[C].content[parent[txn]];
       }
@@ -270,9 +317,7 @@ struct Engine {
 
   std::unordered_set<Event> compute_neighbor_summary(
       Transaction Ti, Nonterminal A, Nonterminal B,
-      const std::unordered_map<Transaction, Transaction> &parent,
-      std::unordered_map<std::pair<Nonterminal, Transaction>,
-                         std::unordered_set<Event>> &NS) {
+      const std::unordered_map<Transaction, Transaction> &parent) {
 
     if (NS.contains(std::make_pair(A, Ti))) {
       return NS[std::make_pair(A, Ti)];
@@ -294,7 +339,7 @@ struct Engine {
         res.insert(aux_graph[B].summary[Tj].begin(),
                    aux_graph[B].summary[Tj].end());
         std::unordered_set<Event> neighbor_summary =
-            compute_neighbor_summary(Tj, A, B, parent, NS);
+            compute_neighbor_summary(Tj, A, B, parent);
         res.insert(neighbor_summary.begin(), neighbor_summary.end());
       }
     }
@@ -306,9 +351,7 @@ struct Engine {
 
   std::unordered_set<Event> compute_trickle_down_summary(
       Transaction Ti, Nonterminal A, Nonterminal B, Nonterminal C,
-      const std::unordered_set<Event> &neighbor_summary,
-      std::unordered_map<std::pair<Nonterminal, Transaction>,
-                         std::unordered_set<Event>> &TDS) {
+      const std::unordered_set<Event> &neighbor_summary) {
 
     if (TDS.contains(std::make_pair(A, Ti))) {
       return TDS[std::make_pair(A, Ti)];
@@ -453,13 +496,7 @@ struct Engine {
 
   std::unordered_set<Event> compute_trickle_up_summary(
       size_t depth, Transaction Ti, Nonterminal A, Nonterminal B, Nonterminal C,
-      const std::unordered_map<Transaction, Transaction> &parent,
-      std::unordered_map<std::pair<Nonterminal, Transaction>,
-                         std::unordered_set<Event>> &NS,
-      std::unordered_map<std::pair<Nonterminal, Transaction>,
-                         std::unordered_set<Event>> &TDS,
-      std::unordered_map<std::pair<Nonterminal, Transaction>,
-                         std::unordered_set<Event>> &ATDS) {
+      const std::unordered_map<Transaction, Transaction> &parent) {
 
     std::cout << "Engine: compute_trickle_up_summary(depth = " << depth
               << ", Ti = " << Ti.to_string() << ", A = " << A << ", B = " << B
@@ -470,10 +507,10 @@ struct Engine {
     }
 
     std::unordered_set<Event> neighbor_summary =
-        compute_neighbor_summary(Ti, A, B, parent, NS);
+        compute_neighbor_summary(Ti, A, B, parent);
 
     std::unordered_set<Event> trickle_down_summary =
-        compute_trickle_down_summary(Ti, A, B, C, neighbor_summary, TDS);
+        compute_trickle_down_summary(Ti, A, B, C, neighbor_summary);
 
     std::unordered_set<Event> annotated_trickle_down_summary =
         annotate_summary(Ti, A, B, trickle_down_summary, ATDS);
@@ -494,9 +531,9 @@ struct Engine {
             continue;
           }
 
-          std::unordered_set<Event> summary = compute_trickle_up_summary(
-              depth + 1, Tj, A, B, C, parent, NS, TDS, ATDS);
-          trickle_up_summary.insert(summary.begin(), summary.end());
+          std::unordered_set<Event> res =
+              compute_trickle_up_summary(depth + 1, Tj, A, B, C, parent);
+          trickle_up_summary.insert(res.begin(), res.end());
         }
       }
     }
@@ -511,26 +548,28 @@ struct Engine {
                annotated_trickle_down_summary.end());
     res.insert(trickle_up_summary.begin(), trickle_up_summary.end());
 
+    THS[std::make_pair(A, Ti)].insert(aux_graph[B].content[Ti].begin(),
+                                      aux_graph[B].content[Ti].end());
+    THS[std::make_pair(A, Ti)].insert(aux_graph[B].summary[Ti].begin(),
+                                      aux_graph[B].summary[Ti].end());
+    THS[std::make_pair(A, Ti)].insert(neighbor_summary.begin(),
+                                      neighbor_summary.end());
+
+    // BHS[std::make_pair(A, Ti)].insert(trickle_down_summary.begin(),
+    //                                   trickle_down_summary.end());
+
     return res;
   }
 
   void
   compute_summary(Transaction Ti, Nonterminal A, Nonterminal B, Nonterminal C,
-                  const std::unordered_map<Transaction, Transaction> &parent,
-                  std::unordered_map<std::pair<Nonterminal, Transaction>,
-                                     std::unordered_set<Event>> &NS,
-                  std::unordered_map<std::pair<Nonterminal, Transaction>,
-                                     std::unordered_set<Event>> &TDS,
-                  std::unordered_map<std::pair<Nonterminal, Transaction>,
-                                     std::unordered_set<Event>> &ATDS,
-                  std::unordered_map<std::pair<Nonterminal, Transaction>,
-                                     std::unordered_set<Event>> &ACS) {
+                  const std::unordered_map<Transaction, Transaction> &parent) {
 
     std::unordered_set<Event> neighbor_summary;
     if (!contains_event(
             aux_graph[C].content[Ti],
             Event{"", EventType::begin, "", Annotation::undefined})) {
-      neighbor_summary = compute_neighbor_summary(Ti, A, B, parent, NS);
+      neighbor_summary = compute_neighbor_summary(Ti, A, B, parent);
     }
 
     std::unordered_set<Event> trickle_down_summary;
@@ -538,7 +577,7 @@ struct Engine {
             aux_graph[C].content[Ti],
             Event{"", EventType::begin, "", Annotation::undefined})) {
       trickle_down_summary =
-          compute_trickle_down_summary(Ti, A, B, C, neighbor_summary, TDS);
+          compute_trickle_down_summary(Ti, A, B, C, neighbor_summary);
     }
 
     std::unordered_set<Event> annotated_trickle_down_summary =
@@ -570,9 +609,9 @@ struct Engine {
             continue;
           }
 
-          std::unordered_set<Event> summary =
-              compute_trickle_up_summary(1, Tj, A, B, C, parent, NS, TDS, ATDS);
-          trickle_up_summary.insert(summary.begin(), summary.end());
+          std::unordered_set<Event> res =
+              compute_trickle_up_summary(1, Tj, A, B, C, parent);
+          trickle_up_summary.insert(res.begin(), res.end());
         }
       }
     }
@@ -591,32 +630,517 @@ struct Engine {
                                     annotated_c_summary.end());
     aux_graph[A].summary[Ti].insert(trickle_up_summary.begin(),
                                     trickle_up_summary.end());
+
+    if (!contains_event(
+            aux_graph[C].content[Ti],
+            Event{"", EventType::begin, "", Annotation::undefined})) {
+      THS[std::make_pair(A, Ti)].insert(aux_graph[B].summary[Ti].begin(),
+                                        aux_graph[B].summary[Ti].end());
+    }
+    THS[std::make_pair(A, Ti)].insert(neighbor_summary.begin(),
+                                      neighbor_summary.end());
+
+    // BHS[std::make_pair(A, Ti)].insert(bottom_summary.begin(),
+    //                                   bottom_summary.end());
   }
 
   void compute_summaries(
       Nonterminal A, Nonterminal B, Nonterminal C,
       const std::unordered_map<Transaction, Transaction> &parent) {
 
-    std::unordered_map<std::pair<Nonterminal, Transaction>,
-                       std::unordered_set<Event>>
-        NS;
-    std::unordered_map<std::pair<Nonterminal, Transaction>,
-                       std::unordered_set<Event>>
-        TDS;
-    std::unordered_map<std::pair<Nonterminal, Transaction>,
-                       std::unordered_set<Event>>
-        ATDS;
-    std::unordered_map<std::pair<Nonterminal, Transaction>,
-                       std::unordered_set<Event>>
-        ACS;
-
     for (const Transaction &Ti : aux_graph[A].vertices) {
-      compute_summary(Ti, A, B, C, parent, NS, TDS, ATDS, ACS);
+      compute_summary(Ti, A, B, C, parent);
     }
 
     for (const auto &[_, Ti] : aux_graph[A].first_transaction) {
       if (!aux_graph[A].summary.contains(Ti)) {
-        compute_summary(Ti, A, B, C, parent, NS, TDS, ATDS, ACS);
+        compute_summary(Ti, A, B, C, parent);
+      }
+    }
+  }
+
+  std::unordered_set<Event> compute_neighbor_reversed_summary(
+      Transaction Ti, Nonterminal A, Nonterminal C,
+      const std::unordered_map<Transaction, Transaction> &parent) {
+
+    if (NRS.contains(std::make_pair(A, Ti))) {
+      return NRS[std::make_pair(A, Ti)];
+    }
+
+    std::cout << "Engine: compute_neighbor_reversed_summary(Ti = " +
+                     Ti.to_string() + ", A = " + A + ", C = " + C + ")\n";
+
+    std::unordered_set<Event> res;
+
+    for (const auto &edge : aux_graph[C].edges) {
+      Transaction Tj = edge.first;
+      if (Ti == edge.second &&
+          contains_event(
+              aux_graph[A].content[parent.at(Tj)],
+              Event{"", EventType::begin, "", Annotation::undefined})) {
+        res.insert(aux_graph[C].content[Tj].begin(),
+                   aux_graph[C].content[Tj].end());
+        res.insert(aux_graph[C].reversed_summary[Tj].begin(),
+                   aux_graph[C].reversed_summary[Tj].end());
+        std::unordered_set<Event> neighbor_reversed_summary =
+            compute_neighbor_reversed_summary(Tj, A, C, parent);
+        res.insert(neighbor_reversed_summary.begin(),
+                   neighbor_reversed_summary.end());
+      }
+    }
+
+    NRS[std::make_pair(A, Ti)] = res;
+
+    return res;
+  }
+
+  std::unordered_set<Event> compute_trickle_down_reversed_summary(
+      Transaction Ti, Nonterminal A, Nonterminal B, Nonterminal C,
+      const std::unordered_set<Event> &neighbor_reversed_summary) {
+
+    if (TDRS.contains(std::make_pair(A, Ti))) {
+      return TDRS[std::make_pair(A, Ti)];
+    }
+
+    std::cout << "Engine: compute_trickle_down_reversed_summary(Ti = " +
+                     Ti.to_string() + ", B = " + B + ", C = " + C + ")\n";
+
+    std::unordered_set<Event> bottom_reversed_summary;
+    bottom_reversed_summary.insert(aux_graph[C].content[Ti].begin(),
+                                   aux_graph[C].content[Ti].end());
+    bottom_reversed_summary.insert(aux_graph[C].summary[Ti].begin(),
+                                   aux_graph[C].summary[Ti].end());
+    bottom_reversed_summary.insert(neighbor_reversed_summary.begin(),
+                                   neighbor_reversed_summary.end());
+
+    std::vector<std::pair<Event, Event>> args;
+    for (const Thread &ui : threads) {
+      args.push_back(std::make_pair(
+          Event{ui, EventType::undefined, "", Annotation::undefined},
+          Event{ui, EventType::undefined, "", Annotation::undefined}));
+      args.push_back(std::make_pair(
+          Event{ui, EventType::undefined, "", Annotation::undefined},
+          Event{"", EventType::join, ui, Annotation::undefined}));
+      for (const Operand &v : variables) {
+        args.push_back(std::make_pair(
+            Event{ui, EventType::read, v, Annotation::undefined},
+            Event{"", EventType::write, v, Annotation::undefined}));
+        args.push_back(std::make_pair(
+            Event{ui, EventType::write, v, Annotation::undefined},
+            Event{"", EventType::write, v, Annotation::undefined}));
+        args.push_back(std::make_pair(
+            Event{ui, EventType::write, v, Annotation::undefined},
+            Event{"", EventType::read, v, Annotation::undefined}));
+      }
+      for (const Operand &l : locks) {
+        args.push_back(std::make_pair(
+            Event{ui, EventType::unlock, l, Annotation::undefined},
+            Event{"", EventType::lock, l, Annotation::undefined}));
+      }
+      for (const Thread &uj : threads) {
+        args.push_back(std::make_pair(
+            Event{ui, EventType::fork, uj, Annotation::undefined},
+            Event{uj, EventType::undefined, "", Annotation::undefined}));
+      }
+    }
+
+    std::unordered_set<Event> res;
+    for (const std::pair<Event, Event> &arg : args) {
+      std::tuple<Thread, EventType, Operand> decor{
+          arg.first.thread, arg.first.type, arg.first.operand};
+      if (!aux_graph[B].last_transaction.contains(decor)) {
+        continue;
+      }
+
+      Transaction Tj = aux_graph[B].last_transaction[decor];
+      if (Tj.idx == -1) {
+        continue;
+      }
+
+      if (contains_event(
+              aux_graph[B].content[Tj],
+              Event{"", EventType::begin, "", Annotation::undefined}) &&
+          contains_event(bottom_reversed_summary, arg.second)) {
+        res.insert(aux_graph[B].content[Tj].begin(),
+                   aux_graph[B].content[Tj].end());
+        res.insert(aux_graph[B].reversed_summary[Tj].begin(),
+                   aux_graph[B].reversed_summary[Tj].end());
+      }
+    }
+
+    TDRS[std::make_pair(A, Ti)] = res;
+
+    return res;
+  }
+
+  std::unordered_set<Event> annotate_reversed_summary(
+      Transaction Ti, Nonterminal A, Nonterminal C,
+      const std::unordered_set<Event> &reversed_summary,
+      std::unordered_map<std::pair<Nonterminal, Transaction>,
+                         std::unordered_set<Event>> &ARS) {
+
+    if (ARS.contains(std::make_pair(A, Ti))) {
+      return ARS[std::make_pair(A, Ti)];
+    }
+
+    std::unordered_set<Event> res;
+
+    for (Event event : reversed_summary) {
+      if (event.annotation == Annotation::closed ||
+          event.annotation == Annotation::up) {
+        res.insert(event);
+      } else if (event.annotation == Annotation::down) {
+        std::tuple<Thread, EventType, Operand> decor{event.thread,
+                                                     EventType::undefined, ""};
+        if (!aux_graph[C].first_transaction.contains(decor)) {
+          continue;
+        }
+
+        Transaction txn = aux_graph[C].first_transaction[decor];
+        if (txn.idx == -1) {
+          continue;
+        }
+
+        if (contains_event(
+                aux_graph[C].content[txn],
+                Event{"", EventType::end, "", Annotation::undefined})) {
+          res.insert(Event{event.thread, event.type, event.operand,
+                           Annotation::closed});
+        } else {
+          res.insert(event);
+        }
+      } else if (event.annotation == Annotation::open) {
+        std::tuple<Thread, EventType, Operand> decor{event.thread,
+                                                     EventType::undefined, ""};
+        if (!aux_graph[C].first_transaction.contains(decor)) {
+          continue;
+        }
+
+        Transaction txn = aux_graph[C].first_transaction[decor];
+        if (txn.idx == -1) {
+          continue;
+        }
+
+        if (contains_event(
+                aux_graph[C].content[txn],
+                Event{"", EventType::end, "", Annotation::undefined})) {
+          res.insert(
+              Event{event.thread, event.type, event.operand, Annotation::up});
+        } else {
+          res.insert(event);
+        }
+      } else {
+        std::cerr << "Engine: Something went wrong\n";
+        std::exit(EXIT_FAILURE);
+      }
+    }
+
+    ARS[std::make_pair(A, Ti)] = res;
+
+    return res;
+  }
+
+  std::unordered_set<Event> compute_trickle_up_reversed_summary(
+      size_t depth, Transaction Ti, Nonterminal A, Nonterminal B, Nonterminal C,
+      const std::unordered_map<Transaction, Transaction> &parent) {
+
+    std::cout << "Engine: compute_trickle_up_reversed_summary(depth = " << depth
+              << ", Ti = " << Ti.to_string() << ", A = " << A << ", B = " << B
+              << ", C = " << C << ")\n";
+
+    if (depth >= threads.size()) {
+      return std::unordered_set<Event>{};
+    }
+
+    std::unordered_set<Event> neighbor_reversed_summary =
+        compute_neighbor_reversed_summary(Ti, A, C, parent);
+
+    std::unordered_set<Event> trickle_down_reversed_summary =
+        compute_trickle_down_reversed_summary(Ti, A, B, C,
+                                              neighbor_reversed_summary);
+
+    std::unordered_set<Event> annotated_trickle_down_reversed_summary =
+        annotate_reversed_summary(Ti, A, C, trickle_down_reversed_summary,
+                                  ATDRS);
+
+    std::unordered_set<Event> trickle_up_reversed_summary;
+    for (const Event &event : trickle_down_reversed_summary) {
+      if (Ti.thread != event.thread) {
+        if (event.annotation == Annotation::down ||
+            event.annotation == Annotation::open) {
+          std::tuple<Thread, EventType, Operand> decor{
+              event.thread, EventType::undefined, ""};
+          if (!aux_graph[C].first_transaction.contains(decor)) {
+            continue;
+          }
+
+          Transaction Tj = aux_graph[C].first_transaction[decor];
+          if (Tj.idx == -1) {
+            continue;
+          }
+
+          std::unordered_set<Event> res =
+              compute_trickle_up_summary(depth + 1, Tj, A, B, C, parent);
+          trickle_up_reversed_summary.insert(res.begin(), res.end());
+        }
+      }
+    }
+
+    std::unordered_set<Event> res;
+    res.insert(aux_graph[C].content[Ti].begin(),
+               aux_graph[C].content[Ti].end());
+    res.insert(aux_graph[C].reversed_summary[Ti].begin(),
+               aux_graph[C].reversed_summary[Ti].end());
+    res.insert(neighbor_reversed_summary.begin(),
+               neighbor_reversed_summary.end());
+    res.insert(annotated_trickle_down_reversed_summary.begin(),
+               annotated_trickle_down_reversed_summary.end());
+    res.insert(trickle_up_reversed_summary.begin(),
+               trickle_up_reversed_summary.end());
+
+    return res;
+  }
+
+  void compute_reversed_summary(
+      Transaction Ti, Nonterminal A, Nonterminal B, Nonterminal C,
+      const std::unordered_map<Transaction, Transaction> &parent) {
+
+    std::unordered_set<Event> neighbor_reversed_summary;
+    if (!contains_event(aux_graph[B].content[Ti],
+                        Event{"", EventType::end, "", Annotation::undefined})) {
+      neighbor_reversed_summary =
+          compute_neighbor_reversed_summary(Ti, A, C, parent);
+    }
+
+    std::unordered_set<Event> trickle_down_reversed_summary;
+    if (!contains_event(aux_graph[B].content[Ti],
+                        Event{"", EventType::end, "", Annotation::undefined})) {
+      trickle_down_reversed_summary = compute_trickle_down_reversed_summary(
+          Ti, A, B, C, neighbor_reversed_summary);
+    }
+
+    std::unordered_set<Event> annotated_trickle_down_reversed_summary =
+        annotate_reversed_summary(Ti, A, C, trickle_down_reversed_summary,
+                                  ATDRS);
+
+    std::unordered_set<Event> b_reversed_summary = aux_graph[B].summary[Ti];
+
+    std::unordered_set<Event> annotated_b_reversed_summary =
+        annotate_reversed_summary(Ti, B, C, b_reversed_summary, ABRS);
+
+    std::unordered_set<Event> top_reversed_summary;
+    top_reversed_summary.insert(trickle_down_reversed_summary.begin(),
+                                trickle_down_reversed_summary.end());
+    top_reversed_summary.insert(b_reversed_summary.begin(),
+                                b_reversed_summary.end());
+
+    std::unordered_set<Event> trickle_up_reversed_summary;
+    for (const Event &event : top_reversed_summary) {
+      if (Ti.thread != event.thread) {
+        if (event.annotation == Annotation::down ||
+            event.annotation == Annotation::open) {
+          std::tuple<Thread, EventType, Operand> decor{
+              event.thread, EventType::undefined, ""};
+          if (!aux_graph[C].first_transaction.contains(decor)) {
+            continue;
+          }
+
+          Transaction Tj = aux_graph[C].first_transaction[decor];
+          if (Tj.idx == -1) {
+            continue;
+          }
+
+          std::unordered_set<Event> res =
+              compute_trickle_up_reversed_summary(1, Tj, A, B, C, parent);
+          trickle_up_reversed_summary.insert(res.begin(), res.end());
+        }
+      }
+    }
+
+    if (!contains_event(aux_graph[B].content[Ti],
+                        Event{"", EventType::end, "", Annotation::undefined})) {
+      aux_graph[A].reversed_summary[Ti].insert(
+          aux_graph[C].reversed_summary[Ti].begin(),
+          aux_graph[C].reversed_summary[Ti].end());
+    }
+    aux_graph[A].reversed_summary[Ti].insert(neighbor_reversed_summary.begin(),
+                                             neighbor_reversed_summary.end());
+    aux_graph[A].reversed_summary[Ti].insert(
+        annotated_trickle_down_reversed_summary.begin(),
+        annotated_trickle_down_reversed_summary.end());
+    aux_graph[A].reversed_summary[Ti].insert(
+        annotated_b_reversed_summary.begin(),
+        annotated_b_reversed_summary.end());
+    aux_graph[A].reversed_summary[Ti].insert(
+        trickle_up_reversed_summary.begin(), trickle_up_reversed_summary.end());
+  }
+
+  void compute_reversed_summaries(
+      Nonterminal A, Nonterminal B, Nonterminal C,
+      const std::unordered_map<Transaction, Transaction> &parent) {
+
+    for (const Transaction &Ti : aux_graph[A].reversed_vertices) {
+      compute_reversed_summary(Ti, A, B, C, parent);
+    }
+
+    for (const auto &[_, Ti] : aux_graph[A].last_transaction) {
+      if (!aux_graph[A].reversed_summary.contains(Ti)) {
+        compute_reversed_summary(Ti, A, B, C, parent);
+      }
+    }
+  }
+
+  void compute_v2v_edges(
+      Nonterminal A, Nonterminal B, Nonterminal C,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
+
+    for (const Transaction &Ti : aux_graph[A].vertices) {
+      for (const Transaction &Tj : aux_graph[A].vertices) {
+        if (aux_graph[C].edges.contains(
+                std::make_pair(child.at(std::make_pair(C, Ti)),
+                               child.at(std::make_pair(C, Tj))))) {
+          aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+          continue;
+        }
+
+        if (aux_graph[B].edges.contains(
+                std::make_pair(child.at(std::make_pair(B, Ti)),
+                               child.at(std::make_pair(B, Tj))))) {
+          aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+          continue;
+        }
+
+        if (Ti != Tj) {
+          for (const Event &ei : aux_graph[B].content[Ti]) {
+            for (const Event &ej : aux_graph[C].content[Tj]) {
+              if (ei.conflict(ej)) {
+                aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+                goto _continue;
+              }
+            }
+          }
+        }
+
+        for (const Event &ei : aux_graph[B].content[Ti]) {
+          for (const auto &[_, Tk] : aux_graph[C].first_transaction) {
+            if (Ti.thread != Tk.thread) {
+              for (const Event &ek : aux_graph[C].content[Tk]) {
+                if (ei.conflict(ek) &&
+                    (Tk.thread == Tj.thread ||
+                     aux_graph[C].reachable(Tk,
+                                            child.at(std::make_pair(C, Tj))))) {
+                  aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+                  goto _continue;
+                }
+              }
+            }
+          }
+        }
+
+        for (const Event &ei : THS[std::make_pair(A, Ti)]) {
+          for (const Event &ej : aux_graph[C].content[Tj]) {
+            if (ei.conflict(ej)) {
+              aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+              goto _continue;
+            }
+          }
+        }
+
+        for (const Event &ei : THS[std::make_pair(A, Ti)]) {
+          for (const auto &[_, Tk] : aux_graph[C].first_transaction) {
+            for (const Event &ek : aux_graph[C].content[Tk]) {
+              if (ei.conflict(ek) &&
+                  (Tk.thread == Tj.thread ||
+                   aux_graph[C].reachable(Tk,
+                                          child.at(std::make_pair(C, Tj))))) {
+                aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+                goto _continue;
+              }
+            }
+          }
+        }
+
+      _continue:
+        continue;
+      }
+    }
+  }
+
+  void compute_f2v_edges(
+      Nonterminal A, Nonterminal B, Nonterminal C,
+      const std::unordered_map<Transaction, Transaction> &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
+
+    for (const auto &[_, Ti] : aux_graph[A].first_transaction) {
+      for (const Transaction &Tj : aux_graph[A].vertices) {
+        if (aux_graph[C].edges.contains(
+                std::make_pair(child.at(std::make_pair(C, Ti)),
+                               child.at(std::make_pair(C, Tj))))) {
+          aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+          continue;
+        }
+
+        if (aux_graph[B].edges.contains(
+                std::make_pair(child.at(std::make_pair(B, Ti)),
+                               child.at(std::make_pair(B, Tj))))) {
+          aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+          continue;
+        }
+
+        if (Ti != Tj) {
+          for (const Event &ei : aux_graph[B].content[Ti]) {
+            for (const Event &ej : aux_graph[C].content[Tj]) {
+              if (ei.conflict(ej)) {
+                aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+                goto _continue;
+              }
+            }
+          }
+        }
+
+        for (const Event &ei : aux_graph[B].content[Ti]) {
+          for (const auto &[_, Tk] : aux_graph[C].first_transaction) {
+            if (Ti != parent.at(Tk)) {
+              for (const Event &ek : aux_graph[C].content[Tk]) {
+                if (ei.conflict(ek) &&
+                    (Tk.thread == Tj.thread ||
+                     aux_graph[C].reachable(Tk,
+                                            child.at(std::make_pair(C, Tj))))) {
+                  aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+                  goto _continue;
+                }
+              }
+            }
+          }
+        }
+
+        for (const Event &ei : THS[std::make_pair(A, Ti)]) {
+          for (const Event &ej : aux_graph[C].content[Tj]) {
+            if (ei.conflict(ej)) {
+              aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+              goto _continue;
+            }
+          }
+        }
+
+        for (const Event &ei : THS[std::make_pair(A, Ti)]) {
+          for (const auto &[_, Tk] : aux_graph[C].first_transaction) {
+            for (const Event &ek : aux_graph[C].content[Tk]) {
+              if (ei.conflict(ek) &&
+                  (Tk.thread == Tj.thread ||
+                   aux_graph[C].reachable(Tk,
+                                          child.at(std::make_pair(C, Tj))))) {
+                aux_graph[A].edges.insert(std::make_pair(Ti, Tj));
+                goto _continue;
+              }
+            }
+          }
+        }
+
+      _continue:
+        continue;
       }
     }
   }
@@ -626,34 +1150,35 @@ struct Engine {
                      ")\n";
 
     std::unordered_map<Transaction, Transaction> parent;
+    std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction> child;
 
     std::cout << "Before merge_routine\n";
     std::cout << aux_graph[A] << "\n";
-    merge_routine(A, B, C, parent);
+    merge_routine(A, B, C, parent, child);
     std::cout << "After merge_routine\n";
     std::cout << aux_graph[A] << "\n";
 
     std::cout << "Before compute_vertices\n";
     std::cout << aux_graph[A] << "\n";
-    compute_vertices(A, B, C, parent);
+    compute_vertices(A, B, C, parent, child);
     std::cout << "After compute_vertices\n";
     std::cout << aux_graph[A] << "\n";
 
     std::cout << "Before compute_reversed_vertices\n";
     std::cout << aux_graph[A] << "\n";
-    compute_reversed_vertices(A, B, C, parent);
+    compute_reversed_vertices(A, B, C, parent, child);
     std::cout << "After compute_reversed_vertices\n";
     std::cout << aux_graph[A] << "\n";
 
     std::cout << "Before compute_first_transactions\n";
     std::cout << aux_graph[A] << "\n";
-    compute_first_transactions(A, B, C, parent);
+    compute_first_transactions(A, B, C, parent, child);
     std::cout << "After compute_first_transactions\n";
     std::cout << aux_graph[A] << "\n";
 
     std::cout << "Before compute_last_transactions\n";
     std::cout << aux_graph[A] << "\n";
-    compute_last_transactions(A, B, C, parent);
+    compute_last_transactions(A, B, C, parent, child);
     std::cout << "After compute_last_transactions\n";
     std::cout << aux_graph[A] << "\n";
 
@@ -661,6 +1186,24 @@ struct Engine {
     std::cout << aux_graph[A] << "\n";
     compute_summaries(A, B, C, parent);
     std::cout << "After compute_summaries\n";
+    std::cout << aux_graph[A] << "\n";
+
+    std::cout << "Before compute_reversed_summaries\n";
+    std::cout << aux_graph[A] << "\n";
+    compute_reversed_summaries(A, B, C, parent);
+    std::cout << "After compute_reversed_summaries\n";
+    std::cout << aux_graph[A] << "\n";
+
+    std::cout << "Before compute_v2v_edges\n";
+    std::cout << aux_graph[A] << "\n";
+    compute_v2v_edges(A, B, C, child);
+    std::cout << "After compute_v2v_edges\n";
+    std::cout << aux_graph[A] << "\n";
+
+    std::cout << "Before compute_f2v_edges\n";
+    std::cout << aux_graph[A] << "\n";
+    compute_f2v_edges(A, B, C, parent, child);
+    std::cout << "After compute_f2v_edges\n";
     std::cout << aux_graph[A] << "\n";
   }
 
@@ -856,14 +1399,13 @@ struct Engine {
     std::tie(grammar, threads, variables, locks) =
         Parser{}.parse(map_path, grammar_path);
     topological_ordering = topological_sort(grammar);
-    int iteration = 0;
     for (Nonterminal nonterminal : topological_ordering) {
-      if (++iteration > 20) {
-        break;
-      }
       if (analyze_csv(nonterminal)) {
         std::cout << "Conflict serializability violation detected in " +
-                         nonterminal + "\n";
+                         nonterminal + ":\n";
+        grammar.generate(nonterminal);
+        std::cout << "\nCross graph:\n";
+        std::cout << cross_graph[nonterminal] << "\n";
         return;
       }
     }

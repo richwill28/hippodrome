@@ -80,10 +80,17 @@ struct Event {
       : thread{thr}, type{ty}, operand{op}, annotation{anno} {}
 
   bool conflict(const Event &other) const {
-    return (type == EventType::read && other.type == EventType::write) ||
-           (type == EventType::write && other.type == EventType::read) ||
-           (type == EventType::write && other.type == EventType::write) ||
-           (type == EventType::unlock && other.type == EventType::lock);
+    return (thread == other.thread) ||
+           (type == EventType::fork && operand == other.thread) ||
+           (thread == other.operand && other.type == EventType::join) ||
+           (type == EventType::read && other.type == EventType::write &&
+            operand == other.operand) ||
+           (type == EventType::write && other.type == EventType::read &&
+            operand == other.operand) ||
+           (type == EventType::write && other.type == EventType::write &&
+            operand == other.operand) ||
+           (type == EventType::unlock && other.type == EventType::lock &&
+            operand == other.operand);
   }
 
   std::string to_string() const {
