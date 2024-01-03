@@ -1,3 +1,4 @@
+Engine: analyze_csv(50)
 Engine: compute_aux_graph (50 -> [0])
 V = T0
 RV =
@@ -8,6 +9,7 @@ LT(0, undefined, ) = T0
 E =
 C(T0) = (0, begin, , down)
 
+Engine: analyze_csv(51)
 Engine: compute_aux_graph (51 -> [1])
 V = T1
 RV = T1
@@ -18,6 +20,7 @@ LT(0, undefined, ) = T1
 E =
 C(T1) = (0, write, @03.Table.forks_\[Z, open)
 
+Engine: analyze_csv(52)
 Engine: compute_aux_graph (52 -> [2])
 V = T2
 RV = T2
@@ -28,6 +31,7 @@ LT(0, undefined, ) = T2
 E =
 C(T2) = (0, read, @03.Table.forks_\[Z, open)
 
+Engine: analyze_csv(53)
 Engine: compute_aux_graph (53 -> [3])
 V = T3
 RV = T3
@@ -38,6 +42,7 @@ LT(0, undefined, ) = T3
 E =
 C(T3) = (0, write, @04[0], open)
 
+Engine: analyze_csv(54)
 Engine: compute_aux_graph (54 -> [4])
 V = T4
 RV = T4
@@ -48,6 +53,7 @@ LT(0, undefined, ) = T4
 E =
 C(T4) = (0, write, @04[1], open)
 
+Engine: analyze_csv(55)
 Engine: compute_aux_graph (55 -> [5])
 V = T5
 RV = T5
@@ -58,6 +64,7 @@ LT(0, undefined, ) = T5
 E =
 C(T5) = (0, write, @04[2], open)
 
+Engine: analyze_csv(56)
 Engine: compute_aux_graph (56 -> [6])
 V = T6
 RV = T6
@@ -68,6 +75,7 @@ LT(0, undefined, ) = T6
 E =
 C(T6) = (0, write, @04[3], open)
 
+Engine: analyze_csv(57)
 Engine: compute_aux_graph (57 -> [7])
 V = T7
 RV = T7
@@ -78,6 +86,7 @@ LT(0, undefined, ) = T7
 E =
 C(T7) = (0, write, @04[4], open)
 
+Engine: analyze_csv(58)
 Engine: compute_aux_graph (58 -> [8])
 V = T8
 RV = T8
@@ -88,6 +97,7 @@ LT(0, undefined, ) = T8
 E =
 C(T8) = (0, write, @05.Philo.id_I, open)
 
+Engine: analyze_csv(59)
 Engine: compute_aux_graph (59 -> [9])
 V = T9
 RV = T9
@@ -98,6 +108,7 @@ LT(0, undefined, ) = T9
 E =
 C(T9) = (0, write, @05.Philo.t_LTable;, open)
 
+Engine: analyze_csv(60)
 Engine: compute_aux_graph (60 -> [10])
 V = T10
 RV = T10
@@ -108,6 +119,7 @@ LT(0, undefined, ) = T10
 E =
 C(T10) = (0, fork, 1, open)
 
+Engine: analyze_csv(61)
 Engine: compute_aux_graph (61 -> [11])
 V = T11
 RV =
@@ -118,6 +130,7 @@ LT(1, undefined, ) = T11
 E =
 C(T11) = (1, begin, , down)
 
+Engine: analyze_csv(62)
 Engine: compute_aux_graph (62 -> [12])
 V = T12
 RV = T12
@@ -128,6 +141,7 @@ LT(0, undefined, ) = T12
 E =
 C(T12) = (0, write, @07.Philo.id_I, open)
 
+Engine: analyze_csv(63)
 Engine: compute_aux_graph (63 -> [13])
 V = T13
 RV = T13
@@ -138,6 +152,7 @@ LT(1, undefined, ) = T13
 E =
 C(T13) = (1, read, @05.Philo.id_I, open)
 
+Engine: analyze_csv(64)
 Engine: compute_aux_graph (64 -> [14])
 V = T14
 RV = T14
@@ -148,6 +163,7 @@ LT(0, undefined, ) = T14
 E =
 C(T14) = (0, write, @07.Philo.t_LTable;, open)
 
+Engine: analyze_csv(134)
 Engine: compute_aux_graph (134 -> [15])
 V = T15
 RV = T15
@@ -158,6 +174,7 @@ LT(1, undefined, ) = T15
 E =
 C(T15) = (1, read, @05.Philo.t_LTable;, open)
 
+Engine: analyze_csv(22)
 Engine: compute_aux_graph (22 -> 134 63)
 Before merge_routine
 V =
@@ -342,6 +359,7 @@ C(T17) = (1, read, @05.Philo.id_I, open) (1, read, @05.Philo.t_LTable;, open)
 S(T17) =
 RS(T17) =
 
+Engine: analyze_csv(1)
 Engine: compute_aux_graph (1 -> 63 22)
 Before merge_routine
 V =
@@ -526,6 +544,7 @@ C(T19) = (1, read, @05.Philo.t_LTable;, open) (1, read, @05.Philo.id_I, open)
 S(T19) =
 RS(T19) =
 
+Engine: analyze_csv(65)
 Engine: compute_aux_graph (65 -> [16])
 V = T20
 RV = T20
@@ -536,6 +555,7 @@ LT(0, undefined, ) = T20
 E =
 C(T20) = (0, fork, 2, open)
 
+Engine: analyze_csv(66)
 Engine: compute_aux_graph (66 -> [17])
 V = T21
 RV =
@@ -546,6 +566,7 @@ LT(2, undefined, ) = T21
 E =
 C(T21) = (2, begin, , down)
 
+Engine: analyze_csv(67)
 Engine: compute_aux_graph (67 -> [18])
 V = T22
 RV = T22
@@ -556,6 +577,7 @@ LT(0, undefined, ) = T22
 E =
 C(T22) = (0, write, @08.Philo.id_I, open)
 
+Engine: analyze_csv(68)
 Engine: compute_aux_graph (68 -> [19])
 V = T23
 RV = T23
@@ -566,6 +588,7 @@ LT(0, undefined, ) = T23
 E =
 C(T23) = (0, write, @08.Philo.t_LTable;, open)
 
+Engine: analyze_csv(69)
 Engine: compute_aux_graph (69 -> [20])
 V = T24
 RV = T24
@@ -576,6 +599,7 @@ LT(2, undefined, ) = T24
 E =
 C(T24) = (2, read, @07.Philo.id_I, open)
 
+Engine: analyze_csv(70)
 Engine: compute_aux_graph (70 -> [21])
 V = T25
 RV = T25
@@ -586,6 +610,7 @@ LT(1, undefined, ) = T25
 E =
 C(T25) = (1, lock, @03, open)
 
+Engine: analyze_csv(71)
 Engine: compute_aux_graph (71 -> [22])
 V = T26
 RV = T26
@@ -596,6 +621,7 @@ LT(2, undefined, ) = T26
 E =
 C(T26) = (2, read, @07.Philo.t_LTable;, open)
 
+Engine: analyze_csv(98)
 Engine: compute_aux_graph (98 -> [23])
 V = T27
 RV = T27
@@ -606,6 +632,7 @@ LT(1, undefined, ) = T27
 E =
 C(T27) = (1, read, @03.Table.forks_\[Z, open)
 
+Engine: analyze_csv(99)
 Engine: compute_aux_graph (99 -> [24])
 V = T28
 RV = T28
@@ -616,6 +643,7 @@ LT(1, undefined, ) = T28
 E =
 C(T28) = (1, read, @04[0], open)
 
+Engine: analyze_csv(2)
 Engine: compute_aux_graph (2 -> 98 99)
 Before merge_routine
 V =
@@ -800,6 +828,7 @@ C(T30) = (1, read, @04[0], open) (1, read, @03.Table.forks_\[Z, open)
 S(T30) =
 RS(T30) =
 
+Engine: analyze_csv(72)
 Engine: compute_aux_graph (72 -> [25])
 V = T31
 RV = T31
@@ -810,6 +839,7 @@ LT(0, undefined, ) = T31
 E =
 C(T31) = (0, fork, 3, open)
 
+Engine: analyze_csv(78)
 Engine: compute_aux_graph (78 -> [26])
 V = T32
 RV = T32
@@ -820,6 +850,7 @@ LT(1, undefined, ) = T32
 E =
 C(T32) = (1, read, @04[1], open)
 
+Engine: analyze_csv(3)
 Engine: compute_aux_graph (3 -> 98 78)
 Before merge_routine
 V =
@@ -1004,6 +1035,7 @@ C(T34) = (1, read, @04[1], open) (1, read, @03.Table.forks_\[Z, open)
 S(T34) =
 RS(T34) =
 
+Engine: analyze_csv(73)
 Engine: compute_aux_graph (73 -> [27])
 V = T35
 RV =
@@ -1014,6 +1046,7 @@ LT(3, undefined, ) = T35
 E =
 C(T35) = (3, begin, , down)
 
+Engine: analyze_csv(74)
 Engine: compute_aux_graph (74 -> [28])
 V = T36
 RV = T36
@@ -1024,6 +1057,7 @@ LT(0, undefined, ) = T36
 E =
 C(T36) = (0, write, @09.Philo.id_I, open)
 
+Engine: analyze_csv(75)
 Engine: compute_aux_graph (75 -> [29])
 V = T37
 RV = T37
@@ -1034,6 +1068,7 @@ LT(0, undefined, ) = T37
 E =
 C(T37) = (0, write, @09.Philo.t_LTable;, open)
 
+Engine: analyze_csv(76)
 Engine: compute_aux_graph (76 -> [30])
 V = T38
 RV = T38
@@ -1044,6 +1079,7 @@ LT(3, undefined, ) = T38
 E =
 C(T38) = (3, read, @08.Philo.id_I, open)
 
+Engine: analyze_csv(4)
 Engine: compute_aux_graph (4 -> 76 98)
 Before merge_routine
 V =
@@ -1281,6 +1317,7 @@ S(T41) =
 RS(T41) =
 RS(T42) =
 
+Engine: analyze_csv(77)
 Engine: compute_aux_graph (77 -> [31])
 V = T43
 RV = T43
@@ -1291,6 +1328,7 @@ LT(3, undefined, ) = T43
 E =
 C(T43) = (3, read, @08.Philo.t_LTable;, open)
 
+Engine: analyze_csv(79)
 Engine: compute_aux_graph (79 -> [32])
 V = T44
 RV = T44
@@ -1301,6 +1339,7 @@ LT(0, undefined, ) = T44
 E =
 C(T44) = (0, fork, 4, open)
 
+Engine: analyze_csv(119)
 Engine: compute_aux_graph (119 -> [33])
 V = T45
 RV = T45
@@ -1311,6 +1350,7 @@ LT(1, undefined, ) = T45
 E =
 C(T45) = (1, write, @04[1], open)
 
+Engine: analyze_csv(120)
 Engine: compute_aux_graph (120 -> [34])
 V = T46
 RV = T46
@@ -1321,6 +1361,7 @@ LT(1, undefined, ) = T46
 E =
 C(T46) = (1, write, @04[0], open)
 
+Engine: analyze_csv(325)
 Engine: compute_aux_graph (325 -> 119 120)
 Before merge_routine
 V =
@@ -1505,6 +1546,7 @@ C(T48) = (1, write, @04[0], open) (1, write, @04[1], open)
 S(T48) =
 RS(T48) =
 
+Engine: analyze_csv(5)
 Engine: compute_aux_graph (5 -> 98 325)
 Before merge_routine
 V =
@@ -1709,6 +1751,7 @@ C(T50) = (1, write, @04[1], open) (1, write, @04[0], open) (1, read, @03.Table.f
 S(T50) =
 RS(T50) =
 
+Engine: analyze_csv(80)
 Engine: compute_aux_graph (80 -> [35])
 V = T51
 RV =
@@ -1719,6 +1762,7 @@ LT(4, undefined, ) = T51
 E =
 C(T51) = (4, begin, , down)
 
+Engine: analyze_csv(81)
 Engine: compute_aux_graph (81 -> [36])
 V = T52
 RV = T52
@@ -1729,6 +1773,7 @@ LT(0, undefined, ) = T52
 E =
 C(T52) = (0, write, @0A.Philo.id_I, open)
 
+Engine: analyze_csv(82)
 Engine: compute_aux_graph (82 -> [37])
 V = T53
 RV = T53
@@ -1739,6 +1784,7 @@ LT(1, undefined, ) = T53
 E =
 C(T53) = (1, read, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(83)
 Engine: compute_aux_graph (83 -> [38])
 V = T54
 RV = T54
@@ -1749,6 +1795,7 @@ LT(4, undefined, ) = T54
 E =
 C(T54) = (4, read, @09.Philo.id_I, open)
 
+Engine: analyze_csv(84)
 Engine: compute_aux_graph (84 -> [39])
 V = T55
 RV = T55
@@ -1759,6 +1806,7 @@ LT(0, undefined, ) = T55
 E =
 C(T55) = (0, write, @0A.Philo.t_LTable;, open)
 
+Engine: analyze_csv(121)
 Engine: compute_aux_graph (121 -> [40])
 V = T56
 RV = T56
@@ -1769,6 +1817,7 @@ LT(1, undefined, ) = T56
 E =
 C(T56) = (1, write, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(122)
 Engine: compute_aux_graph (122 -> [41])
 V = T57
 RV = T57
@@ -1779,6 +1828,7 @@ LT(1, undefined, ) = T57
 E =
 C(T57) = (1, unlock, @03, open)
 
+Engine: analyze_csv(6)
 Engine: compute_aux_graph (6 -> 121 122)
 Before merge_routine
 V =
@@ -1963,6 +2013,7 @@ C(T59) = (1, unlock, @03, open) (1, write, @03.Table.eatctr_I, open)
 S(T59) =
 RS(T59) =
 
+Engine: analyze_csv(85)
 Engine: compute_aux_graph (85 -> [42])
 V = T60
 RV = T60
@@ -1973,6 +2024,7 @@ LT(4, undefined, ) = T60
 E =
 C(T60) = (4, read, @09.Philo.t_LTable;, open)
 
+Engine: analyze_csv(86)
 Engine: compute_aux_graph (86 -> [43])
 V = T61
 RV = T61
@@ -1983,6 +2035,7 @@ LT(3, undefined, ) = T61
 E =
 C(T61) = (3, lock, @03, open)
 
+Engine: analyze_csv(91)
 Engine: compute_aux_graph (91 -> [44])
 V = T62
 RV = T62
@@ -1993,6 +2046,7 @@ LT(3, undefined, ) = T62
 E =
 C(T62) = (3, read, @03.Table.forks_\[Z, open)
 
+Engine: analyze_csv(7)
 Engine: compute_aux_graph (7 -> 91 63)
 Before merge_routine
 V =
@@ -2230,6 +2284,7 @@ S(T65) =
 RS(T65) =
 RS(T66) =
 
+Engine: analyze_csv(87)
 Engine: compute_aux_graph (87 -> [45])
 V = T67
 RV = T67
@@ -2240,6 +2295,7 @@ LT(3, undefined, ) = T67
 E =
 C(T67) = (3, read, @04[2], open)
 
+Engine: analyze_csv(88)
 Engine: compute_aux_graph (88 -> [46])
 V = T68
 RV = T68
@@ -2250,6 +2306,7 @@ LT(0, undefined, ) = T68
 E =
 C(T68) = (0, fork, 5, open)
 
+Engine: analyze_csv(123)
 Engine: compute_aux_graph (123 -> [47])
 V = T69
 RV = T69
@@ -2260,6 +2317,7 @@ LT(3, undefined, ) = T69
 E =
 C(T69) = (3, read, @04[3], open)
 
+Engine: analyze_csv(8)
 Engine: compute_aux_graph (8 -> 91 123)
 Before merge_routine
 V =
@@ -2444,6 +2502,7 @@ C(T71) = (3, read, @04[3], open) (3, read, @03.Table.forks_\[Z, open)
 S(T71) =
 RS(T71) =
 
+Engine: analyze_csv(89)
 Engine: compute_aux_graph (89 -> [48])
 V = T72
 RV =
@@ -2454,6 +2513,7 @@ LT(5, undefined, ) = T72
 E =
 C(T72) = (5, begin, , down)
 
+Engine: analyze_csv(90)
 Engine: compute_aux_graph (90 -> [49])
 V = T73
 RV = T73
@@ -2464,6 +2524,7 @@ LT(5, undefined, ) = T73
 E =
 C(T73) = (5, read, @0A.Philo.id_I, open)
 
+Engine: analyze_csv(92)
 Engine: compute_aux_graph (92 -> [50])
 V = T74
 RV = T74
@@ -2474,6 +2535,7 @@ LT(5, undefined, ) = T74
 E =
 C(T74) = (5, read, @0A.Philo.t_LTable;, open)
 
+Engine: analyze_csv(124)
 Engine: compute_aux_graph (124 -> [51])
 V = T75
 RV = T75
@@ -2484,6 +2546,7 @@ LT(3, undefined, ) = T75
 E =
 C(T75) = (3, write, @04[3], open)
 
+Engine: analyze_csv(125)
 Engine: compute_aux_graph (125 -> [52])
 V = T76
 RV = T76
@@ -2494,6 +2557,7 @@ LT(3, undefined, ) = T76
 E =
 C(T76) = (3, write, @04[2], open)
 
+Engine: analyze_csv(9)
 Engine: compute_aux_graph (9 -> 124 125)
 Before merge_routine
 V =
@@ -2678,6 +2742,7 @@ C(T78) = (3, write, @04[2], open) (3, write, @04[3], open)
 S(T78) =
 RS(T78) =
 
+Engine: analyze_csv(126)
 Engine: compute_aux_graph (126 -> [53])
 V = T79
 RV = T79
@@ -2688,6 +2753,7 @@ LT(3, undefined, ) = T79
 E =
 C(T79) = (3, read, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(127)
 Engine: compute_aux_graph (127 -> [54])
 V = T80
 RV = T80
@@ -2698,6 +2764,7 @@ LT(3, undefined, ) = T80
 E =
 C(T80) = (3, write, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(128)
 Engine: compute_aux_graph (128 -> [55])
 V = T81
 RV = T81
@@ -2708,6 +2775,7 @@ LT(3, undefined, ) = T81
 E =
 C(T81) = (3, unlock, @03, open)
 
+Engine: analyze_csv(326)
 Engine: compute_aux_graph (326 -> 127 128)
 Before merge_routine
 V =
@@ -2892,6 +2960,7 @@ C(T83) = (3, unlock, @03, open) (3, write, @03.Table.eatctr_I, open)
 S(T83) =
 RS(T83) =
 
+Engine: analyze_csv(10)
 Engine: compute_aux_graph (10 -> 126 326)
 Before merge_routine
 V =
@@ -3096,6 +3165,7 @@ C(T85) = (3, write, @03.Table.eatctr_I, open) (3, unlock, @03, open) (3, read, @
 S(T85) =
 RS(T85) =
 
+Engine: analyze_csv(93)
 Engine: compute_aux_graph (93 -> [56])
 V = T86
 RV = T86
@@ -3106,6 +3176,7 @@ LT(2, undefined, ) = T86
 E =
 C(T86) = (2, lock, @03, open)
 
+Engine: analyze_csv(94)
 Engine: compute_aux_graph (94 -> [57])
 V = T87
 RV = T87
@@ -3116,6 +3187,7 @@ LT(2, undefined, ) = T87
 E =
 C(T87) = (2, read, @03.Table.forks_\[Z, open)
 
+Engine: analyze_csv(95)
 Engine: compute_aux_graph (95 -> [58])
 V = T88
 RV = T88
@@ -3126,6 +3198,7 @@ LT(2, undefined, ) = T88
 E =
 C(T88) = (2, read, @04[1], open)
 
+Engine: analyze_csv(101)
 Engine: compute_aux_graph (101 -> [59])
 V = T89
 RV = T89
@@ -3136,6 +3209,7 @@ LT(2, undefined, ) = T89
 E =
 C(T89) = (2, read, @04[2], open)
 
+Engine: analyze_csv(11)
 Engine: compute_aux_graph (11 -> 94 101)
 Before merge_routine
 V =
@@ -3320,6 +3394,7 @@ C(T91) = (2, read, @04[2], open) (2, read, @03.Table.forks_\[Z, open)
 S(T91) =
 RS(T91) =
 
+Engine: analyze_csv(12)
 Engine: compute_aux_graph (12 -> 94 95)
 Before merge_routine
 V =
@@ -3504,6 +3579,7 @@ C(T93) = (2, read, @04[1], open) (2, read, @03.Table.forks_\[Z, open)
 S(T93) =
 RS(T93) =
 
+Engine: analyze_csv(105)
 Engine: compute_aux_graph (105 -> [60])
 V = T94
 RV = T94
@@ -3514,6 +3590,7 @@ LT(5, undefined, ) = T94
 E =
 C(T94) = (5, lock, @03, open)
 
+Engine: analyze_csv(131)
 Engine: compute_aux_graph (131 -> [61])
 V = T95
 RV = T95
@@ -3524,6 +3601,7 @@ LT(5, undefined, ) = T95
 E =
 C(T95) = (5, read, @03.Table.forks_\[Z, open)
 
+Engine: analyze_csv(132)
 Engine: compute_aux_graph (132 -> [62])
 V = T96
 RV = T96
@@ -3534,6 +3612,7 @@ LT(5, undefined, ) = T96
 E =
 C(T96) = (5, read, @04[4], open)
 
+Engine: analyze_csv(20)
 Engine: compute_aux_graph (20 -> 131 132)
 Before merge_routine
 V =
@@ -3718,6 +3797,7 @@ C(T98) = (5, read, @04[4], open) (5, read, @03.Table.forks_\[Z, open)
 S(T98) =
 RS(T98) =
 
+Engine: analyze_csv(133)
 Engine: compute_aux_graph (133 -> [63])
 V = T99
 RV = T99
@@ -3728,6 +3808,7 @@ LT(5, undefined, ) = T99
 E =
 C(T99) = (5, read, @04[0], open)
 
+Engine: analyze_csv(21)
 Engine: compute_aux_graph (21 -> 131 133)
 Before merge_routine
 V =
@@ -3912,6 +3993,7 @@ C(T101) = (5, read, @04[0], open) (5, read, @03.Table.forks_\[Z, open)
 S(T101) =
 RS(T101) =
 
+Engine: analyze_csv(49)
 Engine: compute_aux_graph (49 -> 20 21)
 Before merge_routine
 V =
@@ -4116,6 +4198,7 @@ C(T103) = (5, read, @04[0], open) (5, read, @04[4], open) (5, read, @03.Table.fo
 S(T103) =
 RS(T103) =
 
+Engine: analyze_csv(38)
 Engine: compute_aux_graph (38 -> 49 49)
 Before merge_routine
 V =
@@ -4320,6 +4403,7 @@ C(T105) = (5, read, @04[0], open) (5, read, @04[4], open) (5, read, @03.Table.fo
 S(T105) =
 RS(T105) =
 
+Engine: analyze_csv(13)
 Engine: compute_aux_graph (13 -> 105 38)
 Before merge_routine
 V =
@@ -4544,6 +4628,7 @@ C(T107) = (5, read, @03.Table.forks_\[Z, open) (5, read, @04[0], open) (5, read,
 S(T107) =
 RS(T107) =
 
+Engine: analyze_csv(96)
 Engine: compute_aux_graph (96 -> [64])
 V = T108
 RV = T108
@@ -4554,6 +4639,7 @@ LT(4, undefined, ) = T108
 E =
 C(T108) = (4, lock, @03, open)
 
+Engine: analyze_csv(97)
 Engine: compute_aux_graph (97 -> [65])
 V = T109
 RV = T109
@@ -4564,6 +4650,7 @@ LT(4, undefined, ) = T109
 E =
 C(T109) = (4, read, @03.Table.forks_\[Z, open)
 
+Engine: analyze_csv(130)
 Engine: compute_aux_graph (130 -> [66])
 V = T110
 RV = T110
@@ -4574,6 +4661,7 @@ LT(4, undefined, ) = T110
 E =
 C(T110) = (4, read, @04[3], open)
 
+Engine: analyze_csv(15)
 Engine: compute_aux_graph (15 -> 97 130)
 Before merge_routine
 V =
@@ -4758,6 +4846,7 @@ C(T112) = (4, read, @04[3], open) (4, read, @03.Table.forks_\[Z, open)
 S(T112) =
 RS(T112) =
 
+Engine: analyze_csv(129)
 Engine: compute_aux_graph (129 -> [67])
 V = T113
 RV = T113
@@ -4768,6 +4857,7 @@ LT(4, undefined, ) = T113
 E =
 C(T113) = (4, read, @04[4], open)
 
+Engine: analyze_csv(327)
 Engine: compute_aux_graph (327 -> 97 129)
 Before merge_routine
 V =
@@ -4952,6 +5042,7 @@ C(T115) = (4, read, @04[4], open) (4, read, @03.Table.forks_\[Z, open)
 S(T115) =
 RS(T115) =
 
+Engine: analyze_csv(14)
 Engine: compute_aux_graph (14 -> 15 327)
 Before merge_routine
 V =
@@ -5156,6 +5247,7 @@ C(T117) = (4, read, @04[4], open) (4, read, @04[3], open) (4, read, @03.Table.fo
 S(T117) =
 RS(T117) =
 
+Engine: analyze_csv(45)
 Engine: compute_aux_graph (45 -> 77 76)
 Before merge_routine
 V =
@@ -5340,6 +5432,7 @@ C(T119) = (3, read, @08.Philo.id_I, open) (3, read, @08.Philo.t_LTable;, open)
 S(T119) =
 RS(T119) =
 
+Engine: analyze_csv(17)
 Engine: compute_aux_graph (17 -> 76 45)
 Before merge_routine
 V =
@@ -5524,6 +5617,7 @@ C(T121) = (3, read, @08.Philo.t_LTable;, open) (3, read, @08.Philo.id_I, open)
 S(T121) =
 RS(T121) =
 
+Engine: analyze_csv(43)
 Engine: compute_aux_graph (43 -> 86 91)
 Before merge_routine
 V =
@@ -5708,6 +5802,7 @@ C(T123) = (3, read, @03.Table.forks_\[Z, open) (3, lock, @03, open)
 S(T123) =
 RS(T123) =
 
+Engine: analyze_csv(44)
 Engine: compute_aux_graph (44 -> 91 9)
 Before merge_routine
 V =
@@ -5912,6 +6007,7 @@ C(T125) = (3, write, @04[3], open) (3, write, @04[2], open) (3, read, @03.Table.
 S(T125) =
 RS(T125) =
 
+Engine: analyze_csv(329)
 Engine: compute_aux_graph (329 -> 44 128)
 Before merge_routine
 V =
@@ -6136,6 +6232,7 @@ C(T127) = (3, unlock, @03, open) (3, write, @04[3], open) (3, write, @04[2], ope
 S(T127) =
 RS(T127) =
 
+Engine: analyze_csv(328)
 Engine: compute_aux_graph (328 -> 43 329)
 Before merge_routine
 V =
@@ -6380,6 +6477,7 @@ C(T129) = (3, write, @04[2], open) (3, write, @04[3], open) (3, unlock, @03, ope
 S(T129) =
 RS(T129) =
 
+Engine: analyze_csv(16)
 Engine: compute_aux_graph (16 -> 17 328)
 Before merge_routine
 V =
@@ -6664,6 +6762,7 @@ C(T131) = (3, lock, @03, open) (3, read, @03.Table.forks_\[Z, open) (3, unlock, 
 S(T131) =
 RS(T131) =
 
+Engine: analyze_csv(349)
 Engine: compute_aux_graph (349 -> 8 91)
 Before merge_routine
 V =
@@ -6848,6 +6947,7 @@ C(T133) = (3, read, @04[3], open) (3, read, @03.Table.forks_\[Z, open)
 S(T133) =
 RS(T133) =
 
+Engine: analyze_csv(46)
 Engine: compute_aux_graph (46 -> 87 349)
 Before merge_routine
 V =
@@ -7052,6 +7152,7 @@ C(T135) = (3, read, @03.Table.forks_\[Z, open) (3, read, @04[3], open) (3, read,
 S(T135) =
 RS(T135) =
 
+Engine: analyze_csv(334)
 Engine: compute_aux_graph (334 -> 76 76)
 Before merge_routine
 V =
@@ -7216,6 +7317,7 @@ C(T137) = (3, read, @08.Philo.id_I, open)
 S(T137) =
 RS(T137) =
 
+Engine: analyze_csv(333)
 Engine: compute_aux_graph (333 -> 10 334)
 Before merge_routine
 V =
@@ -7440,6 +7542,7 @@ C(T139) = (3, read, @08.Philo.id_I, open) (3, write, @03.Table.eatctr_I, open) (
 S(T139) =
 RS(T139) =
 
+Engine: analyze_csv(332)
 Engine: compute_aux_graph (332 -> 44 333)
 Before merge_routine
 V =
@@ -7724,6 +7827,7 @@ C(T141) = (3, unlock, @03, open) (3, read, @08.Philo.id_I, open) (3, read, @03.T
 S(T141) =
 RS(T141) =
 
+Engine: analyze_csv(331)
 Engine: compute_aux_graph (331 -> 46 332)
 Before merge_routine
 V =
@@ -8048,6 +8152,7 @@ C(T143) = (3, write, @04[2], open) (3, write, @04[3], open) (3, read, @03.Table.
 S(T143) =
 RS(T143) =
 
+Engine: analyze_csv(330)
 Engine: compute_aux_graph (330 -> 46 331)
 Before merge_routine
 V =
@@ -8372,6 +8477,7 @@ C(T145) = (3, unlock, @03, open) (3, read, @08.Philo.id_I, open) (3, read, @03.T
 S(T145) =
 RS(T145) =
 
+Engine: analyze_csv(18)
 Engine: compute_aux_graph (18 -> 43 330)
 Before merge_routine
 V =
@@ -8716,6 +8822,7 @@ C(T147) = (3, read, @04[2], open) (3, read, @04[3], open) (3, write, @04[2], ope
 S(T147) =
 RS(T147) =
 
+Engine: analyze_csv(42)
 Engine: compute_aux_graph (42 -> 98 5)
 Before merge_routine
 V =
@@ -8920,6 +9027,7 @@ C(T149) = (1, write, @04[0], open) (1, write, @04[1], open) (1, read, @03.Table.
 S(T149) =
 RS(T149) =
 
+Engine: analyze_csv(336)
 Engine: compute_aux_graph (336 -> 42 122)
 Before merge_routine
 V =
@@ -9144,6 +9252,7 @@ C(T151) = (1, unlock, @03, open) (1, write, @04[0], open) (1, write, @04[1], ope
 S(T151) =
 RS(T151) =
 
+Engine: analyze_csv(335)
 Engine: compute_aux_graph (335 -> 70 336)
 Before merge_routine
 V =
@@ -9388,6 +9497,7 @@ C(T153) = (1, read, @03.Table.forks_\[Z, open) (1, write, @04[1], open) (1, writ
 S(T153) =
 RS(T153) =
 
+Engine: analyze_csv(19)
 Engine: compute_aux_graph (19 -> 1 335)
 Before merge_routine
 V =
@@ -9672,6 +9782,7 @@ C(T155) = (1, lock, @03, open) (1, unlock, @03, open) (1, write, @04[1], open) (
 S(T155) =
 RS(T155) =
 
+Engine: analyze_csv(142)
 Engine: compute_aux_graph (142 -> [68])
 V = T156
 RV = T156
@@ -9682,6 +9793,7 @@ LT(5, undefined, ) = T156
 E =
 C(T156) = (5, write, @04[0], open)
 
+Engine: analyze_csv(143)
 Engine: compute_aux_graph (143 -> [69])
 V = T157
 RV = T157
@@ -9692,6 +9804,7 @@ LT(5, undefined, ) = T157
 E =
 C(T157) = (5, write, @04[4], open)
 
+Engine: analyze_csv(351)
 Engine: compute_aux_graph (351 -> 142 143)
 Before merge_routine
 V =
@@ -9876,6 +9989,7 @@ C(T159) = (5, write, @04[4], open) (5, write, @04[0], open)
 S(T159) =
 RS(T159) =
 
+Engine: analyze_csv(350)
 Engine: compute_aux_graph (350 -> 131 351)
 Before merge_routine
 V =
@@ -10080,6 +10194,7 @@ C(T161) = (5, write, @04[0], open) (5, write, @04[4], open) (5, read, @03.Table.
 S(T161) =
 RS(T161) =
 
+Engine: analyze_csv(47)
 Engine: compute_aux_graph (47 -> 131 350)
 Before merge_routine
 V =
@@ -10284,6 +10399,7 @@ C(T163) = (5, write, @04[0], open) (5, write, @04[4], open) (5, read, @03.Table.
 S(T163) =
 RS(T163) =
 
+Engine: analyze_csv(135)
 Engine: compute_aux_graph (135 -> [70])
 V = T164
 RV = T164
@@ -10294,6 +10410,7 @@ LT(5, undefined, ) = T164
 E =
 C(T164) = (5, read, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(136)
 Engine: compute_aux_graph (136 -> [71])
 V = T165
 RV = T165
@@ -10304,6 +10421,7 @@ LT(5, undefined, ) = T165
 E =
 C(T165) = (5, write, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(137)
 Engine: compute_aux_graph (137 -> [72])
 V = T166
 RV = T166
@@ -10314,6 +10432,7 @@ LT(5, undefined, ) = T166
 E =
 C(T166) = (5, unlock, @03, open)
 
+Engine: analyze_csv(338)
 Engine: compute_aux_graph (338 -> 136 137)
 Before merge_routine
 V =
@@ -10498,6 +10617,7 @@ C(T168) = (5, unlock, @03, open) (5, write, @03.Table.eatctr_I, open)
 S(T168) =
 RS(T168) =
 
+Engine: analyze_csv(337)
 Engine: compute_aux_graph (337 -> 135 338)
 Before merge_routine
 V =
@@ -10702,6 +10822,7 @@ C(T170) = (5, write, @03.Table.eatctr_I, open) (5, unlock, @03, open) (5, read, 
 S(T170) =
 RS(T170) =
 
+Engine: analyze_csv(23)
 Engine: compute_aux_graph (23 -> 47 337)
 Before merge_routine
 V =
@@ -10966,6 +11087,7 @@ C(T172) = (5, read, @03.Table.eatctr_I, open) (5, unlock, @03, open) (5, write, 
 S(T172) =
 RS(T172) =
 
+Engine: analyze_csv(24)
 Engine: compute_aux_graph (24 -> 2 90)
 Before merge_routine
 V =
@@ -11223,6 +11345,7 @@ S(T175) =
 RS(T175) =
 RS(T176) =
 
+Engine: analyze_csv(25)
 Engine: compute_aux_graph (25 -> 16 76)
 Before merge_routine
 V =
@@ -11507,6 +11630,7 @@ C(T178) = (3, lock, @03, open) (3, read, @03.Table.forks_\[Z, open) (3, unlock, 
 S(T178) =
 RS(T178) =
 
+Engine: analyze_csv(34)
 Engine: compute_aux_graph (34 -> 45 18)
 Before merge_routine
 V =
@@ -11871,6 +11995,7 @@ C(T180) = (3, lock, @03, open) (3, read, @03.Table.forks_\[Z, open) (3, write, @
 S(T180) =
 RS(T180) =
 
+Engine: analyze_csv(28)
 Engine: compute_aux_graph (28 -> 92 90)
 Before merge_routine
 V =
@@ -12055,6 +12180,7 @@ C(T182) = (5, read, @0A.Philo.id_I, open) (5, read, @0A.Philo.t_LTable;, open)
 S(T182) =
 RS(T182) =
 
+Engine: analyze_csv(352)
 Engine: compute_aux_graph (352 -> 47 137)
 Before merge_routine
 V =
@@ -12279,6 +12405,7 @@ C(T184) = (5, unlock, @03, open) (5, write, @04[0], open) (5, write, @04[4], ope
 S(T184) =
 RS(T184) =
 
+Engine: analyze_csv(48)
 Engine: compute_aux_graph (48 -> 105 352)
 Before merge_routine
 V =
@@ -12523,6 +12650,7 @@ C(T186) = (5, read, @03.Table.forks_\[Z, open) (5, write, @04[4], open) (5, writ
 S(T186) =
 RS(T186) =
 
+Engine: analyze_csv(40)
 Engine: compute_aux_graph (40 -> 28 48)
 Before merge_routine
 V =
@@ -12807,6 +12935,7 @@ C(T188) = (5, lock, @03, open) (5, unlock, @03, open) (5, write, @04[4], open) (
 S(T188) =
 RS(T188) =
 
+Engine: analyze_csv(339)
 Engine: compute_aux_graph (339 -> 90 40)
 Before merge_routine
 V =
@@ -13091,6 +13220,7 @@ C(T190) = (5, read, @0A.Philo.t_LTable;, open) (5, write, @04[0], open) (5, read
 S(T190) =
 RS(T190) =
 
+Engine: analyze_csv(26)
 Engine: compute_aux_graph (26 -> 34 339)
 Before merge_routine
 V =
@@ -13648,6 +13778,7 @@ S(T193) =
 RS(T193) =
 RS(T194) =
 
+Engine: analyze_csv(27)
 Engine: compute_aux_graph (27 -> 94 90)
 Before merge_routine
 V =
@@ -13885,6 +14016,7 @@ S(T197) =
 RS(T197) =
 RS(T198) =
 
+Engine: analyze_csv(346)
 Engine: compute_aux_graph (346 -> 90 90)
 Before merge_routine
 V =
@@ -14049,6 +14181,7 @@ C(T200) = (5, read, @0A.Philo.id_I, open)
 S(T200) =
 RS(T200) =
 
+Engine: analyze_csv(39)
 Engine: compute_aux_graph (39 -> 23 346)
 Before merge_routine
 V =
@@ -14333,6 +14466,7 @@ C(T202) = (5, read, @0A.Philo.id_I, open) (5, read, @03.Table.eatctr_I, open) (5
 S(T202) =
 RS(T202) =
 
+Engine: analyze_csv(29)
 Engine: compute_aux_graph (29 -> 13 39)
 Before merge_routine
 V =
@@ -14677,6 +14811,7 @@ C(T204) = (5, write, @04[0], open) (5, write, @03.Table.eatctr_I, open) (5, unlo
 S(T204) =
 RS(T204) =
 
+Engine: analyze_csv(30)
 Engine: compute_aux_graph (30 -> 90 92)
 Before merge_routine
 V =
@@ -14861,6 +14996,7 @@ C(T206) = (5, read, @0A.Philo.t_LTable;, open) (5, read, @0A.Philo.id_I, open)
 S(T206) =
 RS(T206) =
 
+Engine: analyze_csv(343)
 Engine: compute_aux_graph (343 -> 90 48)
 Before merge_routine
 V =
@@ -15125,6 +15261,7 @@ C(T208) = (5, lock, @03, open) (5, unlock, @03, open) (5, write, @04[0], open) (
 S(T208) =
 RS(T208) =
 
+Engine: analyze_csv(35)
 Engine: compute_aux_graph (35 -> 30 343)
 Before merge_routine
 V =
@@ -15409,6 +15546,7 @@ C(T210) = (5, read, @03.Table.forks_\[Z, open) (5, write, @04[4], open) (5, unlo
 S(T210) =
 RS(T210) =
 
+Engine: analyze_csv(340)
 Engine: compute_aux_graph (340 -> 29 35)
 Before merge_routine
 V =
@@ -15773,6 +15911,7 @@ C(T212) = (5, read, @0A.Philo.t_LTable;, open) (5, write, @04[0], open) (5, writ
 S(T212) =
 RS(T212) =
 
+Engine: analyze_csv(31)
 Engine: compute_aux_graph (31 -> 130 340)
 Before merge_routine
 V =
@@ -16210,6 +16349,7 @@ S(T215) =
 RS(T215) =
 RS(T216) =
 
+Engine: analyze_csv(342)
 Engine: compute_aux_graph (342 -> 29 16)
 Before merge_routine
 V =
@@ -16747,6 +16887,7 @@ S(T219) =
 RS(T219) =
 RS(T220) =
 
+Engine: analyze_csv(341)
 Engine: compute_aux_graph (341 -> 101 342)
 Before merge_routine
 V =
@@ -17357,6 +17498,7 @@ RS(T224) =
 RS(T225) =
 RS(T226) =
 
+Engine: analyze_csv(32)
 Engine: compute_aux_graph (32 -> 27 341)
 Before merge_routine
 V =
@@ -17987,6 +18129,7 @@ RS(T231) =
 RS(T230) =
 RS(T232) =
 
+Engine: analyze_csv(33)
 Engine: compute_aux_graph (33 -> 92 95)
 Before merge_routine
 V =
@@ -18224,6 +18367,7 @@ S(T235) =
 RS(T235) =
 RS(T236) =
 
+Engine: analyze_csv(100)
 Engine: compute_aux_graph (100 -> [73])
 V =
 RV = T237
@@ -18234,6 +18378,7 @@ LT(3, undefined, ) = T237
 E =
 C(T237) = (3, end, , up)
 
+Engine: analyze_csv(36)
 Engine: compute_aux_graph (36 -> 90 94)
 Before merge_routine
 V =
@@ -18471,6 +18616,7 @@ S(T240) =
 RS(T240) =
 RS(T241) =
 
+Engine: analyze_csv(138)
 Engine: compute_aux_graph (138 -> [74])
 V = T242
 RV = T242
@@ -18481,6 +18627,7 @@ LT(2, undefined, ) = T242
 E =
 C(T242) = (2, write, @04[2], open)
 
+Engine: analyze_csv(139)
 Engine: compute_aux_graph (139 -> [75])
 V = T243
 RV = T243
@@ -18491,6 +18638,7 @@ LT(2, undefined, ) = T243
 E =
 C(T243) = (2, write, @04[1], open)
 
+Engine: analyze_csv(345)
 Engine: compute_aux_graph (345 -> 138 139)
 Before merge_routine
 V =
@@ -18675,6 +18823,7 @@ C(T245) = (2, write, @04[1], open) (2, write, @04[2], open)
 S(T245) =
 RS(T245) =
 
+Engine: analyze_csv(344)
 Engine: compute_aux_graph (344 -> 94 345)
 Before merge_routine
 V =
@@ -18879,6 +19028,7 @@ C(T247) = (2, write, @04[2], open) (2, write, @04[1], open) (2, read, @03.Table.
 S(T247) =
 RS(T247) =
 
+Engine: analyze_csv(37)
 Engine: compute_aux_graph (37 -> 94 344)
 Before merge_routine
 V =
@@ -19083,6 +19233,7 @@ C(T249) = (2, write, @04[1], open) (2, write, @04[2], open) (2, read, @03.Table.
 S(T249) =
 RS(T249) =
 
+Engine: analyze_csv(102)
 Engine: compute_aux_graph (102 -> [76])
 V = T250
 RV = T250
@@ -19093,6 +19244,7 @@ LT(2, undefined, ) = T250
 E =
 C(T250) = (2, read, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(103)
 Engine: compute_aux_graph (103 -> [77])
 V = T251
 RV = T251
@@ -19103,6 +19255,7 @@ LT(2, undefined, ) = T251
 E =
 C(T251) = (2, write, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(104)
 Engine: compute_aux_graph (104 -> [78])
 V = T252
 RV = T252
@@ -19113,6 +19266,7 @@ LT(2, undefined, ) = T252
 E =
 C(T252) = (2, unlock, @03, open)
 
+Engine: analyze_csv(106)
 Engine: compute_aux_graph (106 -> [79])
 V =
 RV = T253
@@ -19123,6 +19277,7 @@ LT(2, undefined, ) = T253
 E =
 C(T253) = (2, end, , up)
 
+Engine: analyze_csv(107)
 Engine: compute_aux_graph (107 -> [80])
 V =
 RV = T254
@@ -19133,6 +19288,7 @@ LT(5, undefined, ) = T254
 E =
 C(T254) = (5, end, , up)
 
+Engine: analyze_csv(140)
 Engine: compute_aux_graph (140 -> [81])
 V = T255
 RV = T255
@@ -19143,6 +19299,7 @@ LT(4, undefined, ) = T255
 E =
 C(T255) = (4, write, @04[4], open)
 
+Engine: analyze_csv(141)
 Engine: compute_aux_graph (141 -> [82])
 V = T256
 RV = T256
@@ -19153,6 +19310,7 @@ LT(4, undefined, ) = T256
 E =
 C(T256) = (4, write, @04[3], open)
 
+Engine: analyze_csv(348)
 Engine: compute_aux_graph (348 -> 140 141)
 Before merge_routine
 V =
@@ -19337,6 +19495,7 @@ C(T258) = (4, write, @04[3], open) (4, write, @04[4], open)
 S(T258) =
 RS(T258) =
 
+Engine: analyze_csv(347)
 Engine: compute_aux_graph (347 -> 97 348)
 Before merge_routine
 V =
@@ -19541,6 +19700,7 @@ C(T260) = (4, write, @04[4], open) (4, write, @04[3], open) (4, read, @03.Table.
 S(T260) =
 RS(T260) =
 
+Engine: analyze_csv(41)
 Engine: compute_aux_graph (41 -> 97 347)
 Before merge_routine
 V =
@@ -19745,6 +19905,7 @@ C(T262) = (4, write, @04[3], open) (4, write, @04[4], open) (4, read, @03.Table.
 S(T262) =
 RS(T262) =
 
+Engine: analyze_csv(108)
 Engine: compute_aux_graph (108 -> [83])
 V = T263
 RV = T263
@@ -19755,6 +19916,7 @@ LT(4, undefined, ) = T263
 E =
 C(T263) = (4, read, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(109)
 Engine: compute_aux_graph (109 -> [84])
 V = T264
 RV = T264
@@ -19765,6 +19927,7 @@ LT(4, undefined, ) = T264
 E =
 C(T264) = (4, write, @03.Table.eatctr_I, open)
 
+Engine: analyze_csv(110)
 Engine: compute_aux_graph (110 -> [85])
 V = T265
 RV = T265
@@ -19775,6 +19938,7 @@ LT(4, undefined, ) = T265
 E =
 C(T265) = (4, unlock, @03, open)
 
+Engine: analyze_csv(111)
 Engine: compute_aux_graph (111 -> [86])
 V =
 RV = T266
@@ -19785,6 +19949,7 @@ LT(4, undefined, ) = T266
 E =
 C(T266) = (4, end, , up)
 
+Engine: analyze_csv(112)
 Engine: compute_aux_graph (112 -> [87])
 V =
 RV = T267
@@ -19795,6 +19960,7 @@ LT(1, undefined, ) = T267
 E =
 C(T267) = (1, end, , up)
 
+Engine: analyze_csv(113)
 Engine: compute_aux_graph (113 -> [88])
 V = T268
 RV = T268
@@ -19805,6 +19971,7 @@ LT(0, undefined, ) = T268
 E =
 C(T268) = (0, join, 1, open)
 
+Engine: analyze_csv(114)
 Engine: compute_aux_graph (114 -> [89])
 V = T269
 RV = T269
@@ -19815,6 +19982,7 @@ LT(0, undefined, ) = T269
 E =
 C(T269) = (0, join, 2, open)
 
+Engine: analyze_csv(115)
 Engine: compute_aux_graph (115 -> [90])
 V = T270
 RV = T270
@@ -19825,6 +19993,7 @@ LT(0, undefined, ) = T270
 E =
 C(T270) = (0, join, 3, open)
 
+Engine: analyze_csv(116)
 Engine: compute_aux_graph (116 -> [91])
 V = T271
 RV = T271
@@ -19835,6 +20004,7 @@ LT(0, undefined, ) = T271
 E =
 C(T271) = (0, join, 4, open)
 
+Engine: analyze_csv(117)
 Engine: compute_aux_graph (117 -> [92])
 V = T272
 RV = T272
@@ -19845,6 +20015,7 @@ LT(0, undefined, ) = T272
 E =
 C(T272) = (0, join, 5, open)
 
+Engine: analyze_csv(118)
 Engine: compute_aux_graph (118 -> [93])
 V =
 RV = T273
@@ -19855,6 +20026,7 @@ LT(0, undefined, ) = T273
 E =
 C(T273) = (0, end, , up)
 
+Engine: analyze_csv(324)
 Engine: compute_aux_graph (324 -> 117 118)
 Before merge_routine
 V =
@@ -20039,6 +20211,7 @@ C(T275) = (0, end, , up) (0, join, 5, open)
 S(T275) = (0, end, , up)
 RS(T275) =
 
+Engine: analyze_csv(323)
 Engine: compute_aux_graph (323 -> 116 324)
 Before merge_routine
 V =
@@ -20243,6 +20416,7 @@ C(T277) = (0, join, 5, open) (0, end, , up) (0, join, 4, open)
 S(T277) = (0, join, 5, open) (0, end, , up)
 RS(T277) =
 
+Engine: analyze_csv(322)
 Engine: compute_aux_graph (322 -> 115 323)
 Before merge_routine
 V =
@@ -20467,6 +20641,7 @@ C(T279) = (0, join, 4, open) (0, end, , up) (0, join, 5, open) (0, join, 3, open
 S(T279) = (0, join, 4, open) (0, end, , up) (0, join, 5, open)
 RS(T279) =
 
+Engine: analyze_csv(321)
 Engine: compute_aux_graph (321 -> 114 322)
 Before merge_routine
 V =
@@ -20711,6 +20886,7 @@ C(T281) = (0, join, 3, open) (0, join, 5, open) (0, end, , up) (0, join, 4, open
 S(T281) = (0, join, 3, open) (0, join, 5, open) (0, end, , up) (0, join, 4, open)
 RS(T281) =
 
+Engine: analyze_csv(320)
 Engine: compute_aux_graph (320 -> 113 321)
 Before merge_routine
 V =
@@ -20975,6 +21151,7 @@ C(T283) = (0, join, 2, open) (0, join, 4, open) (0, end, , up) (0, join, 5, open
 S(T283) = (0, join, 2, open) (0, join, 4, open) (0, end, , up) (0, join, 5, open) (0, join, 3, open)
 RS(T283) =
 
+Engine: analyze_csv(319)
 Engine: compute_aux_graph (319 -> 112 320)
 Before merge_routine
 V =
@@ -21306,6 +21483,7 @@ S(T267) =
 RS(T267) =
 RS(T285) =
 
+Engine: analyze_csv(318)
 Engine: compute_aux_graph (318 -> 19 319)
 Before merge_routine
 V =
@@ -21783,6 +21961,7 @@ S(T288) =
 RS(T288) =
 RS(T289) =
 
+Engine: analyze_csv(317)
 Engine: compute_aux_graph (317 -> 63 318)
 Before merge_routine
 V =
@@ -22260,6 +22439,7 @@ S(T292) =
 RS(T292) =
 RS(T293) =
 
+Engine: analyze_csv(316)
 Engine: compute_aux_graph (316 -> 63 317)
 Before merge_routine
 V =
@@ -22737,6 +22917,7 @@ S(T296) =
 RS(T296) =
 RS(T297) =
 
+Engine: analyze_csv(315)
 Engine: compute_aux_graph (315 -> 6 316)
 Before merge_routine
 V =
@@ -23234,6 +23415,7 @@ S(T300) =
 RS(T300) =
 RS(T301) =
 
+Engine: analyze_csv(314)
 Engine: compute_aux_graph (314 -> 82 315)
 Before merge_routine
 V =
@@ -23751,6 +23933,7 @@ S(T304) =
 RS(T304) =
 RS(T305) =
 
+Engine: analyze_csv(313)
 Engine: compute_aux_graph (313 -> 42 314)
 Before merge_routine
 V =
@@ -24268,6 +24451,7 @@ S(T308) =
 RS(T308) =
 RS(T309) =
 
+Engine: analyze_csv(312)
 Engine: compute_aux_graph (312 -> 3 313)
 Before merge_routine
 V =
@@ -24805,6 +24989,7 @@ S(T312) =
 RS(T312) =
 RS(T313) =
 
+Engine: analyze_csv(311)
 Engine: compute_aux_graph (311 -> 2 312)
 Before merge_routine
 V =
@@ -25362,6 +25547,7 @@ S(T316) =
 RS(T316) =
 RS(T317) =
 
+Engine: analyze_csv(310)
 Engine: compute_aux_graph (310 -> 111 311)
 Before merge_routine
 V =
@@ -25986,6 +26172,7 @@ RS(T266) =
 RS(T320) =
 RS(T321) =
 
+Engine: analyze_csv(309)
 Engine: compute_aux_graph (309 -> 110 310)
 Before merge_routine
 V =
@@ -26636,6 +26823,7 @@ RS(T325) =
 RS(T326) =
 RS(T327) =
 
+Engine: analyze_csv(308)
 Engine: compute_aux_graph (308 -> 41 309)
 Before merge_routine
 V =
@@ -27346,6 +27534,7 @@ RS(T331) =
 RS(T332) =
 RS(T333) =
 
+Engine: analyze_csv(307)
 Engine: compute_aux_graph (307 -> 96 308)
 Before merge_routine
 V =
@@ -28076,6 +28265,7 @@ RS(T337) =
 RS(T338) =
 RS(T339) =
 
+Engine: analyze_csv(306)
 Engine: compute_aux_graph (306 -> 83 307)
 Before merge_routine
 V =
@@ -28826,6 +29016,7 @@ RS(T343) =
 RS(T344) =
 RS(T345) =
 
+Engine: analyze_csv(305)
 Engine: compute_aux_graph (305 -> 85 306)
 Before merge_routine
 V =
@@ -29596,6 +29787,7 @@ RS(T349) =
 RS(T350) =
 RS(T351) =
 
+Engine: analyze_csv(304)
 Engine: compute_aux_graph (304 -> 83 305)
 Before merge_routine
 V =
@@ -30366,6 +30558,7 @@ RS(T355) =
 RS(T356) =
 RS(T357) =
 
+Engine: analyze_csv(303)
 Engine: compute_aux_graph (303 -> 83 304)
 Before merge_routine
 V =
@@ -31136,6 +31329,7 @@ RS(T361) =
 RS(T362) =
 RS(T363) =
 
+Engine: analyze_csv(302)
 Engine: compute_aux_graph (302 -> 83 303)
 Before merge_routine
 V =
@@ -31906,6 +32100,7 @@ RS(T367) =
 RS(T368) =
 RS(T369) =
 
+Engine: analyze_csv(301)
 Engine: compute_aux_graph (301 -> 110 302)
 Before merge_routine
 V =
@@ -32676,6 +32871,7 @@ RS(T373) =
 RS(T374) =
 RS(T375) =
 
+Engine: analyze_csv(300)
 Engine: compute_aux_graph (300 -> 109 301)
 Before merge_routine
 V =
@@ -33466,6 +33662,7 @@ RS(T379) =
 RS(T380) =
 RS(T381) =
 
+Engine: analyze_csv(299)
 Engine: compute_aux_graph (299 -> 108 300)
 Before merge_routine
 V =
@@ -34276,6 +34473,7 @@ RS(T385) =
 RS(T386) =
 RS(T387) =
 
+Engine: analyze_csv(298)
 Engine: compute_aux_graph (298 -> 41 299)
 Before merge_routine
 V =
@@ -35086,6 +35284,7 @@ RS(T391) =
 RS(T392) =
 RS(T393) =
 
+Engine: analyze_csv(297)
 Engine: compute_aux_graph (297 -> 14 298)
 Before merge_routine
 V =
@@ -35936,6 +36135,7 @@ RS(T397) =
 RS(T398) =
 RS(T399) =
 
+Engine: analyze_csv(296)
 Engine: compute_aux_graph (296 -> 107 297)
 Before merge_routine
 V =
@@ -36853,6 +37053,7 @@ RS(T403) =
 RS(T404) =
 RS(T405) =
 
+Engine: analyze_csv(295)
 Engine: compute_aux_graph (295 -> 40 296)
 Before merge_routine
 V =
@@ -37916,6 +38117,7 @@ RS(T411) =
 RS(T412) =
 RS(T413) =
 
+Engine: analyze_csv(294)
 Engine: compute_aux_graph (294 -> 24 295)
 Before merge_routine
 V =
@@ -38980,70 +39182,324 @@ RS(T420) =
 RS(T421) =
 
 Conflict serializability violation detected in 294:
+====================294====================
+====================24====================
+====================2====================
+====================98====================
 (1, read, @03.Table.forks_\[Z, undefined)
+====================98====================
+====================99====================
 (1, read, @04[0], undefined)
+====================99====================
+====================2====================
+====================90====================
 (5, read, @0A.Philo.id_I, undefined)
+====================90====================
+====================24====================
+====================295====================
+====================40====================
+====================28====================
+====================92====================
 (5, read, @0A.Philo.t_LTable;, undefined)
+====================92====================
+====================90====================
 (5, read, @0A.Philo.id_I, undefined)
+====================90====================
+====================28====================
+====================48====================
+====================105====================
 (5, lock, @03, undefined)
+====================105====================
+====================352====================
+====================47====================
+====================131====================
 (5, read, @03.Table.forks_\[Z, undefined)
+====================131====================
+====================350====================
+====================131====================
 (5, read, @03.Table.forks_\[Z, undefined)
+====================131====================
+====================351====================
+====================142====================
 (5, write, @04[0], undefined)
+====================142====================
+====================143====================
 (5, write, @04[4], undefined)
+====================143====================
+====================351====================
+====================350====================
+====================47====================
+====================137====================
 (5, unlock, @03, undefined)
+====================137====================
+====================352====================
+====================48====================
+====================40====================
+====================296====================
+====================107====================
 (5, end, , undefined)
+====================107====================
+====================297====================
+====================14====================
+====================15====================
+====================97====================
 (4, read, @03.Table.forks_\[Z, undefined)
+====================97====================
+====================130====================
 (4, read, @04[3], undefined)
+====================130====================
+====================15====================
+====================327====================
+====================97====================
 (4, read, @03.Table.forks_\[Z, undefined)
+====================97====================
+====================129====================
 (4, read, @04[4], undefined)
+====================129====================
+====================327====================
+====================14====================
+====================298====================
+====================41====================
+====================97====================
 (4, read, @03.Table.forks_\[Z, undefined)
+====================97====================
+====================347====================
+====================97====================
 (4, read, @03.Table.forks_\[Z, undefined)
+====================97====================
+====================348====================
+====================140====================
 (4, write, @04[4], undefined)
+====================140====================
+====================141====================
 (4, write, @04[3], undefined)
+====================141====================
+====================348====================
+====================347====================
+====================41====================
+====================299====================
+====================108====================
 (4, read, @03.Table.eatctr_I, undefined)
+====================108====================
+====================300====================
+====================109====================
 (4, write, @03.Table.eatctr_I, undefined)
+====================109====================
+====================301====================
+====================110====================
 (4, unlock, @03, undefined)
+====================110====================
+====================302====================
+====================83====================
 (4, read, @09.Philo.id_I, undefined)
+====================83====================
+====================303====================
+====================83====================
 (4, read, @09.Philo.id_I, undefined)
+====================83====================
+====================304====================
+====================83====================
 (4, read, @09.Philo.id_I, undefined)
+====================83====================
+====================305====================
+====================85====================
 (4, read, @09.Philo.t_LTable;, undefined)
+====================85====================
+====================306====================
+====================83====================
 (4, read, @09.Philo.id_I, undefined)
+====================83====================
+====================307====================
+====================96====================
 (4, lock, @03, undefined)
+====================96====================
+====================308====================
+====================41====================
+====================97====================
 (4, read, @03.Table.forks_\[Z, undefined)
+====================97====================
+====================347====================
+====================97====================
 (4, read, @03.Table.forks_\[Z, undefined)
+====================97====================
+====================348====================
+====================140====================
 (4, write, @04[4], undefined)
+====================140====================
+====================141====================
 (4, write, @04[3], undefined)
+====================141====================
+====================348====================
+====================347====================
+====================41====================
+====================309====================
+====================110====================
 (4, unlock, @03, undefined)
+====================110====================
+====================310====================
+====================111====================
 (4, end, , undefined)
+====================111====================
+====================311====================
+====================2====================
+====================98====================
 (1, read, @03.Table.forks_\[Z, undefined)
+====================98====================
+====================99====================
 (1, read, @04[0], undefined)
+====================99====================
+====================2====================
+====================312====================
+====================3====================
+====================98====================
 (1, read, @03.Table.forks_\[Z, undefined)
+====================98====================
+====================78====================
 (1, read, @04[1], undefined)
+====================78====================
+====================3====================
+====================313====================
+====================42====================
+====================98====================
 (1, read, @03.Table.forks_\[Z, undefined)
+====================98====================
+====================5====================
+====================98====================
 (1, read, @03.Table.forks_\[Z, undefined)
+====================98====================
+====================325====================
+====================119====================
 (1, write, @04[1], undefined)
+====================119====================
+====================120====================
 (1, write, @04[0], undefined)
+====================120====================
+====================325====================
+====================5====================
+====================42====================
+====================314====================
+====================82====================
 (1, read, @03.Table.eatctr_I, undefined)
+====================82====================
+====================315====================
+====================6====================
+====================121====================
 (1, write, @03.Table.eatctr_I, undefined)
+====================121====================
+====================122====================
 (1, unlock, @03, undefined)
+====================122====================
+====================6====================
+====================316====================
+====================63====================
 (1, read, @05.Philo.id_I, undefined)
+====================63====================
+====================317====================
+====================63====================
 (1, read, @05.Philo.id_I, undefined)
+====================63====================
+====================318====================
+====================19====================
+====================1====================
+====================63====================
 (1, read, @05.Philo.id_I, undefined)
+====================63====================
+====================22====================
+====================134====================
 (1, read, @05.Philo.t_LTable;, undefined)
+====================134====================
+====================63====================
 (1, read, @05.Philo.id_I, undefined)
+====================63====================
+====================22====================
+====================1====================
+====================335====================
+====================70====================
 (1, lock, @03, undefined)
+====================70====================
+====================336====================
+====================42====================
+====================98====================
 (1, read, @03.Table.forks_\[Z, undefined)
+====================98====================
+====================5====================
+====================98====================
 (1, read, @03.Table.forks_\[Z, undefined)
+====================98====================
+====================325====================
+====================119====================
 (1, write, @04[1], undefined)
+====================119====================
+====================120====================
 (1, write, @04[0], undefined)
+====================120====================
+====================325====================
+====================5====================
+====================42====================
+====================122====================
 (1, unlock, @03, undefined)
+====================122====================
+====================336====================
+====================335====================
+====================19====================
+====================319====================
+====================112====================
 (1, end, , undefined)
+====================112====================
+====================320====================
+====================113====================
 (0, join, 1, undefined)
+====================113====================
+====================321====================
+====================114====================
 (0, join, 2, undefined)
+====================114====================
+====================322====================
+====================115====================
 (0, join, 3, undefined)
+====================115====================
+====================323====================
+====================116====================
 (0, join, 4, undefined)
+====================116====================
+====================324====================
+====================117====================
 (0, join, 5, undefined)
+====================117====================
+====================118====================
 (0, end, , undefined)
+====================118====================
+====================324====================
+====================323====================
+====================322====================
+====================321====================
+====================320====================
+====================319====================
+====================318====================
+====================317====================
+====================316====================
+====================315====================
+====================314====================
+====================313====================
+====================312====================
+====================311====================
+====================310====================
+====================309====================
+====================308====================
+====================307====================
+====================306====================
+====================305====================
+====================304====================
+====================303====================
+====================302====================
+====================301====================
+====================300====================
+====================299====================
+====================298====================
+====================297====================
+====================296====================
+====================295====================
+====================294====================
 
 Cross graph:
 V = T414 T415 T416 T417

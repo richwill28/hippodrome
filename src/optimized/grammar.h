@@ -19,6 +19,8 @@ struct Grammar {
   std::unordered_map<Terminal, Event> content;
 
   void generate(Nonterminal nonterminal) const {
+    std::cout << "====================" + nonterminal +
+                     "====================\n";
     if (rules.at(nonterminal).size() == 1) {
       std::cout << content.at(rules.at(nonterminal).at(0)) << "\n";
     } else if (rules.at(nonterminal).size() == 2) {
@@ -28,6 +30,8 @@ struct Grammar {
       std::cerr << "Grammar is not in CNF\n";
       std::exit(EXIT_FAILURE);
     }
+    std::cout << "====================" + nonterminal +
+                     "====================\n";
   }
 };
 

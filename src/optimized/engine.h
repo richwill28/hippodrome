@@ -1357,6 +1357,8 @@ struct Engine {
   }
 
   bool analyze_csv(Nonterminal nonterminal) {
+    std::cout << "Engine: analyze_csv(" + nonterminal + ")\n";
+
     std::vector<Symbol> chunks = grammar.rules[nonterminal];
 
     if (chunks.size() == 1) {
