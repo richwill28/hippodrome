@@ -136,6 +136,7 @@ struct Engine {
       parent[vertex] = txn;
       parent[txn] = txn;
       child[std::make_pair(B, txn)] = vertex;
+      child[std::make_pair(C, txn)] = Transaction{};
     }
 
     for (const Transaction &reversed_vertex : aux_graph[C].reversed_vertices) {
@@ -167,6 +168,7 @@ struct Engine {
         cross_transaction[txn.thread] = txn;
         parent[reversed_vertex] = txn;
         parent[txn] = txn;
+        child[std::make_pair(B, txn)] = Transaction{};
         child[std::make_pair(C, txn)] = reversed_vertex;
       }
     }
@@ -186,6 +188,7 @@ struct Engine {
         aux_graph[A].vertices.insert(parent[vertex]);
       } else {
         parent[vertex] = vertex;
+        child[std::make_pair(B, vertex)] = Transaction{};
         child[std::make_pair(C, vertex)] = vertex;
         aux_graph[A].vertices.insert(parent[vertex]);
         aux_graph[A].content[parent[vertex]] =
@@ -222,6 +225,7 @@ struct Engine {
       } else {
         parent[reversed_vertex] = reversed_vertex;
         child[std::make_pair(B, reversed_vertex)] = reversed_vertex;
+        child[std::make_pair(C, reversed_vertex)] = Transaction{};
         aux_graph[A].reversed_vertices.insert(parent[reversed_vertex]);
         aux_graph[A].content[parent[reversed_vertex]] =
             aux_graph[C].content[parent[reversed_vertex]];
@@ -256,6 +260,7 @@ struct Engine {
         aux_graph[A].first_transaction[decor] = parent[txn];
       } else {
         parent[txn] = txn;
+        child[std::make_pair(B, txn)] = Transaction{};
         child[std::make_pair(C, txn)] = txn;
         aux_graph[A].first_transaction[decor] = parent[txn];
         aux_graph[A].content[parent[txn]] = aux_graph[C].content[parent[txn]];
@@ -272,6 +277,7 @@ struct Engine {
       } else {
         parent[txn] = txn;
         child[std::make_pair(B, txn)] = txn;
+        child[std::make_pair(C, txn)] = Transaction{};
         aux_graph[A].first_transaction[decor] = parent[txn];
         aux_graph[A].content[parent[txn]] = aux_graph[B].content[parent[txn]];
       }
@@ -294,6 +300,7 @@ struct Engine {
       } else {
         parent[txn] = txn;
         child[std::make_pair(B, txn)] = txn;
+        child[std::make_pair(C, txn)] = Transaction{};
         aux_graph[A].last_transaction[decor] = parent[txn];
         aux_graph[A].content[parent[txn]] = aux_graph[B].content[parent[txn]];
       }
@@ -308,6 +315,7 @@ struct Engine {
         aux_graph[A].last_transaction[decor] = parent[txn];
       } else {
         parent[txn] = txn;
+        child[std::make_pair(B, txn)] = Transaction{};
         child[std::make_pair(C, txn)] = txn;
         aux_graph[A].last_transaction[decor] = parent[txn];
         aux_graph[A].content[parent[txn]] = aux_graph[C].content[parent[txn]];
@@ -555,9 +563,6 @@ struct Engine {
     THS[std::make_pair(A, Ti)].insert(neighbor_summary.begin(),
                                       neighbor_summary.end());
 
-    // BHS[std::make_pair(A, Ti)].insert(trickle_down_summary.begin(),
-    //                                   trickle_down_summary.end());
-
     return res;
   }
 
@@ -639,9 +644,6 @@ struct Engine {
     }
     THS[std::make_pair(A, Ti)].insert(neighbor_summary.begin(),
                                       neighbor_summary.end());
-
-    // BHS[std::make_pair(A, Ti)].insert(bottom_summary.begin(),
-    //                                   bottom_summary.end());
   }
 
   void compute_summaries(
