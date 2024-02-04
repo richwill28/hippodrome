@@ -6,15 +6,15 @@
 #include <string>
 #include <unordered_set>
 
-using TransactionIdx = int;
+using TransactionIdx = uint64_t;
 
 struct Transaction {
   TransactionIdx idx;
   Thread thread;
 
-  Transaction() : idx{-1}, thread{} {}
+  Transaction() : idx{0}, thread{} {}
 
-  Transaction(TransactionIdx idx) : idx{idx}, thread{} {}
+  Transaction(TransactionIdx index) : idx{index}, thread{} {}
 
   std::string to_string() const { return "T" + std::to_string(idx); }
 
@@ -23,7 +23,7 @@ struct Transaction {
 
 template <> struct std::hash<Transaction> {
   std::size_t operator()(const Transaction &key) const {
-    return std::hash<int>{}(key.idx);
+    return std::hash<TransactionIdx>{}(key.idx);
   }
 };
 

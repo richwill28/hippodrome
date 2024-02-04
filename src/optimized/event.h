@@ -73,7 +73,7 @@ struct Event {
   Annotation annotation;
 
   Event()
-      : thread{-1}, type{EventType::undefined}, operand{},
+      : thread{""}, type{EventType::undefined}, operand{""},
         annotation{Annotation::undefined} {}
 
   Event(Thread thr, EventType ty, Operand op, Annotation anno)

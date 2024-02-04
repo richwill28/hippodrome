@@ -1,8 +1,8 @@
-CXX := clang++
-CXXFLAGS := -std=c++2a -O3 -Wall -Wextra -Wpedantic
+CXX := g++-12
+CXXFLAGS := -std=c++20 -Wpedantic -Wall -Wextra -Wconversion -Wshadow -Werror
 
 all:
-	$(CXX) $(CXXFLAGS) hippodrome.cpp -o hippodrome
+	$(CXX) $(CXXFLAGS) -O3 hippodrome.cpp -o hippodrome
 
 debug:
-	$(CXX) $(CXXFLAGS) -g -D DEBUG hippodrome.cpp -o hippodrome
+	$(CXX) $(CXXFLAGS) -Og -D DEBUG hippodrome.cpp -o hippodrome

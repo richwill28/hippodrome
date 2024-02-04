@@ -98,6 +98,34 @@ struct Graph {
     return visited.contains(w);
   }
 
+  bool reachable(Transaction v, Transaction w,
+                 const std::unordered_set<Transaction> &avoid) {
+    std::unordered_map<Transaction, std::unordered_set<Transaction>> neighbors;
+    std::unordered_set<Transaction> visited;
+    std::stack<Transaction> bag;
+
+    for (const auto &edge : edges) {
+      neighbors[edge.first].insert(edge.second);
+    }
+
+    bag.push(v);
+    while (!bag.empty()) {
+      Transaction x = bag.top();
+      bag.pop();
+      visited.insert(x);
+      for (Transaction y : neighbors[x]) {
+        if (y == w) {
+          return true;
+        }
+        if (!visited.contains(y) && !avoid.contains(y)) {
+          bag.push(y);
+        }
+      }
+    }
+
+    return visited.contains(w);
+  }
+
   std::string to_string() const {
     std::string str;
 
