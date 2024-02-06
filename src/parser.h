@@ -4,19 +4,19 @@
 #include "event.h"
 #include "grammar.h"
 #include "util.h"
-#include <ankerl/unordered_dense.h>
 #include <fstream>
 #include <iostream>
 #include <regex>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 struct Parser {
   Grammar grammar;
-  ankerl::unordered_dense::set<Thread> threads;
-  ankerl::unordered_dense::set<Operand> variables;
-  ankerl::unordered_dense::set<Operand> locks;
+  std::unordered_set<Thread> threads;
+  std::unordered_set<Operand> variables;
+  std::unordered_set<Operand> locks;
 
   EventType parse_event_type(std::string event_type) {
     if (event_type == "R") {
@@ -122,9 +122,8 @@ struct Parser {
     }
   }
 
-  std::tuple<Grammar, ankerl::unordered_dense::set<Thread>,
-             ankerl::unordered_dense::set<Operand>,
-             ankerl::unordered_dense::set<Operand>>
+  std::tuple<Grammar, std::unordered_set<Thread>, std::unordered_set<Operand>,
+             std::unordered_set<Operand>>
   parse(std::string map_path, std::string grammar_path) {
     parse_map(map_path);
     parse_grammar(grammar_path);

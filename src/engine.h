@@ -5,9 +5,9 @@
 #include "grammar.h"
 #include "graph.h"
 #include "parser.h"
-#include <ankerl/unordered_dense.h>
 #include <string>
 #include <tuple>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -22,30 +22,30 @@ struct Engine {
   Grammar grammar;
   std::vector<Nonterminal> topological_ordering;
 
-  ankerl::unordered_dense::map<Nonterminal, Graph> aux_graph;
-  ankerl::unordered_dense::map<Nonterminal, Graph> cross_graph;
-  ankerl::unordered_dense::map<Nonterminal, bool> csv;
+  std::unordered_map<Nonterminal, Graph> aux_graph;
+  std::unordered_map<Nonterminal, Graph> cross_graph;
+  std::unordered_map<Nonterminal, bool> csv;
 
-  ankerl::unordered_dense::set<Thread> threads;
-  ankerl::unordered_dense::set<Operand> variables;
-  ankerl::unordered_dense::set<Operand> locks;
+  std::unordered_set<Thread> threads;
+  std::unordered_set<Operand> variables;
+  std::unordered_set<Operand> locks;
 
   TransactionIdx fresh_transaction_idx = 1;
 
   // These are important for edges computation
-  ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                               ankerl::unordered_dense::set<Event>>
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
       THS; // top half summary
-  ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                               ankerl::unordered_dense::set<Event>>
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
       BHRS; // bottom half reversed summary
 
   // These are for memoization
-  ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                               ankerl::unordered_dense::set<Event>>
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
       TUS; // trickle up summary
-  ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                               ankerl::unordered_dense::set<Event>>
+  std::unordered_map<std::pair<Nonterminal, Transaction>,
+                     std::unordered_set<Event>>
       TURS; // trickle up reversed summary
 
   Transaction make_transaction() {
@@ -96,7 +96,7 @@ struct Engine {
 #endif
   }
 
-  bool contains_event(ankerl::unordered_dense::set<Event> set, Event event) {
+  bool contains_event(std::unordered_set<Event> set, Event event) {
     for (const Event &it : set) {
       if ((it.thread == event.thread || event.thread == "") &&
           (it.type == event.type || event.type == EventType::undefined) &&
@@ -109,14 +109,13 @@ struct Engine {
     return false;
   }
 
-  void merge_routine(
-      Nonterminal A, Nonterminal B, Nonterminal C,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &parent,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &child) {
+  void merge_routine(Nonterminal A, Nonterminal B, Nonterminal C,
+                     std::unordered_map<std::pair<Nonterminal, Transaction>,
+                                        Transaction> &parent,
+                     std::unordered_map<std::pair<Nonterminal, Transaction>,
+                                        Transaction> &child) {
 
-    ankerl::unordered_dense::map<Thread, Transaction> cross_transaction;
+    std::unordered_map<Thread, Transaction> cross_transaction;
 
     for (const Transaction &vertex : aux_graph[B].vertices) {
       if (vertex.idx == 0) {
@@ -206,12 +205,11 @@ struct Engine {
     }
   }
 
-  void compute_vertices(
-      Nonterminal A, Nonterminal B, Nonterminal C,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &parent,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &child) {
+  void compute_vertices(Nonterminal A, Nonterminal B, Nonterminal C,
+                        std::unordered_map<std::pair<Nonterminal, Transaction>,
+                                           Transaction> &parent,
+                        std::unordered_map<std::pair<Nonterminal, Transaction>,
+                                           Transaction> &child) {
 
     for (const Transaction &vertex : aux_graph[C].vertices) {
 
@@ -250,10 +248,10 @@ struct Engine {
 
   void compute_reversed_vertices(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &parent,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &child) {
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const Transaction &reversed_vertex : aux_graph[B].reversed_vertices) {
 
@@ -294,10 +292,10 @@ struct Engine {
 
   void compute_first_transactions(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &parent,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &child) {
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const auto &[decor, ftxn] : aux_graph[B].first_transaction) {
 
@@ -344,10 +342,10 @@ struct Engine {
 
   void compute_last_transactions(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &parent,
-      ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                   Transaction> &child) {
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const auto &[decor, ltxn] : aux_graph[C].last_transaction) {
 
@@ -392,19 +390,19 @@ struct Engine {
     }
   }
 
-  ankerl::unordered_dense::set<Event> compute_neighbor_summary_fixpoint(
+  std::unordered_set<Event> compute_neighbor_summary_fixpoint(
       Transaction Ti, Nonterminal A, Nonterminal B,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      ankerl::unordered_dense::set<Thread> &avoid) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      std::unordered_set<Thread> &avoid) {
 
     if (avoid.contains(Ti.thread)) {
-      return ankerl::unordered_dense::set<Event>{};
+      return std::unordered_set<Event>{};
     }
 
     avoid.insert(Ti.thread);
 
-    ankerl::unordered_dense::set<Event> res;
+    std::unordered_set<Event> res;
 
     for (const auto &edge : aux_graph[B].edges) {
 
@@ -452,7 +450,7 @@ struct Engine {
       res.insert(aux_graph[B].summary[Tj].begin(),
                  aux_graph[B].summary[Tj].end());
 
-      ankerl::unordered_dense::set<Event> neighbor_summary =
+      std::unordered_set<Event> neighbor_summary =
           compute_neighbor_summary_fixpoint(Tj, A, B, parent, avoid);
 
       res.insert(neighbor_summary.begin(), neighbor_summary.end());
@@ -461,23 +459,23 @@ struct Engine {
     return res;
   }
 
-  ankerl::unordered_dense::set<Event> compute_neighbor_summary(
+  std::unordered_set<Event> compute_neighbor_summary(
       Transaction Ti, Nonterminal A, Nonterminal B,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent) {
 
-    ankerl::unordered_dense::set<Thread> avoid;
+    std::unordered_set<Thread> avoid;
 
     return compute_neighbor_summary_fixpoint(Ti, A, B, parent, avoid);
   }
 
-  ankerl::unordered_dense::set<Event> compute_trickle_down_summary(
+  std::unordered_set<Event> compute_trickle_down_summary(
       Transaction Ti, Nonterminal B, Nonterminal C,
-      const ankerl::unordered_dense::set<Event> &neighbor_summary,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent) {
+      const std::unordered_set<Event> &neighbor_summary,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent) {
 
-    ankerl::unordered_dense::set<Event> top_events;
+    std::unordered_set<Event> top_events;
 
     top_events.insert(aux_graph[B].content[Ti].begin(),
                       aux_graph[B].content[Ti].end());
@@ -517,7 +515,7 @@ struct Engine {
       }
     }
 
-    ankerl::unordered_dense::set<Event> res;
+    std::unordered_set<Event> res;
 
     for (const std::pair<Event, Event> &arg : args) {
 
@@ -558,11 +556,11 @@ struct Engine {
     return res;
   }
 
-  ankerl::unordered_dense::set<Event>
+  std::unordered_set<Event>
   annotate_bottom_summary(Nonterminal B,
-                          const ankerl::unordered_dense::set<Event> &summary) {
+                          const std::unordered_set<Event> &summary) {
 
-    ankerl::unordered_dense::set<Event> res;
+    std::unordered_set<Event> res;
 
     for (const Event &event : summary) {
 
@@ -610,31 +608,31 @@ struct Engine {
     return res;
   }
 
-  ankerl::unordered_dense::set<Event> compute_trickle_up_summary_fixpoint(
+  std::unordered_set<Event> compute_trickle_up_summary_fixpoint(
       Transaction Ti, Transaction Tj, Nonterminal A, Nonterminal B,
       Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child,
-      ankerl::unordered_dense::set<Thread> &avoid) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child,
+      std::unordered_set<Thread> &avoid) {
 
     if (avoid.contains(Tj.thread)) {
-      return ankerl::unordered_dense::set<Event>{};
+      return std::unordered_set<Event>{};
     }
 
     avoid.insert(Tj.thread);
 
-    ankerl::unordered_dense::set<Event> neighbor_summary =
+    std::unordered_set<Event> neighbor_summary =
         compute_neighbor_summary(Tj, A, B, parent);
 
-    ankerl::unordered_dense::set<Event> trickle_down_summary =
+    std::unordered_set<Event> trickle_down_summary =
         compute_trickle_down_summary(Tj, B, C, neighbor_summary, parent);
 
-    ankerl::unordered_dense::set<Event> annotated_trickle_down_summary =
+    std::unordered_set<Event> annotated_trickle_down_summary =
         annotate_bottom_summary(B, trickle_down_summary);
 
-    ankerl::unordered_dense::set<Event> trickle_up_summary;
+    std::unordered_set<Event> trickle_up_summary;
 
     for (const Event &event : trickle_down_summary) {
       if (avoid.contains(event.thread)) {
@@ -653,15 +651,14 @@ struct Engine {
 
         Transaction Tk = aux_graph[B].last_transaction[decor];
 
-        ankerl::unordered_dense::set<Event> res =
-            compute_trickle_up_summary_fixpoint(Ti, Tk, A, B, C, parent, child,
-                                                avoid);
+        std::unordered_set<Event> res = compute_trickle_up_summary_fixpoint(
+            Ti, Tk, A, B, C, parent, child, avoid);
 
         trickle_up_summary.insert(res.begin(), res.end());
       }
     }
 
-    ankerl::unordered_dense::set<Event> res;
+    std::unordered_set<Event> res;
 
     res.insert(aux_graph[B].content[Tj].begin(),
                aux_graph[B].content[Tj].end());
@@ -682,13 +679,13 @@ struct Engine {
     return res;
   }
 
-  ankerl::unordered_dense::set<Event> compute_trickle_up_summary(
+  std::unordered_set<Event> compute_trickle_up_summary(
       Transaction Ti, Transaction Tj, Nonterminal A, Nonterminal B,
       Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     std::pair<Nonterminal, Transaction> decor{A, Ti};
 
@@ -696,7 +693,7 @@ struct Engine {
       return TUS[decor];
     }
 
-    ankerl::unordered_dense::set<Thread> avoid;
+    std::unordered_set<Thread> avoid;
 
     TUS[decor] = compute_trickle_up_summary_fixpoint(Ti, Tj, A, B, C, parent,
                                                      child, avoid);
@@ -706,10 +703,10 @@ struct Engine {
 
   void compute_summary(
       Transaction Ti, Nonterminal A, Nonterminal B, Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     if (aux_graph[A].summary.contains(Ti)) {
       return;
@@ -720,13 +717,13 @@ struct Engine {
               << ", B = " << B << ", C = " << C << ")\n";
 #endif
 
-    ankerl::unordered_dense::set<Event> b_summary;
+    std::unordered_set<Event> b_summary;
 
     if (child.contains(std::make_pair(B, Ti))) {
       b_summary = aux_graph[B].summary[child.at(std::make_pair(B, Ti))];
     }
 
-    ankerl::unordered_dense::set<Event> neighbor_summary;
+    std::unordered_set<Event> neighbor_summary;
 
     if (child.contains(std::make_pair(B, Ti))) {
       neighbor_summary = compute_neighbor_summary(
@@ -741,7 +738,7 @@ struct Engine {
     std::cout << "\n";
 #endif
 
-    ankerl::unordered_dense::set<Event> trickle_down_summary;
+    std::unordered_set<Event> trickle_down_summary;
 
     if (child.contains(std::make_pair(B, Ti))) {
       trickle_down_summary = compute_trickle_down_summary(
@@ -756,22 +753,22 @@ struct Engine {
     std::cout << "\n";
 #endif
 
-    ankerl::unordered_dense::set<Event> c_summary;
+    std::unordered_set<Event> c_summary;
 
     if (child.contains(std::make_pair(C, Ti))) {
       c_summary = aux_graph[C].summary[child.at(std::make_pair(C, Ti))];
     }
 
-    ankerl::unordered_dense::set<Event> bottom_summary;
+    std::unordered_set<Event> bottom_summary;
 
     bottom_summary.insert(trickle_down_summary.begin(),
                           trickle_down_summary.end());
     bottom_summary.insert(c_summary.begin(), c_summary.end());
 
-    ankerl::unordered_dense::set<Event> annotated_bottom_summary =
+    std::unordered_set<Event> annotated_bottom_summary =
         annotate_bottom_summary(B, bottom_summary);
 
-    ankerl::unordered_dense::set<Event> trickle_up_summary;
+    std::unordered_set<Event> trickle_up_summary;
 
     for (const Event &event : bottom_summary) {
       if (event.thread == Ti.thread) {
@@ -790,7 +787,7 @@ struct Engine {
 
         Transaction Tj = aux_graph[B].last_transaction[decor];
 
-        ankerl::unordered_dense::set<Event> res =
+        std::unordered_set<Event> res =
             compute_trickle_up_summary(Ti, Tj, A, B, C, parent, child);
 
         trickle_up_summary.insert(res.begin(), res.end());
@@ -812,10 +809,10 @@ struct Engine {
 
   void compute_summaries(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const Transaction &Ti : aux_graph[A].vertices) {
       compute_summary(Ti, A, B, C, parent, child);
@@ -826,20 +823,19 @@ struct Engine {
     }
   }
 
-  ankerl::unordered_dense::set<Event>
-  compute_neighbor_reversed_summary_fixpoint(
+  std::unordered_set<Event> compute_neighbor_reversed_summary_fixpoint(
       Transaction Ti, Nonterminal A, Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      ankerl::unordered_dense::set<Thread> &avoid) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      std::unordered_set<Thread> &avoid) {
 
     if (avoid.contains(Ti.thread)) {
-      return ankerl::unordered_dense::set<Event>{};
+      return std::unordered_set<Event>{};
     }
 
     avoid.insert(Ti.thread);
 
-    ankerl::unordered_dense::set<Event> res;
+    std::unordered_set<Event> res;
 
     for (const auto &edge : aux_graph[C].edges) {
 
@@ -887,7 +883,7 @@ struct Engine {
       res.insert(aux_graph[C].reversed_summary[Tj].begin(),
                  aux_graph[C].reversed_summary[Tj].end());
 
-      ankerl::unordered_dense::set<Event> neighbor_reversed_summary =
+      std::unordered_set<Event> neighbor_reversed_summary =
           compute_neighbor_reversed_summary_fixpoint(Tj, A, C, parent, avoid);
 
       res.insert(neighbor_reversed_summary.begin(),
@@ -897,23 +893,23 @@ struct Engine {
     return res;
   }
 
-  ankerl::unordered_dense::set<Event> compute_neighbor_reversed_summary(
+  std::unordered_set<Event> compute_neighbor_reversed_summary(
       Transaction Ti, Nonterminal A, Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent) {
 
-    ankerl::unordered_dense::set<Thread> avoid;
+    std::unordered_set<Thread> avoid;
 
     return compute_neighbor_reversed_summary_fixpoint(Ti, A, C, parent, avoid);
   }
 
-  ankerl::unordered_dense::set<Event> compute_trickle_down_reversed_summary(
+  std::unordered_set<Event> compute_trickle_down_reversed_summary(
       Transaction Ti, Nonterminal B, Nonterminal C,
-      const ankerl::unordered_dense::set<Event> &neighbor_reversed_summary,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent) {
+      const std::unordered_set<Event> &neighbor_reversed_summary,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent) {
 
-    ankerl::unordered_dense::set<Event> bottom_events;
+    std::unordered_set<Event> bottom_events;
 
     bottom_events.insert(aux_graph[C].content[Ti].begin(),
                          aux_graph[C].content[Ti].end());
@@ -954,7 +950,7 @@ struct Engine {
       }
     }
 
-    ankerl::unordered_dense::set<Event> res;
+    std::unordered_set<Event> res;
 
     for (const std::pair<Event, Event> &arg : args) {
 
@@ -995,11 +991,10 @@ struct Engine {
     return res;
   }
 
-  ankerl::unordered_dense::set<Event> annotate_top_reversed_summary(
-      Nonterminal C,
-      const ankerl::unordered_dense::set<Event> &reversed_summary) {
+  std::unordered_set<Event> annotate_top_reversed_summary(
+      Nonterminal C, const std::unordered_set<Event> &reversed_summary) {
 
-    ankerl::unordered_dense::set<Event> res;
+    std::unordered_set<Event> res;
 
     for (const Event &event : reversed_summary) {
 
@@ -1047,34 +1042,32 @@ struct Engine {
     return res;
   }
 
-  ankerl::unordered_dense::set<Event>
-  compute_trickle_up_reversed_summary_fixpoint(
+  std::unordered_set<Event> compute_trickle_up_reversed_summary_fixpoint(
       Transaction Ti, Transaction Tj, Nonterminal A, Nonterminal B,
       Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child,
-      ankerl::unordered_dense::set<Thread> &avoid) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child,
+      std::unordered_set<Thread> &avoid) {
 
     if (avoid.contains(Tj.thread)) {
-      return ankerl::unordered_dense::set<Event>{};
+      return std::unordered_set<Event>{};
     }
 
     avoid.insert(Tj.thread);
 
-    ankerl::unordered_dense::set<Event> neighbor_reversed_summary =
+    std::unordered_set<Event> neighbor_reversed_summary =
         compute_neighbor_reversed_summary(Tj, A, C, parent);
 
-    ankerl::unordered_dense::set<Event> trickle_down_reversed_summary =
+    std::unordered_set<Event> trickle_down_reversed_summary =
         compute_trickle_down_reversed_summary(
             Tj, B, C, neighbor_reversed_summary, parent);
 
-    ankerl::unordered_dense::set<Event>
-        annotated_trickle_down_reversed_summary =
-            annotate_top_reversed_summary(C, trickle_down_reversed_summary);
+    std::unordered_set<Event> annotated_trickle_down_reversed_summary =
+        annotate_top_reversed_summary(C, trickle_down_reversed_summary);
 
-    ankerl::unordered_dense::set<Event> trickle_up_reversed_summary;
+    std::unordered_set<Event> trickle_up_reversed_summary;
 
     for (const Event &event : trickle_down_reversed_summary) {
       if (avoid.contains(event.thread)) {
@@ -1093,7 +1086,7 @@ struct Engine {
 
         Transaction Tk = aux_graph[C].first_transaction[decor];
 
-        ankerl::unordered_dense::set<Event> res =
+        std::unordered_set<Event> res =
             compute_trickle_up_reversed_summary_fixpoint(Ti, Tk, A, B, C,
                                                          parent, child, avoid);
 
@@ -1101,7 +1094,7 @@ struct Engine {
       }
     }
 
-    ankerl::unordered_dense::set<Event> res;
+    std::unordered_set<Event> res;
 
     res.insert(aux_graph[C].content[Tj].begin(),
                aux_graph[C].content[Tj].end());
@@ -1125,13 +1118,13 @@ struct Engine {
     return res;
   }
 
-  ankerl::unordered_dense::set<Event> compute_trickle_up_reversed_summary(
+  std::unordered_set<Event> compute_trickle_up_reversed_summary(
       Transaction Ti, Transaction Tj, Nonterminal A, Nonterminal B,
       Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     std::pair<Nonterminal, Transaction> decor{A, Ti};
 
@@ -1139,7 +1132,7 @@ struct Engine {
       return TURS[decor];
     }
 
-    ankerl::unordered_dense::set<Thread> avoid;
+    std::unordered_set<Thread> avoid;
 
     TURS[decor] = compute_trickle_up_reversed_summary_fixpoint(
         Ti, Tj, A, B, C, parent, child, avoid);
@@ -1149,30 +1142,30 @@ struct Engine {
 
   void compute_reversed_summary(
       Transaction Ti, Nonterminal A, Nonterminal B, Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     if (aux_graph[A].reversed_summary.contains(Ti)) {
       return;
     }
 
-    ankerl::unordered_dense::set<Event> c_reversed_summary;
+    std::unordered_set<Event> c_reversed_summary;
 
     if (child.contains(std::make_pair(C, Ti))) {
       c_reversed_summary =
           aux_graph[C].reversed_summary[child.at(std::make_pair(C, Ti))];
     }
 
-    ankerl::unordered_dense::set<Event> neighbor_reversed_summary;
+    std::unordered_set<Event> neighbor_reversed_summary;
 
     if (child.contains(std::make_pair(C, Ti))) {
       neighbor_reversed_summary = compute_neighbor_reversed_summary(
           child.at(std::make_pair(C, Ti)), A, C, parent);
     }
 
-    ankerl::unordered_dense::set<Event> trickle_down_reversed_summary;
+    std::unordered_set<Event> trickle_down_reversed_summary;
 
     if (child.contains(std::make_pair(C, Ti))) {
       trickle_down_reversed_summary = compute_trickle_down_reversed_summary(
@@ -1180,24 +1173,24 @@ struct Engine {
           parent);
     }
 
-    ankerl::unordered_dense::set<Event> b_reversed_summary;
+    std::unordered_set<Event> b_reversed_summary;
 
     if (child.contains(std::make_pair(B, Ti))) {
       b_reversed_summary =
           aux_graph[B].reversed_summary[child.at(std::make_pair(B, Ti))];
     }
 
-    ankerl::unordered_dense::set<Event> top_reversed_summary;
+    std::unordered_set<Event> top_reversed_summary;
 
     top_reversed_summary.insert(trickle_down_reversed_summary.begin(),
                                 trickle_down_reversed_summary.end());
     top_reversed_summary.insert(b_reversed_summary.begin(),
                                 b_reversed_summary.end());
 
-    ankerl::unordered_dense::set<Event> annotated_top_reversed_summary =
+    std::unordered_set<Event> annotated_top_reversed_summary =
         annotate_top_reversed_summary(C, top_reversed_summary);
 
-    ankerl::unordered_dense::set<Event> trickle_up_reversed_summary;
+    std::unordered_set<Event> trickle_up_reversed_summary;
 
     for (const Event &event : top_reversed_summary) {
       if (event.thread == Ti.thread) {
@@ -1216,7 +1209,7 @@ struct Engine {
 
         Transaction Tj = aux_graph[C].first_transaction[decor];
 
-        ankerl::unordered_dense::set<Event> res =
+        std::unordered_set<Event> res =
             compute_trickle_up_reversed_summary(Ti, Tj, A, B, C, parent, child);
 
         trickle_up_reversed_summary.insert(res.begin(), res.end());
@@ -1240,10 +1233,10 @@ struct Engine {
 
   void compute_reversed_summaries(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const Transaction &Ti : aux_graph[A].reversed_vertices) {
       compute_reversed_summary(Ti, A, B, C, parent, child);
@@ -1257,10 +1250,10 @@ struct Engine {
   void compute_edge(
       Transaction Ti, Transaction Tj, Nonterminal A, Nonterminal B,
       Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     if (child.contains(std::make_pair(C, Ti)) &&
         child.contains(std::make_pair(C, Tj)) &&
@@ -1377,10 +1370,10 @@ struct Engine {
 
   void compute_edges(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const Transaction &Ti : aux_graph[A].vertices) {
       for (const Transaction &Tj : aux_graph[A].vertices) {
@@ -1401,10 +1394,10 @@ struct Engine {
   void compute_reversed_edge(
       Transaction Tj, Transaction Ti, Nonterminal A, Nonterminal B,
       Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     if (child.contains(std::make_pair(B, Tj)) &&
         child.contains(std::make_pair(B, Ti)) &&
@@ -1521,10 +1514,10 @@ struct Engine {
 
   void compute_reversed_edges(
       Nonterminal A, Nonterminal B, Nonterminal C,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &parent,
-      const ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                         Transaction> &child) {
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &parent,
+      const std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction>
+          &child) {
 
     for (const Transaction &Ti : aux_graph[A].reversed_vertices) {
       for (const Transaction &Tj : aux_graph[A].reversed_vertices) {
@@ -1548,7 +1541,7 @@ struct Engine {
     std::cout << "Engine: refresh_graph (" << B << ", " << C << ")\n";
 #endif
 
-    ankerl::unordered_dense::map<Transaction, Transaction> fresh;
+    std::unordered_map<Transaction, Transaction> fresh;
 
     for (const auto &txn : aux_graph[B].vertices) {
       if (!fresh.contains(txn)) {
@@ -1624,12 +1617,8 @@ struct Engine {
               << ")\n";
 #endif
 
-    ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                 Transaction>
-        parent;
-    ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                 Transaction>
-        child;
+    std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction> parent;
+    std::unordered_map<std::pair<Nonterminal, Transaction>, Transaction> child;
 
 #ifdef DEBUG
     std::cout << "Before merge_routine\n";
@@ -1731,15 +1720,15 @@ struct Engine {
     Nonterminal B{chunks[0]};
     Nonterminal C{chunks[1]};
 
-    ankerl::unordered_dense::map<Thread, Transaction> cross_transaction;
-    ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                 ankerl::unordered_dense::set<Event>>
+    std::unordered_map<Thread, Transaction> cross_transaction;
+    std::unordered_map<std::pair<Nonterminal, Transaction>,
+                       std::unordered_set<Event>>
         content;
-    ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                 ankerl::unordered_dense::set<Event>>
+    std::unordered_map<std::pair<Nonterminal, Transaction>,
+                       std::unordered_set<Event>>
         summary;
-    ankerl::unordered_dense::map<std::pair<Nonterminal, Transaction>,
-                                 ankerl::unordered_dense::set<Event>>
+    std::unordered_map<std::pair<Nonterminal, Transaction>,
+                       std::unordered_set<Event>>
         reversed_summary;
 
     for (const Transaction &vertex : aux_graph[B].vertices) {
@@ -1783,7 +1772,7 @@ struct Engine {
       }
     }
 
-    for (const auto &it : cross_transaction) {
+    for (const std::pair<const Thread, Transaction> &it : cross_transaction) {
       cross_graph[A].vertices.insert(it.second);
     }
 
@@ -1883,7 +1872,7 @@ struct Engine {
   }
 
   void topological_sort_dfs(Nonterminal &vertex,
-                            ankerl::unordered_dense::set<Nonterminal> &visited,
+                            std::unordered_set<Nonterminal> &visited,
                             std::vector<Nonterminal> &result) {
     visited.insert(vertex);
     for (Symbol neighbor : grammar.rules.at(vertex)) {
@@ -1898,7 +1887,7 @@ struct Engine {
 
   std::vector<Nonterminal> topological_sort() {
     Nonterminal start{"0"};
-    ankerl::unordered_dense::set<Nonterminal> visited;
+    std::unordered_set<Nonterminal> visited;
     std::vector<Nonterminal> result;
     topological_sort_dfs(start, visited, result);
     return result;

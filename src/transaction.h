@@ -2,7 +2,9 @@
 #define TRANSACTION_H
 
 #include "event.h"
+#include "grammar.h"
 #include <string>
+#include <unordered_set>
 
 using TransactionIdx = uint64_t;
 

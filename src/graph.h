@@ -4,10 +4,11 @@
 #include "event.h"
 #include "grammar.h"
 #include "transaction.h"
-#include <ankerl/unordered_dense.h>
 #include <stack>
 #include <string>
 #include <tuple>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 
 template <> struct std::hash<std::tuple<Thread, EventType, Operand>> {
@@ -27,31 +28,24 @@ template <> struct std::hash<std::pair<Transaction, Transaction>> {
 };
 
 struct Graph {
-  ankerl::unordered_dense::set<Transaction> vertices;
-  ankerl::unordered_dense::set<Transaction> reversed_vertices;
-  ankerl::unordered_dense::map<std::tuple<Thread, EventType, Operand>,
-                               Transaction>
+  std::unordered_set<Transaction> vertices;
+  std::unordered_set<Transaction> reversed_vertices;
+  std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
       first_transaction;
-  ankerl::unordered_dense::map<std::tuple<Thread, EventType, Operand>,
-                               Transaction>
+  std::unordered_map<std::tuple<Thread, EventType, Operand>, Transaction>
       last_transaction;
-  ankerl::unordered_dense::set<std::pair<Transaction, Transaction>> edges;
-  ankerl::unordered_dense::map<Transaction, ankerl::unordered_dense::set<Event>>
-      content;
-  ankerl::unordered_dense::map<Transaction, ankerl::unordered_dense::set<Event>>
-      summary;
-  ankerl::unordered_dense::map<Transaction, ankerl::unordered_dense::set<Event>>
-      reversed_summary;
+  std::unordered_set<std::pair<Transaction, Transaction>> edges;
+  std::unordered_map<Transaction, std::unordered_set<Event>> content;
+  std::unordered_map<Transaction, std::unordered_set<Event>> summary;
+  std::unordered_map<Transaction, std::unordered_set<Event>> reversed_summary;
 
   Graph()
       : vertices{}, reversed_vertices{}, first_transaction{},
         last_transaction{}, edges{}, content{}, summary{}, reversed_summary{} {}
 
   bool cyclic() const {
-    ankerl::unordered_dense::map<Transaction,
-                                 ankerl::unordered_dense::set<Transaction>>
-        neighbors;
-    ankerl::unordered_dense::map<Transaction, size_t> in_degree;
+    std::unordered_map<Transaction, std::unordered_set<Transaction>> neighbors;
+    std::unordered_map<Transaction, size_t> in_degree;
     std::stack<Transaction> bag;
     size_t visited = 0;
 
@@ -81,10 +75,8 @@ struct Graph {
   }
 
   bool reachable(Transaction v, Transaction w) {
-    ankerl::unordered_dense::map<Transaction,
-                                 ankerl::unordered_dense::set<Transaction>>
-        neighbors;
-    ankerl::unordered_dense::set<Transaction> visited;
+    std::unordered_map<Transaction, std::unordered_set<Transaction>> neighbors;
+    std::unordered_set<Transaction> visited;
     std::stack<Transaction> bag;
 
     for (const auto &edge : edges) {
@@ -107,11 +99,9 @@ struct Graph {
   }
 
   bool reachable(Transaction v, Transaction w,
-                 const ankerl::unordered_dense::set<Transaction> &avoid) {
-    ankerl::unordered_dense::map<Transaction,
-                                 ankerl::unordered_dense::set<Transaction>>
-        neighbors;
-    ankerl::unordered_dense::set<Transaction> visited;
+                 const std::unordered_set<Transaction> &avoid) {
+    std::unordered_map<Transaction, std::unordered_set<Transaction>> neighbors;
+    std::unordered_set<Transaction> visited;
     std::stack<Transaction> bag;
 
     for (const auto &edge : edges) {

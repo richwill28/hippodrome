@@ -2,9 +2,10 @@
 #define GRAMMAR_H
 
 #include "event.h"
-#include <ankerl/unordered_dense.h>
 #include <iostream>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 using Symbol = std::string;
@@ -12,10 +13,10 @@ using Nonterminal = std::string;
 using Terminal = std::string;
 
 struct Grammar {
-  ankerl::unordered_dense::set<Nonterminal> nonterminals;
-  ankerl::unordered_dense::set<Terminal> terminals;
-  ankerl::unordered_dense::map<Nonterminal, std::vector<Symbol>> rules;
-  ankerl::unordered_dense::map<Terminal, Event> content;
+  std::unordered_set<Nonterminal> nonterminals;
+  std::unordered_set<Terminal> terminals;
+  std::unordered_map<Nonterminal, std::vector<Symbol>> rules;
+  std::unordered_map<Terminal, Event> content;
 
   void generate(Nonterminal nonterminal) const {
     std::cout << "====================" + nonterminal +
