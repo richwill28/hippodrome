@@ -1,0 +1,9 @@
+#!/bin/bash
+#PBS -q largemem
+#PBS -P 11002670
+#PBS -l select=1:ncpus=1:mem=32gb
+#PBS -l walltime=00:30:00
+#PBS -o output.log
+#PBS -e error.log
+
+./home/users/nus/e0550368/repo/hippodrome/scripts/build/transform_grammar philo
