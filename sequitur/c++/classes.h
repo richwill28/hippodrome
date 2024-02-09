@@ -13,8 +13,8 @@
 
 using namespace std;
 
-extern int num_symbols, current_rule, K;
-extern int occupied, table_size;
+extern long long num_symbols, current_rule, K;
+extern long long occupied, table_size;
 
 class symbols;
 class rules;
@@ -35,21 +35,21 @@ class rules {
   symbols *guard;
 
   // count keeps track of the number of times the rule is used in the grammar
-  int count;
+  long long count;
 
   // Usage stores the number of times a rule is used in the input.
   //    An example of the difference between count and Usage: in a grammar
   //    with rules S->abXcdXef , X->gAiAj , A->kl , rule A's count is 2
   //    (it is used two times in the grammar), while its Usage is 4 (there
   //    are two X's in the input sequence, and each of them uses A two times)
-  int Usage;
+  long long Usage;
 
   // number can serve two purposes:
   // (1) numbering the rules nicely for printing
   //     (in this case it's not essential for the algorithm)
   // (2) if this is a non-terminal symbol, assign a code to it
   //     (used in compression and forget_print())
-  int number;
+  long long number;
 
 public:
   void output();     // output right hand of the rule when printing out grammar
@@ -64,11 +64,11 @@ public:
   symbols *first();     // pointer to first symbol of rule's right hand
   symbols *last();      // pointer to last symbol of rule's right hand
 
-  int freq()           { return count; }
-  int usage()          { return Usage; }
-  void usage(int i)    { Usage += i; }
-  int index()          { return number; }
-  void index(int i)    { number = i; }
+  long long freq()           { return count; }
+  long long usage()          { return Usage; }
+  void usage(long long i)    { Usage += i; }
+  long long index()          { return number; }
+  void index(long long i)    { number = i; }
 
   void reproduce();    // reproduce full expansion of the rule
 };
@@ -81,7 +81,7 @@ public:
 
   // print out symbol, or, if it is non-terminal, rule's full expansion
   void reproduce() {
-    extern int numbers;
+    extern long long numbers;
 
     if (non_terminal()) rule()->reproduce();
     else {
@@ -163,7 +163,7 @@ public:
     if (is_guard() || n->is_guard()) return;
     symbols **m = find_digram(this);
     if (m == 0) return;
-    for (int i = 0; i < K; i ++)
+    for (long long i = 0; i < K; i ++)
       if (m[i] == this) {
 	m[i] = (symbols *) 1;
 	occupied --;
@@ -180,7 +180,7 @@ public:
   // the corresponding rule, they're guaranteed to be even
   // (more -- a multiple of 4) on modern architectures
 
-  int non_terminal() { return ((s % 2) == 0) && (s != 0);}
+  long long non_terminal() { return ((s % 2) == 0) && (s != 0);}
 
   symbols *next() { return n; }
   symbols *prev() { return p; }
@@ -194,7 +194,7 @@ public:
   void substitute(rules *r);
 
   // check digram and enforce the Sequitur constraints if necessary
-  int check();
+  long long check();
 
   // substitute non-terminal symbol with its rule's right hand
   void expand();

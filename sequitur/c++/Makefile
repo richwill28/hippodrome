@@ -1,6 +1,6 @@
 .PHONY: clean
 
-CFLAGS = -O3
+CFLAGS = -O3 -Wpedantic -Wall -Wextra -Wconversion
 
 all:	sequitur sequitur_simple
 

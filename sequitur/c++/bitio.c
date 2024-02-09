@@ -50,18 +50,18 @@ static char
  * can be referenced by macro
  */
 
-unsigned int	_bytes_input = 0;
-unsigned int	_bytes_output = 0;
+unsigned long long	_bytes_input = 0;
+unsigned long long	_bytes_output = 0;
 
-int		_in_buffer;			/* I/O buffer */
+long long		_in_buffer;			/* I/O buffer */
 unsigned char	_in_bit_ptr = 0;		/* bits left in buffer */
-int		_in_garbage;			/* bytes read beyond eof */
+long long		_in_garbage;			/* bytes read beyond eof */
 
-int		_out_buffer;			/* I/O buffer */
-int		_out_bits_to_go;		/* bits to fill buffer */
+long long		_out_buffer;			/* I/O buffer */
+long long		_out_bits_to_go;		/* bits to fill buffer */
 
 #ifndef FAST_BITIO
-int		_bitio_tmp;			/* Used by some of the */
+long long		_bitio_tmp;			/* Used by some of the */
 #endif						/* bitio.h macros */
 
 /*
@@ -113,7 +113,7 @@ void doneinputtingbits(void)
 /*
  * Number of bytes read with bitio functions.
  */
-int bitio_bytes_in(void)
+long long bitio_bytes_in(void)
 {
     return _bytes_input;
 }
@@ -121,7 +121,7 @@ int bitio_bytes_in(void)
 /*
  * Number of bytes written with bitio functions.
  */
-int bitio_bytes_out(void)
+long long bitio_bytes_out(void)
 {
     return _bytes_output;
 }
@@ -130,7 +130,7 @@ int bitio_bytes_out(void)
  * Return bit to input stream.
  * Only guaranteed to be able to backup by 1 bit.
  */
-void unget_bit(int bit)
+void unget_bit(long long bit)
 {
   _in_bit_ptr <<= 1;
 

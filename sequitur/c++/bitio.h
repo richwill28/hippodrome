@@ -39,17 +39,17 @@ Copyright 1995 John Carpinelli and Wayne Salamonsen, All Rights Reserved.
 #define		BYTE_SIZE		8
 
 /* As declared in bitio.c */
-extern unsigned int	_bytes_input, _bytes_output;
+extern unsigned long long	_bytes_input, _bytes_output;
 
-extern int 		_in_buffer;		/* Input buffer	 	    */
+extern long long 		_in_buffer;		/* Input buffer	 	    */
 extern unsigned char	_in_bit_ptr;		/* Input bit pointer 	    */
-extern int		_in_garbage;		/* # of bytes read past EOF */
+extern long long		_in_garbage;		/* # of bytes read past EOF */
 
-extern int		_out_buffer;		/* Output buffer 	    */
-extern int		_out_bits_to_go;	/* Output bits in buffer    */
+extern long long		_out_buffer;		/* Output buffer 	    */
+extern long long		_out_bits_to_go;	/* Output bits in buffer    */
 
 #ifndef FAST_BITIO
-extern int		_bitio_tmp;		/* Used by i/o macros to    */
+extern long long		_bitio_tmp;		/* Used by i/o macros to    */
 #endif						/* keep function ret values */
 
 
@@ -152,9 +152,9 @@ void startoutputtingbits(void);
 void startinputtingbits(void);
 void doneoutputtingbits(void);
 void doneinputtingbits(void);
-int bitio_bytes_in(void);
-int bitio_bytes_out(void);
+long long bitio_bytes_in(void);
+long long bitio_bytes_out(void);
 
-void unget_bit(int bit);
+void unget_bit(long long bit);
 
 #endif		/* ifndef bitio_h */

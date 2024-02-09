@@ -17,13 +17,13 @@
 #define NONOPT (-1)
 
 char *optarg = NULL;
-int optind = 1;
-static int offset = 0;
+long long optind = 1;
+static long long offset = 0;
 
-int getopt ( int argc, char **argv, char *optstring )
+long long getopt ( long long argc, char **argv, char *optstring )
 {
     char *group, option, *s;
-    int len;
+    long long len;
 
     option = NONOPT;
     optarg = NULL;

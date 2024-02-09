@@ -126,8 +126,8 @@ static char
 
 
 #if defined(VARY_NBITS)
-         int		B_bits = B_BITS;		/* Default values */
-         int		F_bits = F_BITS;
+         long long		B_bits = B_BITS;		/* Default values */
+         long long		F_bits = F_BITS;
   static code_value	Half;
   static code_value	Quarter;
 #else
@@ -170,7 +170,7 @@ do                                      \
 
 #ifdef FRUGAL_BITS
 
-    int _ignore_first_bit = 1;
+    long long _ignore_first_bit = 1;
 
 #  define BIT_PLUS_FOLLOW(x)		\
     do						\
@@ -324,7 +324,7 @@ void arithmetic_encode(freq_value low, freq_value high, freq_value total)
 
 #   ifdef VARY_NBITS
     {
-        int i, nShifts;
+        long long i, nShifts;
 	nShifts = B_bits - F_bits - 1;
 	M = total << nShifts;
 	   for (i = nShifts;; i--) 
@@ -425,7 +425,7 @@ freq_value arithmetic_decode_target(freq_value total)
     in_r = 0;
 #   ifdef  VARY_NBITS
     {
-	int i, nShifts;
+	long long i, nShifts;
 	nShifts = B_bits - F_bits - 1;
 	M = total << nShifts;
 	for (i = nShifts;; i--) 
@@ -535,7 +535,7 @@ void arithmetic_decode(freq_value low, freq_value high, freq_value total)
 
 #   ifdef VARY_NBITS
     {
-      int i, nShifts;
+      long long i, nShifts;
       M = in_r << F_bits;
       nShifts = B_bits - F_bits - 1;
       for (i = nShifts;; i--) 
@@ -603,9 +603,9 @@ void arithmetic_decode(freq_value low, freq_value high, freq_value total)
  *					* in arithmetic_encode() )	*
  *
  */
-void binary_arithmetic_encode(freq_value c0, freq_value c1, int bit)
+void binary_arithmetic_encode(freq_value c0, freq_value c1, long long bit)
 {
-    int LPS;
+    long long LPS;
     freq_value cLPS, rLPS;
 
     if (c0 < c1) 		/* From frequencies (c0 and c1) determine */ 
@@ -631,7 +631,7 @@ void binary_arithmetic_encode(freq_value c0, freq_value c1, int bit)
 
 #  ifdef VARY_NBITS
    {
-    int i, nShifts;
+    long long i, nShifts;
     nShifts = B_bits - F_bits - 1;
     denominator = (c0 + c1) << nShifts;
     for (i = nShifts;; i--) 
@@ -714,11 +714,11 @@ void binary_arithmetic_encode(freq_value c0, freq_value c1, int bit)
  * return bit;
  *
  */
-int
+long long
 binary_arithmetic_decode(freq_value c0, freq_value c1)
 {
-    int LPS;
-    int bit;
+    long long LPS;
+    long long bit;
     freq_value cLPS, rLPS;
 
     if (c0 < c1) 
@@ -742,7 +742,7 @@ binary_arithmetic_decode(freq_value c0, freq_value c1)
 
 #   ifdef VARY_NBITS
     {
-    	    int i, nShifts;
+    	    long long i, nShifts;
 	    nShifts = B_bits - F_bits - 1;
             denominator = (c0 + c1) << nShifts;
 	    for (i = nShifts;; i--) 
@@ -833,7 +833,7 @@ void start_encode(void)
  */
 void finish_encode(void)
 {
-  int nbits, i;
+  long long nbits, i;
   code_value roundup, bits, value;
   for (nbits = 1; nbits <= B_bits; nbits++)
     {
@@ -857,7 +857,7 @@ void finish_encode(void)
  */
 void finish_encode(void)
 {
-  int nbits, i;
+  long long nbits, i;
   code_value bits;
 
   nbits = B_bits;
@@ -884,7 +884,7 @@ void finish_encode(void)
 void 
 start_decode(void)
 {
- int i;
+ long long i;
 #if defined(VARY_NBITS)
 	/* B_bits will have been selected */
     Half	  = ((code_value) 1 << (B_bits-1));
@@ -896,7 +896,7 @@ start_decode(void)
 
 #ifdef FRUGAL_BITS
   {
-    static int firstmessage = 1;
+    static long long firstmessage = 1;
     if (firstmessage)
 	{
 	    for (i = 0; i < B_bits-1; i++)
@@ -937,7 +937,7 @@ start_decode(void)
  */
 void finish_decode(void)
 {
-  int nbits, i;
+  long long nbits, i;
   code_value roundup, bits, value;
   code_value in_L;
 

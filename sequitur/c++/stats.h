@@ -66,15 +66,15 @@ part of each and every copy made of these files.
 
 /* context structure used to store frequencies */
 typedef struct {
-    int initial_size;			/* original length of context */
-    int max_length, length;		/* length of tree and current length */
+    long long initial_size;			/* original length of context */
+    long long max_length, length;		/* length of tree and current length */
     freq_value nSingletons;		/* no. symbols with frequency=1 */
-    int type;				/* context may be STATIC or DYNAMIC */
-    int nSymbols;			/* count of installed symbols */
+    long long type;				/* context may be STATIC or DYNAMIC */
+    long long nSymbols;			/* count of installed symbols */
     freq_value total;			/* total of all frequencies */
     freq_value *tree;			/* Fenwick's binary index tree */
     freq_value incr;			/* current increment */
-    int 	most_freq_symbol;
+    long long 	most_freq_symbol;
     freq_value	most_freq_count;
     freq_value	most_freq_pos;
 } context;
@@ -92,14 +92,14 @@ extern char *stats_desc;
 
 
 /* function prototypes */
-context *create_context(int length, int type);
-int install_symbol(context *pTree, int symbol);
-void delete_symbol(context *pTree, int symbol);
-int encode(context *pContext, int symbol);
-int decode(context *pContext);
+context *create_context(long long length, long long type);
+long long install_symbol(context *pTree, long long symbol);
+void delete_symbol(context *pTree, long long symbol);
+long long encode(context *pContext, long long symbol);
+long long decode(context *pContext);
 void purge_context(context *pContext);
 binary_context *create_binary_context(void);
-int binary_encode(binary_context *pContext, int bit);
-int binary_decode(binary_context *pContext);
+long long binary_encode(binary_context *pContext, long long bit);
+long long binary_decode(binary_context *pContext);
 
 #endif

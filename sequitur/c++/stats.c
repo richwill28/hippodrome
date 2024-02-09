@@ -61,7 +61,7 @@ static char rcsid[] = "$Id: stats.c,v 1.2 1996/10/03 01:27:11 langs Exp $";
 #endif
 
 static void get_interval(context *pContext,
-		         freq_value *pLow, freq_value *pHigh, int symbol);
+		         freq_value *pLow, freq_value *pHigh, long long symbol);
 static void halve_context(context *pContext);
 
 
@@ -78,7 +78,7 @@ static void halve_context(context *pContext);
 #define INCR_SYMBOL_PROB_ACTUAL(pContext, symbol, inc1)			\
    freq_value _inc = (inc1);						\
    freq_value *_tree = pContext->tree;					\
-   int i=symbol;                                  			\
+   long long i=symbol;                                  			\
 					/* Increment stats */		\
    do {									\
         _tree[i] += _inc;						\
@@ -192,11 +192,11 @@ void init_zero_freq(context *pContext)
  *  needs to be expanded)
  */
 
-context *create_context(int length, int type)
+context *create_context(long long length, long long type)
 {
     context	*pContext;
-    int		i;
-    int		size = 1;
+    long long		i;
+    long long		size = 1;
 
 #ifdef VARY_NBITS
     /* Ensure max frequency set up.  */
@@ -254,7 +254,7 @@ context *create_context(int length, int type)
  *
  */
 
-void delete_symbol(context *pContext, int symbol)
+void delete_symbol(context *pContext, long long symbol)
 {
     freq_value low, high;
 
@@ -265,9 +265,9 @@ void delete_symbol(context *pContext, int symbol)
     INCR_SYMBOL_PROB(pContext, symbol, low, high, low - high);
 }
 
-int install_symbol(context *pContext, int symbol)
+long long install_symbol(context *pContext, long long symbol)
 {
-    int i;
+    long long i;
     freq_value low, high;
 
 		/* Increment because first user symbol (symbol 0)
@@ -341,7 +341,7 @@ int install_symbol(context *pContext, int symbol)
  * return NOT_KNOWN otherwise returns 0
  *
  */
-int encode(context *pContext, int symbol)
+long long encode(context *pContext, long long symbol)
 {
     freq_value low, high, low_w, high_w;
 
@@ -439,10 +439,10 @@ int encode(context *pContext, int symbol)
  * decode function is passed a context, and returns a symbol
  *
  */
-int 
+long long 
 decode(context *pContext)
 {
-    int	symbol;
+    long long	symbol;
     freq_value low, high, mid, target;
     freq_value total = pContext->total;
  
@@ -496,7 +496,7 @@ decode(context *pContext)
 		high = low + pContext->tree[symbol];
 	else
 	  {
-		int parent, sym_1;
+		long long parent, sym_1;
 		freq_value *tree = pContext->tree;
 		parent = BACK(symbol);
 		high = low;
@@ -554,7 +554,7 @@ decode(context *pContext)
  *
  */
 static void 
-get_interval(context *pContext, freq_value *pLow, freq_value *pHigh, int symbol)
+get_interval(context *pContext, freq_value *pLow, freq_value *pHigh, long long symbol)
 {
     freq_value low, high, shared, parent;
     freq_value *tree = pContext->tree;
@@ -603,7 +603,7 @@ get_interval(context *pContext, freq_value *pLow, freq_value *pHigh, int symbol)
 static void
 halve_context(context *pContext)
 {
-    int	i, zero_count, temp;
+    long long	i, zero_count, temp;
     freq_value old_values[MAX_F_BITS], new_values[MAX_F_BITS];
     freq_value sum_old, sum_new;
     freq_value *tree = pContext->tree;
@@ -669,7 +669,7 @@ halve_context(context *pContext)
 void 
 purge_context(context *pContext)
 {
-    int i;
+    long long i;
 
     free(pContext->tree);
     
@@ -742,8 +742,8 @@ binary_context *create_binary_context(void)
  * returns 0 if successful
  *
  */
-int
-binary_encode(binary_context *pContext, int bit)
+long long
+binary_encode(binary_context *pContext, long long bit)
 {
     binary_arithmetic_encode(pContext->c0, pContext->c1, bit);
 
@@ -771,10 +771,10 @@ binary_encode(binary_context *pContext, int bit)
  * coding functions
  *
  */
-int
+long long
 binary_decode(binary_context *pContext)
 {
-    int bit;
+    long long bit;
 
     bit = binary_arithmetic_decode(pContext->c0, pContext->c1);
 

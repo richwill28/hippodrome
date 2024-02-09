@@ -37,14 +37,14 @@ using namespace std;
 
 rules *S;                 // pointer to main rule of the grammar
 
-int num_rules = 0;        // number of rules in the grammar
-int num_symbols = 0;      // number of symbols in the grammar
-int min_terminal,         // minimum and maximum value among terminal symbols
+long long num_rules = 0;        // number of rules in the grammar
+long long num_symbols = 0;      // number of symbols in the grammar
+long long min_terminal,         // minimum and maximum value among terminal symbols
     max_terminal;         //
-int max_rule_len = 2;     // maximum rule length
+long long max_rule_len = 2;     // maximum rule length
 bool compression_initialized = false;
 
-int compress = 0,
+long long compress = 0,
   do_uncompress = 0,
   do_print = 0,
   reproduce = 0,
@@ -69,7 +69,7 @@ ofstream *rule_S = 0;
 
 #ifdef PLATFORM_MSWIN
 extern "C" {
-int getopt ( int argc, char **argv, char *optstring );
+long long getopt ( long long argc, char **argv, char *optstring );
 }
 #endif
 
@@ -99,9 +99,9 @@ int main(int argc, char **argv)
   extern int optind, opterr;   // ... from getopt()
 
   // number of input characters read so far (used only for progress indicator)
-  int chars = 0;
+  long long chars = 0;
   // maximum number of symbols that can be held in memory (used with -f option)
-  int max_symbols = 0;
+  long long max_symbols = 0;
 
   int c;
 
@@ -118,9 +118,9 @@ int main(int argc, char **argv)
       case 'q': quiet = 1; break;
       case 'z': phind = 1; break;
       case 'e': delimiter_string = optarg; break;
-      case 'f': max_symbols = atoi(optarg); break;
-      case 'k': K = atoi(optarg) - 1; break;
-      case 'm': memory_to_use = atoi(optarg) * 1000000; break;
+      case 'f': max_symbols = atoll(optarg); break;
+      case 'k': K = atoll(optarg) - 1; break;
+      case 'm': memory_to_use = atoll(optarg) * 1000000; break;
     }
   }
 
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
   }
 
   if (delimiter_string)
-    delimiter = numbers ? atoi(delimiter_string) : delimiter_string[0];
+    delimiter = numbers ? atoll(delimiter_string) : delimiter_string[0];
 
 
   //
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
   // read first character and put it in the grammar
   //
 
-  int i;
+  long long i;
 
   if (numbers) cin >> i;
   else i = cin.get();
@@ -183,7 +183,7 @@ int main(int argc, char **argv)
   //
   // now loop reading characters (loop will end upon reaching end of input)
   //
-  static int last_time = 0;
+  static long long last_time = 0;
   struct timeb tp;
   ftime(&tp);
   last_time =  tp.time * 1000 + tp.millitm;
@@ -194,14 +194,14 @@ int main(int argc, char **argv)
 #ifdef PLATFORM_UNIX
     if (++ chars % 1000000 == 0 && !quiet) {
       struct tms buffer;
-      extern int collisions, lookups, occupancy;//, occ[100];
+      extern long long collisions, lookups, occupancy;//, occ[100];
 
       ftime(&tp);
-      int milliseconds =  tp.time * 1000 + tp.millitm;
+      long long milliseconds =  tp.time * 1000 + tp.millitm;
 
-      fprintf(stderr, "%3d MB processed, %.2f MB/s, %.3f collisions/lookup, %.2f%% occupancy\n",
-	      chars / 1000000, 1000.0 / (milliseconds - last_time),
-	      collisions/ float(lookups), 100.0 * occupied / table_size);
+      fprintf(stderr, "%3lld MB processed, %.2Lf MB/s, %.3Lf collisions/lookup, %.2Lf%% occupancy\n",
+	      chars / 1000000, 1000.0 / (long double) (milliseconds - last_time),
+	      collisions / (long double) lookups, 100.0 * (long double) occupied / table_size);
       //      last_time = buffer.tms_utime;
       last_time = milliseconds;
     }
@@ -266,12 +266,12 @@ int main(int argc, char **argv)
 // print the rules out
 
 rules **R1;
-int Ri;
+long long Ri;
 
 // print out the grammar (after non-terminals have been numbered)
 void print()
 {
-  for (int i = 0; i < Ri; i ++) {
+  for (long long i = 0; i < Ri; i ++) {
     cout << i << " -> ";
     for (symbols *p = R1[i]->first(); !p->is_guard(); p = p->next())
       if (p->non_terminal()) cout << p->rule()->index() << ' ';
@@ -300,7 +300,7 @@ void number()
   R1[0] = S;
   Ri = 1;
 
-  for (int i = 0; i < Ri; i ++)
+  for (long long i = 0; i < Ri; i ++)
     for (symbols *p = R1[i]->first(); !p->is_guard(); p = p->next())
       if (p->non_terminal() && R1[p->rule()->index()] != p->rule()) {
          p->rule()->index(Ri);

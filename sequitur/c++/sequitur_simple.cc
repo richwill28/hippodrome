@@ -1,5 +1,5 @@
-#include <cstring>
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 // This code was written for didactic purposes;
@@ -26,11 +26,11 @@ class rules {
   symbols *guard;
 
   //  count keeps track of the number of times the rule is used in the grammar
-  int count;
+  long long count;
 
   // this is just for numbering the rules nicely for printing; it's
   // not essential for the algorithm
-  int number;
+  long long number;
 
 public:
   rules();
@@ -42,9 +42,9 @@ public:
   symbols *first();
   symbols *last();
 
-  int freq() { return count; };
-  int index() { return number; };
-  void index(int i) { number = i; };
+  long long freq() { return count; };
+  long long index() { return number; };
+  void index(long long i) { number = i; };
 };
 
 class symbols {
@@ -123,13 +123,13 @@ class symbols {
 
   // returns true if this is the guard node marking the beginning/end of a rule
 
-  int is_guard() { return non_terminal() && rule()->first()->prev() == this; };
+  long long is_guard() { return non_terminal() && rule()->first()->prev() == this; };
 
   // non_terminal() returns true if a symbol is non-terminal.
   // If s is odd, the symbol is a terminal
   // If s is even, the symbol is  non-terminal: a pointer to the referenced rule
 
-  int non_terminal() { return ((s % 2) == 0) && (s != 0);};
+  long long non_terminal() { return ((s % 2) == 0) && (s != 0);};
 
   symbols *next() { return n;};
   symbols *prev() { return p;};
@@ -146,7 +146,7 @@ class symbols {
   // checks a new digram. If it appears elsewhere, deals with it by calling
   // match(), otherwise inserts it into the hash table
 
-  int check() {
+  long long check() {
     if (is_guard() || n->is_guard()) return 0;
     symbols **x = find_digram(this);
     if (ulong(*x) <= 1) {
@@ -168,10 +168,10 @@ rules S;
 int main()
 {
   S.last()->insert_after(new symbols(cin.get()));
-  int x = 0;
+  long long x = 0;
 
   while (1) {
-    int i = cin.get(); if (cin.eof()) break;
+    long long i = cin.get(); if (cin.eof()) break;
     S.last()->insert_after(new symbols(i));
     S.last()->prev()->check();
   }
@@ -180,7 +180,7 @@ int main()
   print();
 }
 
-int num_rules = 0;
+long long num_rules = 0;
 
 rules::rules()
 {
@@ -286,9 +286,9 @@ symbols **find_digram(symbols *s)
   ulong one = s->raw_value();
   ulong two = s->next()->raw_value();
 
-  int jump = HASH2(one);
-  int insert = -1;
-  int i = HASH(one, two);
+  long long jump = HASH2(one);
+  long long insert = -1;
+  long long i = HASH(one, two);
 
   while (1) {
     symbols *m = table[i];
@@ -306,12 +306,12 @@ symbols **find_digram(symbols *s)
 // print the rules out
 
 rules **R;
-int Ri;
+long long Ri;
 
 void p(rules *r) {
   for (symbols *p = r->first(); !p->is_guard(); p = p->next())
     if (p->non_terminal()) {
-      int i;
+      long long i;
 
       if (R[p->rule()->index()] == p->rule())
         i = p->rule()->index();
@@ -346,7 +346,7 @@ void print()
   R[0] = &S;
   Ri = 1;
 
-  for (int i = 0; i < Ri; i ++) {
+  for (long long i = 0; i < Ri; i ++) {
     cout << i << " -> ";
     p(R[i]);
   }

@@ -132,7 +132,7 @@
 #endif
 
 #if UNROLL_NUM > 32
-  {  int __i7;
+  {  long long __i7;
     for (__i7=0; __i7 < UNROLL_NUM-32; __i7++)
 	{
 		UNROLL_CODE

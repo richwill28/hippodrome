@@ -13,7 +13,7 @@
 #include <ctype.h>
 #include <math.h>
 
-extern int num_rules, delimiter, do_uncompress;
+extern long long num_rules, delimiter, do_uncompress;
 
 rules::rules() {
   num_rules ++;
@@ -44,14 +44,14 @@ symbols *rules::last()  { return guard->prev(); }
 // Global variables used
 //    K (minimum number of times a digram must occur to form rule)
 // **************************************************************************
-int symbols::check() {
+long long symbols::check() {
   if (is_guard() || n->is_guard()) return 0;
 
   symbols **x = find_digram(this);
   // if either symbol of the digram is a delimiter -> do nothing
   if (!x) return 0;
 
-  int i;
+  long long i;
 
   // if digram is not yet in the hash table -> put it there, and return
   for (i = 0; i < K; i ++)
@@ -110,7 +110,7 @@ int symbols::check() {
     if (y[i] == r->first()) continue;
     // check that this hasn't been deleted
     bool deleted = 1;
-    for (int j = 0; j < K; j ++)
+    for (long long j = 0; j < K; j ++)
       if (y[i] == x[j]) {
         deleted = 0;
         break;
@@ -149,9 +149,9 @@ void symbols::expand() {
 
   extern bool compression_initialized;
   if (!compression_initialized) {
-    int i = 0;
+    long long i = 0;
     symbols *s;
-    extern int max_rule_len;
+    extern long long max_rule_len;
     // first calculate length of this rule (the one we are adding symbols to)
     // symbol 'this' should not be counted because it will be deleted
     s = next();
@@ -168,7 +168,7 @@ void symbols::expand() {
   if (!m) return;
   delete rule();
 
-  for (int i = 0; i < K; i ++)
+  for (long long i = 0; i < K; i ++)
     if (m[i] == this) {
       m[i] = (symbols *) 1;
       occupied --;
@@ -205,10 +205,10 @@ void symbols::substitute(rules *r)
   if (!q->check()) q->next()->check();
 }
 
-int table_size;
-int lookups = 0;
-int collisions = 0;
-int occupied = 0;
+long long table_size;
+long long lookups = 0;
+long long collisions = 0;
+long long occupied = 0;
 symbols **table = 0;
 
 // ***************************************************************************
@@ -227,9 +227,9 @@ symbols **table = 0;
 symbols **find_digram(symbols *s)
 {
   if (!table) {
-    extern int memory_to_use;
+    extern long long memory_to_use;
     table_size = memory_to_use / (K * sizeof(symbols *));
-    extern int quiet;
+    extern long long quiet;
 
     if (!quiet) {
       cerr << "Using " << memory_to_use / 1000000
@@ -241,10 +241,10 @@ symbols **find_digram(symbols *s)
     // find a prime less than the maximum table size
     if (table_size % 2 == 0)
       table_size --;
-    int max_factor = int(sqrt(float(table_size)));
+    long long max_factor = sqrt(float(table_size));
     while (1) {
-      int prime = 1;
-      for (int i = 3; i < max_factor; i += 2)
+      long long prime = 1;
+      for (long long i = 3; i < max_factor; i += 2)
 	if (table_size % i == 0) {
 	  prime = 0;
 	  break;
@@ -264,14 +264,14 @@ symbols **find_digram(symbols *s)
   if (delimiter != -1 && (s->value() == delimiter || s->next()->value() == delimiter))
     return 0;
 
-  int jump = (17 - (one % 17)) * K;
-  int insert = -1;
+  long long jump = (17 - (one % 17)) * K;
+  long long insert = -1;
 
   // Hash function: standard open addressing or double hashing. See Knuth.
 
   ulong combined = ((one << 16) | (one >> 16)) ^ two;
-  int i = ((combined * (combined + 3)) % table_size) * K;
-  int original_i = i;
+  long long i = ((combined * (combined + 3)) % table_size) * K;
+  long long original_i = i;
 
   lookups ++;
 
@@ -310,7 +310,7 @@ void rules::reproduce()
 // **************************************************************************
 ostream &operator << (ostream &o, symbols &s)
 {
-  extern int numbers;
+  extern long long numbers;
 
   if (s.non_terminal())
      o << s.rule()->index();
@@ -357,7 +357,7 @@ void rules::output()
   for (s = first(); !s->is_guard(); s = s->next())
     cout << *s << ' ';
 
-  extern int print_rule_usage;
+  extern long long print_rule_usage;
   if (print_rule_usage) cout << "\t(" << Usage << ")";
 
   cout << endl;

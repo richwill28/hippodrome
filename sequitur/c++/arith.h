@@ -101,8 +101,8 @@ typedef unsigned long	div_value;	/* B_BITS-F_BITS of precision */
  * to store them.  Also, that MAX_F_BITS <= MAX_B_BITS-2
  */
 
-#define		MAX_B_BITS   (int)( sizeof(code_value) * 8)
-#define		MAX_F_BITS   (int)((sizeof(freq_value)*8)-1 < MAX_B_BITS - 2\
+#define		MAX_B_BITS   (long long)( sizeof(code_value) * 8)
+#define		MAX_F_BITS   (long long)((sizeof(freq_value)*8)-1 < MAX_B_BITS - 2\
 				?  (sizeof(freq_value)*8)-1 : MAX_B_BITS - 2)
 
 /* If varying bits, variables are B_bits, F_bits, Half and Quarter,
@@ -112,8 +112,8 @@ typedef unsigned long	div_value;	/* B_BITS-F_BITS of precision */
  */
 
 #if defined(VARY_NBITS)
-    extern int		B_bits;
-    extern int		F_bits;
+    extern long long		B_bits;
+    extern long long		F_bits;
 #else
 #   define		B_bits		B_BITS
 #   define		F_bits  	F_BITS
@@ -128,15 +128,15 @@ extern char *coder_desc;
 void arithmetic_encode(freq_value l, freq_value h, freq_value t);
 freq_value arithmetic_decode_target(freq_value t);
 void arithmetic_decode(freq_value l, freq_value h, freq_value t);
-void binary_arithmetic_encode(freq_value c0, freq_value c1, int bit);
-int binary_arithmetic_decode(freq_value c0, freq_value c1);
+void binary_arithmetic_encode(freq_value c0, freq_value c1, long long bit);
+long long binary_arithmetic_decode(freq_value c0, freq_value c1);
 void start_encode(void);
 void finish_encode(void);
 void start_decode(void);
 void finish_decode(void);
 
 #ifdef FRUGAL_BITS
-extern int	_ignore_first_bit;
+extern long long	_ignore_first_bit;
 code_value retrieve_excess_input_bits(void);
 #endif
 

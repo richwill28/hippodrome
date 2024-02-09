@@ -39,7 +39,7 @@ static context *symbol,            // special symbols, terminals, non-terminals
   // codes that indicate whether a rule should be kept in memory or deleted
                *keep;
 
-extern int compress;
+extern long long compress;
 
 // special symbols in the "symbol" context
 #define START_RULE       0
@@ -100,8 +100,8 @@ extern int compress;
 // --------------------------------------------------------------------------
 void start_compress(bool all_input_read)
 {
-  int i;
-  extern int min_terminal, max_terminal, max_rule_len;
+  long long i;
+  extern long long min_terminal, max_terminal, max_rule_len;
 
   keep = create_context(KEEPI_LENGTH, STATIC);
   install_symbol(keep, KEEPI_NO);
@@ -109,7 +109,7 @@ void start_compress(bool all_input_read)
   install_symbol(keep, KEEPI_DUMMY);
 
   binary_context *file_type = create_binary_context();
-  int context_type;
+  long long context_type;
 
   if (compress) {
 
@@ -158,7 +158,7 @@ void start_compress(bool all_input_read)
 
 }
 
-static int forgetting = 1;
+static long long forgetting = 1;
 
 // Tell the encoder/decoder that no more rules will be deleted from memory.
 void stop_forgetting()
@@ -180,11 +180,11 @@ void end_compress() {
   }
 }
 
-int current_rule = FIRST_RULE;
-static int current_rule_index = 0;
+long long current_rule = FIRST_RULE;
+static long long current_rule_index = 0;
 
 // Encode a rule whose right-hand side has already been encoded.
-void encode_rule(rules *r, int keepi)
+void encode_rule(rules *r, long long keepi)
 {
   encode(symbol, r->index());
   if (keepi < KEEPI_LENGTH && forgetting) {
@@ -198,7 +198,7 @@ void encode_rule(rules *r, int keepi)
 // it is added to the context.
 void encode_symbol(ulong s)
 {
-  int i;
+  long long i;
   s = TERM_TO_CODE(s);
   if ((i = encode(symbol, s)) == NOT_KNOWN) {
     arithmetic_encode(s, s + 1, MINMAXTERM_TARGET);
@@ -221,7 +221,7 @@ void rules::output2()
   encode(symbol, START_RULE);
   install_symbol(symbol, number);
 
-  int l = 0;
+  long long l = 0;
   for (s = first(); !s->is_guard(); s = s->next()) l ++;
 
   if (encode(lengths, l) == NOT_KNOWN)
@@ -282,19 +282,19 @@ void forget(symbols *s)
 static rules **R;
 
 // Read a symbol from compressed input and return its arithmetic-coder code.
-int get_symbol()
+long long get_symbol()
 {
-   int i = decode(symbol);
+   long long i = decode(symbol);
 
    if (i == START_RULE) {
 
    // definition of a new rule
 
      // current rule's *arithmetic-coder* code
-      int n = current_rule;
+      long long n = current_rule;
       current_rule += 2;
       // current rule's *grammar* code
-      int ix = current_rule_index++;
+      long long ix = current_rule_index++;
       assert(current_rule_index < UNCOMPRESS_RSIZE);
 
       R[ix] = new rules;
@@ -302,15 +302,15 @@ int get_symbol()
       install_symbol(symbol, n);
 
       // decode rule length
-      int l = decode(lengths);
+      long long l = decode(lengths);
       if (l == NOT_KNOWN) {
          l = arithmetic_decode_target(MAXRULELEN_TARGET);
          arithmetic_decode(l, l + 1, MAXRULELEN_TARGET);
       }
 
       // read rule's right-hand side, symbol by symbol
-      for (int j = 0; j < l; j ++) {
-         int x = get_symbol();
+      for (long long j = 0; j < l; j ++) {
+         long long x = get_symbol();
          if (IS_NONTERMINAL(x))
             R[ix]->last()->insert_after(new symbols(R[CODE_TO_NONTERM(x)]));
          else {
@@ -335,24 +335,24 @@ int get_symbol()
 // Decompress compressed file.
 void uncompress()
 {
-  extern int numbers;     // true - we output (terminal) symbol codes in decimal form, one per line; false - as characters
+  extern long long numbers;     // true - we output (terminal) symbol codes in decimal form, one per line; false - as characters
 
   R = (rules **) malloc(UNCOMPRESS_RSIZE * sizeof(rules *));
 
   start_compress(true);
 
   while (1) {
-    int current = current_rule;
+    long long current = current_rule;
 
     // read a symbol
-    int i = get_symbol();
+    long long i = get_symbol();
 
     if (i == END_OF_FILE) break;
     else if (i == STOP_FORGETTING) forgetting = 0;
     // symbol is a yet unknown terminal
     else if (i == NOT_KNOWN)
     {
-      int j = arithmetic_decode_target(MINMAXTERM_TARGET);
+      long long j = arithmetic_decode_target(MINMAXTERM_TARGET);
       arithmetic_decode(j, j + 1, MINMAXTERM_TARGET);
       install_symbol(symbol, j);
 
@@ -361,17 +361,17 @@ void uncompress()
     // symbol is a (known) terminal
     else if (IS_TERMINAL(i))
     {
-      if (numbers) cout <<  int(CODE_TO_TERM(i)) << endl;
+      if (numbers) cout << (long long) (CODE_TO_TERM(i)) << endl;
       else         cout << char(CODE_TO_TERM(i));
     }
     // symbol is a non-terminal
     else
     {
-      int j = CODE_TO_NONTERM(i);
+      long long j = CODE_TO_NONTERM(i);
       // if we are "forgetting rules", non-terminal is followed
       if (i < current && forgetting) {
 	// by keep index
-        int keepi = decode(keep);
+        long long keepi = decode(keep);
 
 	// reproduce rule's full expansion, unless keep index says not to
         if (keepi != KEEPI_DUMMY) R[j]->reproduce();
