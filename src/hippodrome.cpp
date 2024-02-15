@@ -14,7 +14,8 @@ int main(int argc, char **argv) {
 
   auto time_begin = std::chrono::steady_clock::now();
 
-  Engine{}.analyze(map_path, grammar_path);
+  Engine engine{};
+  engine.analyze(map_path, grammar_path);
 
   auto time_end = std::chrono::steady_clock::now();
 

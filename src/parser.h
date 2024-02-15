@@ -6,6 +6,7 @@
 #include "util.h"
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <regex>
 #include <string>
 #include <tuple>
@@ -13,10 +14,16 @@
 #include <vector>
 
 struct Parser {
-  Grammar grammar;
-  std::unordered_set<Thread> threads;
-  std::unordered_set<Operand> variables;
-  std::unordered_set<Operand> locks;
+  std::unique_ptr<Grammar> grammar;
+  std::unique_ptr<std::unordered_set<Thread>> threads;
+  std::unique_ptr<std::unordered_set<Operand>> variables;
+  std::unique_ptr<std::unordered_set<Operand>> locks;
+
+  Parser()
+      : grammar{std::make_unique<Grammar>()},
+        threads{std::make_unique<std::unordered_set<Thread>>()},
+        variables{std::make_unique<std::unordered_set<Operand>>()},
+        locks{std::make_unique<std::unordered_set<Operand>>()} {}
 
   EventType parse_event_type(std::string event_type) {
     if (event_type == "R") {
@@ -72,18 +79,18 @@ struct Parser {
       Terminal terminal{"[" + tokens[0] + "]"};
       Event event{parse_event(tokens[1])};
 
-      grammar.terminals.insert(terminal);
-      grammar.content[terminal] = event;
+      grammar->terminals.insert(terminal);
+      grammar->content[terminal] = event;
 
-      threads.insert(event.thread);
+      threads->insert(event.thread);
       if (event.type == EventType::read || event.type == EventType::write) {
-        variables.insert(event.operand);
+        variables->insert(event.operand);
       } else if (event.type == EventType::lock ||
                  event.type == EventType::unlock) {
-        locks.insert(event.operand);
+        locks->insert(event.operand);
       } else if (event.type == EventType::fork ||
                  event.type == EventType::join) {
-        threads.insert(event.operand);
+        threads->insert(event.operand);
       }
     }
   }
@@ -104,16 +111,16 @@ struct Parser {
       Nonterminal nonterminal{tokens[0]};
       std::vector<Symbol> symbols = util::split(tokens[1], " ");
 
-      grammar.nonterminals.insert(nonterminal);
-      grammar.rules[nonterminal] = symbols;
+      grammar->nonterminals.insert(nonterminal);
+      grammar->rules[nonterminal] = symbols;
 
       switch (symbols.size()) {
       case 1:
-        grammar.terminals.insert(symbols[0]);
+        grammar->terminals.insert(symbols[0]);
         break;
       case 2:
-        grammar.nonterminals.insert(symbols[0]);
-        grammar.nonterminals.insert(symbols[1]);
+        grammar->nonterminals.insert(symbols[0]);
+        grammar->nonterminals.insert(symbols[1]);
         break;
       default:
         std::cerr << "Parser: Grammar is not in CNF\n";
@@ -122,12 +129,9 @@ struct Parser {
     }
   }
 
-  std::tuple<Grammar, std::unordered_set<Thread>, std::unordered_set<Operand>,
-             std::unordered_set<Operand>>
-  parse(std::string map_path, std::string grammar_path) {
+  void parse(std::string map_path, std::string grammar_path) {
     parse_map(map_path);
     parse_grammar(grammar_path);
-    return std::make_tuple(grammar, threads, variables, locks);
   }
 };
 
