@@ -122,30 +122,30 @@ def optimize(grammar: Grammar) -> Grammar:
         th += 1
 
     # Break bodies of length 3 or more into a cascade of productions, each with a body consisting of two nonterminals.
-    # print("Phase 2")
-    # th = 1
+    print("Phase 2")
+    th = 1
 
-    # rules = opt_grammar.rules.copy()
+    rules = opt_grammar.rules.copy()
 
-    # for nont, symbols in rules.items():
-    #     is_each_symb_nonterminal = False
+    for nont, symbols in rules.items():
+        is_each_symb_nonterminal = False
 
-    #     for symb in symbols:
-    #         # Based on Phase 1 post-condition
-    #         if is_nonterminal(symb):
-    #             is_each_symb_nonterminal = True
-    #         break
+        for symb in symbols:
+            # Based on Phase 1 post-condition
+            if is_nonterminal(symb):
+                is_each_symb_nonterminal = True
+            break
 
-    #     if is_each_symb_nonterminal:
-    #         while len(symbols) > 2:
-    #             new_nont = opt_grammar.get_fresh_nonterminal()
-    #             opt_grammar.add_rule(nont, deque([symbols.popleft(), new_nont]))
-    #             nont = new_nont
+        if is_each_symb_nonterminal:
+            while len(symbols) > 2:
+                new_nont = opt_grammar.get_fresh_nonterminal()
+                opt_grammar.add_rule(nont, deque([symbols.popleft(), new_nont]))
+                nont = new_nont
 
-    #         opt_grammar.add_rule(nont, symbols)
+            opt_grammar.add_rule(nont, symbols)
 
-    #     print(f"{th}/{len(rules)} rules processed")
-    #     th += 1
+        print(f"{th}/{len(rules)} rules processed")
+        th += 1
 
     return opt_grammar
 
