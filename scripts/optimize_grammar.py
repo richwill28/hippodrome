@@ -171,7 +171,7 @@ for b in benchmarks:
             line = line.split()
             nonterminal = line[0]
             symbols = line[2:]
-            grammar.add_rule(nonterminal, symbols)
+            grammar.add_rule(nonterminal, deque(symbols))
 
     opt_grammar = optimize(grammar)
     opt_grammar.write(opt_grammar_path)

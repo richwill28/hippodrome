@@ -135,7 +135,7 @@ for b in benchmarks:
             line = line.split()
             nonterminal = line[0]
             symbols = line[2:]
-            grammar.add_rule(nonterminal, symbols)
+            grammar.add_rule(nonterminal, deque(symbols))
 
     # with open(cnf_grammar_path, "w") as file:
     #     cnf_grammar = transform(grammar)
