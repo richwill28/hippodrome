@@ -114,17 +114,12 @@ struct Parser {
       grammar->nonterminals.insert(nonterminal);
       grammar->rules[nonterminal] = symbols;
 
-      switch (symbols.size()) {
-      case 1:
-        grammar->terminals.insert(symbols[0]);
-        break;
-      case 2:
-        grammar->nonterminals.insert(symbols[0]);
-        grammar->nonterminals.insert(symbols[1]);
-        break;
-      default:
-        std::cerr << "Parser: Grammar is not in CNF\n";
-        std::exit(EXIT_FAILURE);
+      for (const auto &symbol : grammar->rules[nonterminal]) {
+        if (is_terminal(symbol)) {
+          grammar->terminals.insert(symbol);
+        } else {
+          grammar->nonterminals.insert(symbol);
+        }
       }
     }
   }

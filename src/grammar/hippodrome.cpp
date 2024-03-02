@@ -12,12 +12,12 @@ int main(int argc, char **argv) {
   std::string map_path{argv[1]};
   std::string grammar_path{argv[2]};
 
-  auto time_begin = std::chrono::steady_clock::now();
+  auto time_begin = std::chrono::high_resolution_clock::now();
 
   Engine engine{};
   engine.analyze(map_path, grammar_path);
 
-  auto time_end = std::chrono::steady_clock::now();
+  auto time_end = std::chrono::high_resolution_clock::now();
 
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
                       time_end - time_begin)

@@ -5,9 +5,11 @@
 #include "grammar.h"
 #include "graph.h"
 #include "parser.h"
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -73,50 +75,6 @@ struct Engine {
     return Transaction{fresh_transaction_idx++};
   }
 
-  void compute_aux_graph_one(Nonterminal A, Terminal a) {
-
-#ifdef DEBUG
-    std::cout << "Engine: compute_aux_graph (" << A << " -> " << a << ")\n";
-#endif
-
-    Event event = grammar->content[a];
-
-    if (event.type == EventType::begin) {
-      event.annotation = Annotation::down;
-    } else if (event.type == EventType::end) {
-      event.annotation = Annotation::up;
-    } else {
-      event.annotation = Annotation::open;
-    }
-
-    Transaction txn = make_transaction();
-    txn.thread = event.thread;
-
-    if (event.type != EventType::end) {
-      (*aux_graph)[A].vertices.insert(txn);
-    }
-
-    if (event.type != EventType::begin) {
-      (*aux_graph)[A].reversed_vertices.insert(txn);
-    }
-
-    (*aux_graph)[A].first_transaction[std::make_tuple(
-        event.thread, EventType::undefined, "")] = txn;
-    (*aux_graph)[A].first_transaction[std::make_tuple(event.thread, event.type,
-                                                      event.operand)] = txn;
-
-    (*aux_graph)[A].last_transaction[std::make_tuple(
-        event.thread, EventType::undefined, "")] = txn;
-    (*aux_graph)[A].last_transaction[std::make_tuple(event.thread, event.type,
-                                                     event.operand)] = txn;
-
-    (*aux_graph)[A].content[txn].insert(event);
-
-#ifdef DEBUG
-    std::cout << (*aux_graph)[A] << "\n";
-#endif
-  }
-
   bool contains_event(std::unordered_set<Event> set, Event event) {
     for (const Event &it : set) {
       if ((it.thread == event.thread || event.thread == "") &&
@@ -161,7 +119,7 @@ struct Engine {
 
         if (cross_transaction[reversed_vertex.thread].thread !=
             reversed_vertex.thread) {
-          std::cerr << "merge_routine: something went wrong\n";
+          std::cerr << "merge_routine: something went wrong (1)\n";
           std::exit(EXIT_FAILURE);
         }
 
@@ -1636,7 +1594,8 @@ struct Engine {
     }
   }
 
-  void compute_aux_graph_two(Nonterminal A, Nonterminal B, Nonterminal C) {
+  void compute_aux_graph_inductive(Nonterminal A, Nonterminal B,
+                                   Nonterminal C) {
 
     if (B == C) {
       C += "'";
@@ -1720,20 +1679,673 @@ struct Engine {
 #endif
   }
 
+  bool compute_aux_graph_base_forward(
+      Nonterminal A, std::vector<Event> events,
+      std::unordered_map<Thread, std::vector<Transaction>> &transactions) {
+
+    std::unordered_map<Thread, Transaction> alive;
+
+    Event event = events[0];
+
+    Transaction txn = make_transaction();
+    txn.thread = event.thread;
+    transactions[txn.thread].push_back(txn);
+
+    if (event.type == EventType::begin) {
+      event.annotation = Annotation::down;
+    } else if (event.type == EventType::end) {
+      event.annotation = Annotation::up;
+    } else {
+      event.annotation = Annotation::open;
+    }
+
+    if (event.type != EventType::end) {
+      alive[txn.thread] = txn;
+      (*aux_graph)[A].vertices.insert(txn);
+    }
+
+    (*aux_graph)[A].first_transaction[std::make_tuple(
+        event.thread, EventType::undefined, "")] = txn;
+
+    (*aux_graph)[A].first_transaction[std::make_tuple(event.thread, event.type,
+                                                      event.operand)] = txn;
+
+    (*aux_graph)[A].content[txn].insert(event);
+
+    for (size_t i = 1; i < events.size(); i++) {
+
+      event = events[i];
+
+      if (event.type == EventType::read || event.type == EventType::write ||
+          event.type == EventType::lock || event.type == EventType::unlock ||
+          event.type == EventType::fork || event.type == EventType::join) {
+
+        if (alive.contains(event.thread)) {
+          txn = alive[event.thread];
+          event.annotation = (*aux_graph)[A].content[txn].begin()->annotation;
+        } else {
+          txn = make_transaction();
+          txn.thread = event.thread;
+          transactions[txn.thread].push_back(txn);
+          alive[txn.thread] = txn;
+          (*aux_graph)[A].vertices.insert(txn);
+          event.annotation = Annotation::open;
+        }
+
+        if (!(*aux_graph)[A].first_transaction.contains(
+                std::make_tuple(event.thread, EventType::undefined, ""))) {
+          (*aux_graph)[A].first_transaction[std::make_tuple(
+              event.thread, EventType::undefined, "")] = txn;
+        }
+
+        if (!(*aux_graph)[A].first_transaction.contains(
+                std::make_tuple(event.thread, event.type, event.operand))) {
+          (*aux_graph)[A].first_transaction[std::make_tuple(
+              event.thread, event.type, event.operand)] = txn;
+        }
+
+        (*aux_graph)[A].content[txn].insert(event);
+
+        // For optimization
+        std::unordered_set<Transaction> checked;
+
+        // Add v->v edges
+        for (const auto &v : (*aux_graph)[A].vertices) {
+          if (v.thread != event.thread) {
+            for (const auto &e : (*aux_graph)[A].content[v]) {
+              if (e.conflict(event)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(v, txn));
+              }
+            }
+            for (const auto &e : (*aux_graph)[A].summary[v]) {
+              if (e.conflict(event)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(v, txn));
+              }
+            }
+            checked.insert(v);
+          }
+        }
+
+        // Add f->v edges
+        for (const auto &[_, f] : (*aux_graph)[A].first_transaction) {
+          if (f != txn) {
+            if (checked.contains(f)) {
+              continue;
+            }
+            for (const auto &e : (*aux_graph)[A].content[f]) {
+              if (e.conflict(event)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(f, txn));
+              }
+            }
+            for (const auto &e : (*aux_graph)[A].summary[f]) {
+              if (e.conflict(event)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(f, txn));
+              }
+            }
+            checked.insert(f);
+          }
+        }
+
+      } else if (event.type == EventType::begin) {
+
+        txn = make_transaction();
+        txn.thread = event.thread;
+        transactions[txn.thread].push_back(txn);
+
+        event.annotation = Annotation::down;
+
+        alive[txn.thread] = txn;
+        (*aux_graph)[A].vertices.insert(txn);
+
+        if (!(*aux_graph)[A].first_transaction.contains(
+                std::make_tuple(event.thread, EventType::undefined, ""))) {
+          (*aux_graph)[A].first_transaction[std::make_tuple(
+              event.thread, EventType::undefined, "")] = txn;
+        }
+
+        if (!(*aux_graph)[A].first_transaction.contains(
+                std::make_tuple(event.thread, event.type, event.operand))) {
+          (*aux_graph)[A].first_transaction[std::make_tuple(
+              event.thread, event.type, event.operand)] = txn;
+        }
+
+        (*aux_graph)[A].content[txn].insert(event);
+
+        // TODO: Edges computation can probably be optimized away?
+
+        // For optimization
+        std::unordered_set<Transaction> checked;
+
+        // Add v->v edges
+        for (const auto &v : (*aux_graph)[A].vertices) {
+          if (v.thread != event.thread) {
+            for (const auto &e : (*aux_graph)[A].content[v]) {
+              if (e.conflict(event)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(v, txn));
+              }
+            }
+            for (const auto &e : (*aux_graph)[A].summary[v]) {
+              if (e.conflict(event)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(v, txn));
+              }
+            }
+            checked.insert(v);
+          }
+        }
+
+        // Add f->v edges
+        for (const auto &[_, f] : (*aux_graph)[A].first_transaction) {
+          if (f != txn) {
+            if (checked.contains(f)) {
+              continue;
+            }
+            for (const auto &e : (*aux_graph)[A].content[f]) {
+              if (e.conflict(event)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(f, txn));
+              }
+            }
+            for (const auto &e : (*aux_graph)[A].summary[f]) {
+              if (e.conflict(event)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(f, txn));
+              }
+            }
+            checked.insert(f);
+          }
+        }
+
+      } else if (event.type == EventType::end) {
+
+        if (alive.contains(event.thread)) {
+          txn = alive[event.thread];
+
+          Annotation annotation =
+              (*aux_graph)[A].content[txn].begin()->annotation;
+          if (annotation == Annotation::down) {
+            event.annotation = Annotation::closed;
+          } else if (annotation == Annotation::open) {
+            event.annotation = Annotation::up;
+          } else {
+            std::cerr
+                << "compute_aux_graph_base_forward: something went wrong\n";
+            std::exit(EXIT_FAILURE);
+          }
+
+          // TODO: Should we do FT before or after edges?
+          if (!(*aux_graph)[A].first_transaction.contains(
+                  std::make_tuple(event.thread, EventType::undefined, ""))) {
+            (*aux_graph)[A].first_transaction[std::make_tuple(
+                event.thread, EventType::undefined, "")] = txn;
+          }
+
+          if (!(*aux_graph)[A].first_transaction.contains(
+                  std::make_tuple(event.thread, event.type, event.operand))) {
+            (*aux_graph)[A].first_transaction[std::make_tuple(
+                event.thread, event.type, event.operand)] = txn;
+          }
+
+          std::unordered_set<Event> updated_content;
+          for (const auto &e : (*aux_graph)[A].content[txn]) {
+            updated_content.insert(
+                Event{e.thread, e.type, e.operand, event.annotation});
+          }
+          updated_content.insert(event);
+
+          (*aux_graph)[A].content[txn] = updated_content;
+
+          std::unordered_set<Transaction> immediate_preds;
+          std::unordered_set<Transaction> immediate_succs;
+
+          // Connect v -> v -> v edges
+
+          for (const auto &v : (*aux_graph)[A].vertices) {
+            for (const auto &w : (*aux_graph)[A].vertices) {
+              if ((*aux_graph)[A].edges.contains(std::make_pair(v, w))) {
+                if (txn == v) {
+                  immediate_succs.insert(w);
+
+                  bool remove_edge = true;
+                  for (const auto &[_, f] : (*aux_graph)[A].first_transaction) {
+                    if (txn == f) {
+                      remove_edge = false;
+                      break;
+                    }
+                  }
+
+                  // The edge is safe to remove only if it's not an f->v edge
+                  if (remove_edge) {
+                    (*aux_graph)[A].edges.erase(std::make_pair(txn, w));
+                  }
+                }
+
+                else if (txn == w) {
+                  immediate_preds.insert(v);
+
+                  (*aux_graph)[A].summary[v].insert(
+                      (*aux_graph)[A].content[txn].begin(),
+                      (*aux_graph)[A].content[txn].end());
+
+                  (*aux_graph)[A].edges.erase(std::make_pair(v, txn));
+                }
+              }
+            }
+          }
+
+          // TODO: Should we detect general cycle too?
+
+          for (const auto &p : immediate_preds) {
+            for (const auto &s : immediate_succs) {
+              if (p == s) {
+                // Self-cycle detected!
+                (*csv)[A] = true;
+                return true;
+              }
+              (*aux_graph)[A].edges.insert(std::make_pair(p, s));
+            }
+          }
+
+          // Connect f -> v -> v edges
+
+          immediate_preds.clear();
+
+          for (const auto &[_, f] : (*aux_graph)[A].first_transaction) {
+            for (const auto &w : (*aux_graph)[A].vertices) {
+              if ((*aux_graph)[A].edges.contains(std::make_pair(f, w))) {
+                if (txn == w) {
+                  immediate_preds.insert(f);
+
+                  (*aux_graph)[A].summary[f].insert(
+                      (*aux_graph)[A].content[txn].begin(),
+                      (*aux_graph)[A].content[txn].end());
+
+                  (*aux_graph)[A].edges.erase(std::make_pair(f, txn));
+                }
+              }
+            }
+          }
+
+          for (const auto &p : immediate_preds) {
+            for (const auto &s : immediate_succs) {
+              if (p == s) {
+                // Cycle detected!
+                (*csv)[A] = true;
+                return true;
+              }
+              (*aux_graph)[A].edges.insert(std::make_pair(p, s));
+            }
+          }
+
+          alive.erase(txn.thread);
+          (*aux_graph)[A].vertices.erase(txn);
+
+        } else {
+          // It's the first event in the thread.
+
+          txn = make_transaction();
+          txn.thread = event.thread;
+          transactions[txn.thread].push_back(txn);
+
+          event.annotation = Annotation::up;
+
+          if (!(*aux_graph)[A].first_transaction.contains(
+                  std::make_tuple(event.thread, EventType::undefined, ""))) {
+            (*aux_graph)[A].first_transaction[std::make_tuple(
+                event.thread, EventType::undefined, "")] = txn;
+          }
+
+          if (!(*aux_graph)[A].first_transaction.contains(
+                  std::make_tuple(event.thread, event.type, event.operand))) {
+            (*aux_graph)[A].first_transaction[std::make_tuple(
+                event.thread, event.type, event.operand)] = txn;
+          }
+
+          (*aux_graph)[A].content[txn].insert(event);
+        }
+
+      } else {
+        std::cerr << "compute_aux_graph_base_forward: something went wrong\n";
+        std::exit(EXIT_FAILURE);
+      }
+    }
+
+    return false;
+  }
+
+  bool compute_aux_graph_base_backward(
+      Nonterminal A, std::vector<Event> events,
+      std::unordered_map<Thread, std::vector<Transaction>> &transactions) {
+
+    std::reverse(events.begin(), events.end());
+
+    std::unordered_map<Thread, Transaction> alive;
+
+    Event event = events[0];
+
+    Transaction txn = transactions[event.thread].back();
+
+    if (event.type != EventType::begin) {
+      alive[txn.thread] = txn;
+      (*aux_graph)[A].reversed_vertices.insert(txn);
+    }
+
+    (*aux_graph)[A].last_transaction[std::make_tuple(
+        event.thread, EventType::undefined, "")] = txn;
+
+    (*aux_graph)[A].last_transaction[std::make_tuple(event.thread, event.type,
+                                                     event.operand)] = txn;
+
+    if (event.type == EventType::begin) {
+      transactions[event.thread].pop_back();
+    }
+
+    for (size_t i = 1; i < events.size(); i++) {
+
+      event = events[i];
+
+      if (event.type == EventType::read || event.type == EventType::write ||
+          event.type == EventType::lock || event.type == EventType::unlock ||
+          event.type == EventType::fork || event.type == EventType::join) {
+
+        if (alive.contains(event.thread)) {
+          txn = alive[event.thread];
+        } else {
+          txn = transactions[event.thread].back();
+          alive[txn.thread] = txn;
+          (*aux_graph)[A].reversed_vertices.insert(txn);
+        }
+
+        if (!(*aux_graph)[A].last_transaction.contains(
+                std::make_tuple(event.thread, EventType::undefined, ""))) {
+          (*aux_graph)[A].last_transaction[std::make_tuple(
+              event.thread, EventType::undefined, "")] = txn;
+        }
+
+        if (!(*aux_graph)[A].last_transaction.contains(
+                std::make_tuple(event.thread, event.type, event.operand))) {
+          (*aux_graph)[A].last_transaction[std::make_tuple(
+              event.thread, event.type, event.operand)] = txn;
+        }
+
+        // For optimization
+        std::unordered_set<Transaction> checked;
+
+        // Add rv->rv edges
+        for (const auto &v : (*aux_graph)[A].reversed_vertices) {
+          if (v.thread != event.thread) {
+            for (const auto &e : (*aux_graph)[A].content[v]) {
+              if (event.conflict(e)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(txn, v));
+              }
+            }
+            for (const auto &e : (*aux_graph)[A].reversed_summary[v]) {
+              if (event.conflict(e)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(txn, v));
+              }
+            }
+            checked.insert(v);
+          }
+        }
+
+        // Add rv->l edges
+        for (const auto &[_, l] : (*aux_graph)[A].last_transaction) {
+          if (l != txn) {
+            if (checked.contains(l)) {
+              continue;
+            }
+            for (const auto &e : (*aux_graph)[A].content[l]) {
+              if (event.conflict(e)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(txn, l));
+              }
+            }
+            for (const auto &e : (*aux_graph)[A].reversed_summary[l]) {
+              if (event.conflict(e)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(txn, l));
+              }
+            }
+            checked.insert(l);
+          }
+        }
+
+      } else if (event.type == EventType::end) {
+
+        txn = transactions[event.thread].back();
+
+        alive[txn.thread] = txn;
+        (*aux_graph)[A].reversed_vertices.insert(txn);
+
+        if (!(*aux_graph)[A].last_transaction.contains(
+                std::make_tuple(event.thread, EventType::undefined, ""))) {
+          (*aux_graph)[A].last_transaction[std::make_tuple(
+              event.thread, EventType::undefined, "")] = txn;
+        }
+
+        if (!(*aux_graph)[A].last_transaction.contains(
+                std::make_tuple(event.thread, event.type, event.operand))) {
+          (*aux_graph)[A].last_transaction[std::make_tuple(
+              event.thread, event.type, event.operand)] = txn;
+        }
+
+        // For optimization
+        std::unordered_set<Transaction> checked;
+
+        // Add rv->rv edges
+        for (const auto &v : (*aux_graph)[A].reversed_vertices) {
+          if (v.thread != event.thread) {
+            for (const auto &e : (*aux_graph)[A].content[v]) {
+              if (event.conflict(e)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(txn, v));
+              }
+            }
+            for (const auto &e : (*aux_graph)[A].reversed_summary[v]) {
+              if (event.conflict(e)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(txn, v));
+              }
+            }
+            checked.insert(v);
+          }
+        }
+
+        // Add rv->l edges
+        for (const auto &[_, l] : (*aux_graph)[A].last_transaction) {
+          if (l != txn) {
+            if (checked.contains(l)) {
+              continue;
+            }
+            for (const auto &e : (*aux_graph)[A].content[l]) {
+              if (event.conflict(e)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(txn, l));
+              }
+            }
+            for (const auto &e : (*aux_graph)[A].reversed_summary[l]) {
+              if (event.conflict(e)) {
+                (*aux_graph)[A].edges.insert(std::make_pair(txn, l));
+              }
+            }
+            checked.insert(l);
+          }
+        }
+
+      } else if (event.type == EventType::begin) {
+
+        if (alive.contains(event.thread)) {
+          txn = alive[event.thread];
+
+          if (!(*aux_graph)[A].last_transaction.contains(
+                  std::make_tuple(event.thread, EventType::undefined, ""))) {
+            (*aux_graph)[A].last_transaction[std::make_tuple(
+                event.thread, EventType::undefined, "")] = txn;
+          }
+
+          if (!(*aux_graph)[A].last_transaction.contains(
+                  std::make_tuple(event.thread, event.type, event.operand))) {
+            (*aux_graph)[A].last_transaction[std::make_tuple(
+                event.thread, event.type, event.operand)] = txn;
+          }
+
+          std::unordered_set<Transaction> immediate_preds;
+          std::unordered_set<Transaction> immediate_succs;
+
+          // Connect rv -> rv -> rv edges
+
+          for (const auto &v : (*aux_graph)[A].reversed_vertices) {
+            for (const auto &w : (*aux_graph)[A].reversed_vertices) {
+              if ((*aux_graph)[A].edges.contains(std::make_pair(v, w))) {
+                if (txn == v) {
+                  immediate_succs.insert(w);
+
+                  (*aux_graph)[A].reversed_summary[w].insert(
+                      (*aux_graph)[A].content[txn].begin(),
+                      (*aux_graph)[A].content[txn].end());
+
+                  (*aux_graph)[A].edges.erase(std::make_pair(txn, w));
+                }
+
+                else if (txn == w) {
+                  immediate_preds.insert(v);
+
+                  bool remove_edge = true;
+                  for (const auto &[_, l] : (*aux_graph)[A].last_transaction) {
+                    if (txn == l) {
+                      remove_edge = false;
+                      break;
+                    }
+                  }
+
+                  // The edge is safe to remove only if it's not an rv->l edge
+                  if (remove_edge) {
+                    (*aux_graph)[A].edges.erase(std::make_pair(v, txn));
+                  }
+                }
+              }
+            }
+          }
+
+          // TODO: Should we detect general cycle too?
+
+          for (const auto &p : immediate_preds) {
+            for (const auto &s : immediate_succs) {
+              (*aux_graph)[A].edges.insert(std::make_pair(p, s));
+            }
+          }
+
+          // Connect rv -> rv -> l edges
+
+          immediate_succs.clear();
+
+          for (const auto &[_, l] : (*aux_graph)[A].last_transaction) {
+            for (const auto &w : (*aux_graph)[A].reversed_vertices) {
+              if ((*aux_graph)[A].edges.contains(std::make_pair(w, l))) {
+                if (txn == w) {
+                  immediate_succs.insert(l);
+
+                  (*aux_graph)[A].reversed_summary[l].insert(
+                      (*aux_graph)[A].content[txn].begin(),
+                      (*aux_graph)[A].content[txn].end());
+
+                  (*aux_graph)[A].edges.erase(std::make_pair(txn, l));
+                }
+              }
+            }
+          }
+
+          for (const auto &p : immediate_preds) {
+            for (const auto &s : immediate_succs) {
+              (*aux_graph)[A].edges.insert(std::make_pair(p, s));
+            }
+          }
+
+          alive.erase(txn.thread);
+          (*aux_graph)[A].reversed_vertices.erase(txn);
+
+          transactions[event.thread].pop_back();
+
+        } else {
+          // It's the last event in the thread.
+
+          txn = transactions[event.thread].back();
+
+          if (!(*aux_graph)[A].last_transaction.contains(
+                  std::make_tuple(event.thread, EventType::undefined, ""))) {
+            (*aux_graph)[A].last_transaction[std::make_tuple(
+                event.thread, EventType::undefined, "")] = txn;
+          }
+
+          if (!(*aux_graph)[A].last_transaction.contains(
+                  std::make_tuple(event.thread, event.type, event.operand))) {
+            (*aux_graph)[A].last_transaction[std::make_tuple(
+                event.thread, event.type, event.operand)] = txn;
+          }
+
+          transactions[event.thread].pop_back();
+        }
+
+      } else {
+        std::cerr << "compute_aux_graph_base_backward: something went wrong\n";
+        std::exit(EXIT_FAILURE);
+      }
+    }
+
+    return false;
+  }
+
+  void compute_aux_graph_base(Nonterminal A, std::vector<Terminal> terminals) {
+
+#ifdef DEBUG
+    std::cout << "Engine: compute_aux_graph (" << A << " ->";
+    for (const auto &term : terminals) {
+      std::cout << " " << term;
+    }
+    std::cout << ")\n";
+#endif
+
+    std::vector<Event> events;
+    for (const auto &term : terminals) {
+      events.push_back(grammar->content[term]);
+    }
+
+    std::unordered_map<Thread, std::vector<Transaction>> transactions;
+
+    if (compute_aux_graph_base_forward(A, events, transactions)) {
+#ifdef DEBUG
+      std::cout << "cycle detected!\n";
+      std::cout << "forward\n";
+      std::cout << (*aux_graph)[A] << "\n";
+      std::exit(EXIT_FAILURE);
+#endif
+      return;
+    }
+
+    // Copy forward edges as it may be erased on computing aux graph backward
+    std::unordered_set<std::pair<Transaction, Transaction>> forward_edges =
+        (*aux_graph)[A].edges;
+
+#ifdef DEBUG
+    std::cout << "forward\n";
+    std::cout << (*aux_graph)[A] << "\n";
+#endif
+
+    if (compute_aux_graph_base_backward(A, events, transactions)) {
+      return;
+    }
+
+    (*aux_graph)[A].edges.insert(forward_edges.begin(), forward_edges.end());
+
+#ifdef DEBUG
+    std::cout << "forward & backward\n";
+    std::cout << (*aux_graph)[A] << "\n";
+#endif
+  }
+
   void compute_aux_graph(Nonterminal nonterminal) {
     if (aux_graph->contains(nonterminal)) {
       return;
     }
 
-    std::vector<Nonterminal> chunks = grammar->rules[nonterminal];
+    std::vector<Symbol> chunks = grammar->rules[nonterminal];
 
-    if (chunks.size() == 1) {
-      compute_aux_graph_one(nonterminal, chunks[0]);
-    } else if (chunks.size() == 2) {
-      compute_aux_graph_two(nonterminal, chunks[0], chunks[1]);
+    if (grammar->terminals.contains(chunks[0])) {
+      compute_aux_graph_base(nonterminal, chunks);
     } else {
-      std::cerr << "compute_aux_graph: something went wrong\n";
-      std::exit(EXIT_FAILURE);
+      compute_aux_graph_inductive(nonterminal, chunks[0], chunks[1]);
     }
   }
 
@@ -1874,23 +2486,29 @@ struct Engine {
 
 #ifdef DEBUG
     std::cout << "Engine: analyze_csv(" + nonterminal + ")\n";
-    grammar.generate(nonterminal);
+    grammar->generate(nonterminal);
     std::cout << "\n";
 #endif
 
     std::vector<Symbol> chunks = grammar->rules[nonterminal];
 
-    if (chunks.size() == 1) {
+    if (grammar->terminals.contains(grammar->rules[nonterminal][0])) {
       (*csv)[nonterminal] = false;
       compute_aux_graph(nonterminal);
+      // If aux base computation detects a cycle, csv is set to true.
       return (*csv)[nonterminal];
 
-    } else if (chunks.size() == 2) {
+    } else {
+      // #ifdef DEBUG
+      //       std::cout << nonterminal << " skipped\n\n";
+      //       return false;
+      // #endif
+
       compute_cross_graph(nonterminal);
 
 #ifdef DEBUG
       std::cout << "Cross graph:\n";
-      std::cout << cross_graph[nonterminal] << "\n";
+      std::cout << (*cross_graph)[nonterminal] << "\n";
 #endif
 
       bool violation = (*cross_graph)[nonterminal].cyclic();
@@ -1900,12 +2518,9 @@ struct Engine {
       }
       return violation;
     }
-
-    std::cerr << "Engine: Grammar is not in CNF\n";
-    std::exit(EXIT_FAILURE);
   }
 
-  void topological_sort_dfs(Nonterminal &vertex,
+  void topological_sort_dfs(Nonterminal vertex,
                             std::unordered_set<Nonterminal> &visited) {
     visited.insert(vertex);
     for (Symbol neighbor : grammar->rules.at(vertex)) {

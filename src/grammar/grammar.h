@@ -12,6 +12,10 @@ using Symbol = std::string;
 using Nonterminal = std::string;
 using Terminal = std::string;
 
+bool is_terminal(const std::string &s) { return s.substr(0, 1) == "["; }
+
+bool is_nonterminal(const std::string &s) { return !is_terminal(s); }
+
 struct Grammar {
   std::unordered_set<Nonterminal> nonterminals;
   std::unordered_set<Terminal> terminals;
@@ -24,11 +28,17 @@ struct Grammar {
     if (rules.at(nonterminal).size() == 1) {
       std::cout << content.at(rules.at(nonterminal).at(0)) << "\n";
     } else if (rules.at(nonterminal).size() == 2) {
-      generate(rules.at(nonterminal).at(0));
-      generate(rules.at(nonterminal).at(1));
+      if (is_terminal(rules.at(nonterminal).at(0))) {
+        std::cout << content.at(rules.at(nonterminal).at(0)) << "\n";
+        std::cout << content.at(rules.at(nonterminal).at(1)) << "\n";
+      } else {
+        generate(rules.at(nonterminal).at(0));
+        generate(rules.at(nonterminal).at(1));
+      }
     } else {
-      std::cerr << "Grammar is not in CNF\n";
-      std::exit(EXIT_FAILURE);
+      for (const auto &term : rules.at(nonterminal)) {
+        std::cout << content.at(term) << "\n";
+      }
     }
     std::cout << "====================" + nonterminal +
                      "====================\n";
