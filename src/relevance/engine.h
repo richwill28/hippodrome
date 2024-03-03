@@ -66,13 +66,15 @@ struct Engine {
 
   // For relevant variables optimization
   struct Relevance {
-    std::unordered_map<Operand, std::unordered_set<Nonterminal>> occurences;
     std::unordered_map<Nonterminal, std::unordered_set<Operand>> operands;
-    std::unordered_map<Operand, Nonterminal> least_common_ancestor;
+    std::unordered_map<Operand, std::unordered_set<Nonterminal>>
+        lowest_occurences;
+    std::unordered_map<Operand, Nonterminal> lowest_common_ancestor;
     std::unordered_map<Nonterminal, std::unordered_set<Operand>> maintain;
 
     Relevance()
-        : occurences{}, operands{}, least_common_ancestor{}, maintain{} {}
+        : operands{}, lowest_occurences{},
+          lowest_common_ancestor{}, maintain{} {}
   };
 
   std::unique_ptr<Core> core;
@@ -1548,7 +1550,7 @@ struct Engine {
   void refresh_aux_graph(Nonterminal B, Nonterminal C) {
 
 #ifdef DEBUG
-    std::cout << "Engine: refresh_graph (" << B << ", " << C << ")\n";
+    std::cout << "Engine: refresh_aux_graph (" << B << ", " << C << ")\n";
 #endif
 
     std::unordered_map<Transaction, Transaction> fresh;
@@ -2517,9 +2519,9 @@ struct Engine {
     std::cout << "\n";
 #endif
 
-    std::vector<Symbol> chunks = core->grammar.rules[nonterminal];
+    if (core->grammar.terminals.contains(
+            core->grammar.rules[nonterminal].front())) {
 
-    if (core->grammar.terminals.contains(core->grammar.rules[nonterminal][0])) {
       core->csv[nonterminal] = false;
       compute_aux_graph(nonterminal);
       // If aux base computation detects a cycle, csv is set to true.
@@ -2540,6 +2542,257 @@ struct Engine {
         compute_aux_graph(nonterminal);
       }
       return violation;
+    }
+  }
+
+  void compute_lowest_occurences(Nonterminal nonterminal) {
+    for (const Terminal &term : core->grammar.rules[nonterminal]) {
+      Event event = core->grammar.content[term];
+      // For now we keep track of variables and locks.
+      // TODO: Maybe threads as well?
+      if (event.type == EventType::read || event.type == EventType::write ||
+          event.type == EventType::lock || event.type == EventType::unlock) {
+        relv->operands[nonterminal].insert(event.operand);
+        relv->lowest_occurences[event.operand].insert(nonterminal);
+      }
+    }
+  }
+
+  void compute_parents_dfs(
+      Nonterminal vertex, std::unordered_set<Nonterminal> &visited,
+      std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>>
+          &parents) {
+    visited.insert(vertex);
+    for (Symbol neighbor : core->grammar.rules.at(vertex)) {
+      if (core->grammar.nonterminals.contains(neighbor)) {
+        parents[neighbor].insert(vertex);
+        if (!visited.contains(neighbor)) {
+          compute_parents_dfs(neighbor, visited, parents);
+        }
+      }
+    }
+  }
+
+  void compute_parents(
+      std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>>
+          &parents) {
+    Nonterminal start{"0"};
+    std::unordered_set<Nonterminal> visited;
+    compute_parents_dfs(start, visited, parents);
+  }
+
+  void compute_ancestor_dfs(
+      Nonterminal start, Nonterminal vertex,
+      std::unordered_set<Nonterminal> &visited,
+      std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>>
+          &ancestors,
+      const std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>>
+          &parents) {
+
+    visited.insert(vertex);
+
+    if (vertex == "0") {
+      return;
+    }
+
+    for (const auto &p : parents.at(vertex)) {
+      ancestors[start].insert(p);
+      if (!visited.contains(p)) {
+        compute_ancestor_dfs(start, p, visited, ancestors, parents);
+      }
+    }
+  }
+
+  void compute_ancestor(
+      Nonterminal start,
+      std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>>
+          &ancestors,
+      const std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>>
+          &parents) {
+
+    std::unordered_set<Nonterminal> visited;
+    compute_ancestor_dfs(start, start, visited, ancestors, parents);
+  }
+
+  void compute_lowest_common_ancestor_dfs(
+      Nonterminal vertex, Nonterminal &lowest_common_ancestor,
+      const std::unordered_set<Nonterminal> &common_ancestors) {
+
+    Nonterminal top_child = core->grammar.rules[vertex][0];
+    Nonterminal bottom_child = core->grammar.rules[vertex][1];
+
+    bool has_top_child = common_ancestors.contains(top_child);
+    bool has_bottom_child = common_ancestors.contains(bottom_child);
+
+    if (has_top_child && has_bottom_child) {
+      lowest_common_ancestor = vertex;
+    } else if (has_top_child) {
+      compute_lowest_common_ancestor_dfs(top_child, lowest_common_ancestor,
+                                         common_ancestors);
+    } else if (has_bottom_child) {
+      compute_lowest_common_ancestor_dfs(bottom_child, lowest_common_ancestor,
+                                         common_ancestors);
+    } else {
+      lowest_common_ancestor = vertex;
+    }
+  }
+
+  void compute_lowest_common_ancestor(
+      Operand operand,
+      const std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>>
+          &ancestors) {
+
+    if (relv->lowest_common_ancestor.contains(operand)) {
+      return;
+    }
+
+    std::unordered_set<Nonterminal> common_ancestors;
+
+    bool first = true;
+
+    for (const auto &nont : relv->lowest_occurences[operand]) {
+      if (first) {
+        common_ancestors.insert(ancestors.at(nont).begin(),
+                                ancestors.at(nont).end());
+        first = false;
+      } else {
+        std::unordered_set<Nonterminal> intersection;
+        for (const auto &anct : ancestors.at(nont)) {
+          if (common_ancestors.contains(anct)) {
+            intersection.insert(anct);
+          }
+        }
+        common_ancestors = intersection;
+      }
+    }
+
+#ifdef DEBUG
+    std::cout << "Lowest occurences of " << operand << "\n";
+    for (const auto &nont : relv->lowest_occurences[operand]) {
+      std::cout << nont << " ";
+    }
+    std::cout << "\n";
+
+    // for (const auto &nont : relv->lowest_occurences[operand]) {
+    //   std::cout << "Ancestors of " << nont << "\n";
+    //   for (const auto &anct : ancestors.at(nont)) {
+    //     std::cout << anct << " ";
+    //   }
+    //   std::cout << "\n\n";
+    // }
+
+    std::cout << "Common ancestors of " << operand << "\n";
+    for (const auto &anct : common_ancestors) {
+      std::cout << anct << " ";
+    }
+    std::cout << "\n";
+#endif
+
+    Nonterminal start{"0"};
+    compute_lowest_common_ancestor_dfs(
+        start, relv->lowest_common_ancestor[operand], common_ancestors);
+
+#ifdef DEBUG
+    std::cout << "Lowest common ancestor of " << operand << " = "
+              << relv->lowest_common_ancestor[operand] << "\n\n";
+#endif
+  }
+
+  void compute_relevance_base(Nonterminal nonterminal) {
+    for (const Operand &op : relv->operands[nonterminal]) {
+      if (relv->lowest_common_ancestor[op] != nonterminal) {
+        relv->maintain[nonterminal].insert(op);
+      }
+    }
+
+#ifdef DEBUG
+    std::cout << "Relevant operands to maintain from " << nonterminal << "\n";
+    for (const auto &op : relv->maintain[nonterminal]) {
+      std::cout << op << " ";
+    }
+    std::cout << "\n\n";
+#endif
+  }
+
+  void compute_relevance_inductive(Nonterminal nonterminal) {
+    Nonterminal top_child = core->grammar.rules[nonterminal][0];
+    Nonterminal bottom_child = core->grammar.rules[nonterminal][1];
+
+    for (const Operand &op : relv->maintain[top_child]) {
+      if (relv->lowest_common_ancestor[op] != nonterminal) {
+        relv->maintain[nonterminal].insert(op);
+      }
+    }
+
+    for (const Operand &op : relv->maintain[bottom_child]) {
+      if (relv->lowest_common_ancestor[op] != nonterminal) {
+        relv->maintain[nonterminal].insert(op);
+      }
+    }
+
+#ifdef DEBUG
+    std::cout << "Relevant operands to maintain from " << nonterminal << "\n";
+    for (const auto &op : relv->maintain[nonterminal]) {
+      std::cout << op << " ";
+    }
+    std::cout << "\n\n";
+#endif
+  }
+
+  void preprocess() {
+    std::unordered_set<Nonterminal> lowest_nonterminals;
+    for (const Nonterminal &nonterminal : core->topological_ordering) {
+      if (core->grammar.terminals.contains(
+              core->grammar.rules[nonterminal].front())) {
+        lowest_nonterminals.insert(nonterminal);
+      }
+    }
+
+    // 1. Compute lowest occurences of operands
+    for (const Nonterminal &nonterminal : lowest_nonterminals) {
+      compute_lowest_occurences(nonterminal);
+    }
+
+    // 2. Compute lowest common ancestor
+    std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>> parents;
+    compute_parents(parents);
+
+    std::unordered_map<Nonterminal, std::unordered_set<Nonterminal>> ancestors;
+    for (const Nonterminal &nonterminal : lowest_nonterminals) {
+      compute_ancestor(nonterminal, ancestors, parents);
+    }
+
+    std::unordered_set<Operand> operands;
+    operands.insert(core->variables.begin(), core->variables.end());
+    operands.insert(core->locks.begin(), core->locks.end());
+
+    for (const Operand &op : operands) {
+      if (relv->lowest_occurences[op].size() == 1) {
+        relv->lowest_common_ancestor[op] =
+            *(relv->lowest_occurences[op].begin());
+
+#ifdef DEBUG
+        std::cout << "Lowest common ancestor of " << op << " = "
+                  << relv->lowest_common_ancestor[op] << "\n\n";
+#endif
+      }
+    }
+
+    for (const auto &op : core->variables) {
+      compute_lowest_common_ancestor(op, ancestors);
+    }
+
+    for (const auto &op : core->locks) {
+      compute_lowest_common_ancestor(op, ancestors);
+    }
+
+    // 3. Compute relevance
+    for (const Nonterminal &nonterminal : core->topological_ordering) {
+      if (lowest_nonterminals.contains(nonterminal)) {
+        compute_relevance_base(nonterminal);
+      } else {
+        compute_relevance_inductive(nonterminal);
+      }
     }
   }
 
@@ -2572,8 +2825,9 @@ struct Engine {
     core->locks = parser->locks;
 
     topological_sort();
+    preprocess();
 
-    for (Nonterminal nonterminal : core->topological_ordering) {
+    for (const Nonterminal &nonterminal : core->topological_ordering) {
       if (analyze_csv(nonterminal)) {
         std::cout << "Conflict serializability violation detected in " +
                          nonterminal + "\n";
