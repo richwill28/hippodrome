@@ -1,6 +1,7 @@
 #include "engine.h"
 #include <chrono>
 #include <iostream>
+#include <memory>
 #include <string>
 
 int main(int argc, char **argv) {
@@ -14,8 +15,8 @@ int main(int argc, char **argv) {
 
   auto time_begin = std::chrono::high_resolution_clock::now();
 
-  Engine engine{};
-  engine.analyze(map_path, grammar_path);
+  std::unique_ptr<Engine> engine{std::make_unique<Engine>()};
+  engine->analyze(map_path, grammar_path);
 
   auto time_end = std::chrono::high_resolution_clock::now();
 

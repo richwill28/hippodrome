@@ -6,7 +6,6 @@
 #include "util.h"
 #include <fstream>
 #include <iostream>
-#include <memory>
 #include <regex>
 #include <string>
 #include <tuple>
