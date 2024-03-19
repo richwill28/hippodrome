@@ -2922,9 +2922,22 @@ struct Engine {
 
 #ifdef PERF
       std::cout << th++ << "/" << core.topological_ordering.size() << "\n";
+      auto time_begin = std::chrono::high_resolution_clock::now();
 #endif
 
-      if (analyze_csv(nonterminal)) {
+      bool csv = analyze_csv(nonterminal);
+
+#ifdef PERF
+      auto time_end = std::chrono::high_resolution_clock::now();
+
+      auto duration = std::chrono::duration_cast<std::chrono::seconds>(
+                          time_end - time_begin)
+                          .count();
+
+      std::cout << "Time elapsed = " << duration << " sec\n";
+#endif
+
+      if (csv) {
         std::cout << "Conflict serializability violation detected in " +
                          nonterminal + "\n";
         return;
